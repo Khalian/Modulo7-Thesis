@@ -35,24 +35,3 @@ An API will also be exposed to the client along a remote invocation procedure. T
 \end{enumerate}
 
 This API can be consumed for specific song analysis. As design this API will not work on a bulk of files like its sql counterpart. 
-
-
-\chapter{Progress Done}
-The following points of progress have been successfully completed:-
-\begin{enumerate}
-\item Literature study on existing software related to Music Information Retrieval. Software exists which allow feature extraction {jMIR \cite{jMIR2010}.  - My primary inspiration}, Audio analysis and audio based Information Retrieval - {Essentia \cite{essentia}, marsyas \cite{marsyas}}, specialized music theoretic exploration of a song {Humdrum \cite{humdrum}}. None however attack the problem for MIR for scale. Also studied industry's approach on MIR, although companies don't publish all details. 
-\item In the software architecture part : Completed the domain specific converters for Midi, Mp3 and Music XML along with the Modulo7 internal representation and its binarization. Need to start work on HDFS deployment.
-\item Basic Lyrics indexer is implemented(including a tokenizer). Need to start work on lyrics similarity models. 
-\item Identified non trivial amounts of datasets to begin testing on (e.g. the million song dataset for specific song features, JHU's Lester Levy Sheet music collection). I have started the process for acquisition of these datasets but working on these datasets would begin on October. 
-\end{enumerate}
-Points to consider and deliberate over:-
-\begin{enumerate}
-\item If certain meta data is not available, estimate that with existing algorithms (e.g if key of a song is not present, should the author include an estimation algorithm for it?).
-\item Comparisons with other software. Other software try to address different problems so would have to compare different aspects of each software with Modulo7's components.
-\item Criteria for evaluation (speed, accuracy of certain components with existing software etc). Need to figure out what other criteria are appropriate.
-\item Investigate alternatively technologies for software design. (Need to be certain this is the best set of tools and design for this problem and this is the best possible architecture). 
-\item How much breadth coverage is appropriate for the sql algebra space. Is numerical output the only statistics the author should consider or other qualitative aspects should also be a part of the design space?
-\item Should the author attempt special problems already addressed in academia (e.g cover song detection) maybe with a different approach then existing literature?
-\item Should the author work on a crawler and how should its scope be defined? While the author has worked on creating crawlers to mine domain specific sources, there might be copyright infringement on mining arbitrary sources. An alternative is to acquire data that is explicitly marked for research.
-\item Should the author work on a "imprecise querying system" i.e. a search engine based on music theoretic criteria. This work would be extremely ambitious. 
-\end{enumerate}
