@@ -1,5 +1,5 @@
 \chapter{Basics of Music Theory}
-\label{sec:intro}
+\label{sec:music theory}
 
 \noindent Music theory is defined as the systematic study of the structure, complexity and possibilties of what can be expressed musically. More formally its the academic discipline of studying the basic building blocks of music and the interplay of these blocks to produce complex scores (pieces of music). Modulo7 is built on top of western theoretic principles and hence only western music theory is explored. Also music theory is an extremely complicated subject and hence only the basics and relevant portions to the modulo7 implementation are discussed here. \\\\
 Traditionally music theory is used for providing directives to a performer to play a particular song/score. \\\\
@@ -17,6 +17,10 @@ Each note is characterized by two entities. First is the note type and the secon
 \subsection{Semitone and Tone}
 \noindent A semitone is an increment or a decrement between two notes. For instance there is one semitone in between A and A\#. Similarly there are 3 semitones in between A and C. A tone is an increment in between two major notes. Another characterization of a tone is two semitones.
 
+\subsection{Pitch duration}
+
+\noindent A pitch duration is a relative time interval the pitch persists on a musical instrument. For example a whole note will persist twice as longer as a half note. 
+
 \subsection*{Chord}
 \noindent A chord is a set of notes being stacked together (being played together at or almost at the same time). Chords are the basic building blocks of a concept called harmony (which will be discussed further on.). Traditionally a chord is constructed by stacking together notes played on a single instrument, but a chord can be constructed by different instruments simultaneously playing different notes. 
 
@@ -27,7 +31,7 @@ Each note is characterized by two entities. First is the note type and the secon
 \noindent A melody is a succession of notes and rests which sound pleasing. There are many rules about what makes a melody sound good which we will get to in the subsequent reading.
 
 \subsection{Harmony}
-\noindent A harmony is a succession of chords (also known as a chord progression). 
+\noindent A harmony is a succession of chords (also known as a chord progression) along with the principles that govern the relationships between different chords. 
 
 \subsection{Voice}
 \noindent A voice is an interplay of notes, chords and stops by a single instrument/vocalist. The reader can think of a voice as a hybrid or generalization of the melody and harmony concepts. 
@@ -37,3 +41,24 @@ Each note is characterized by two entities. First is the note type and the secon
 
 \subsection{Interval}
 \noindent An interval is the relative semitone distance between any two notes. Intervals are categorized as melodic(semi tone distance between successive notes in a melody) and harmonic intervals (semi tone distance between notes within a chord). 
+
+\section{General Concepts in Music Theory}
+
+\noindent On top of the building blocks of music, there are certain generic ideas or concepts on which music is based. The following sections describe them :-
+
+\subsection{Polyphony/Homophony}
+
+\noindent A homophonic song involves exactly one voice in the song. An example would be a single person singing a tune. A polyphonic song is one which involves two or more voices transposed with one another. An example of polyphonic music would be a Western classical orchestra of a rock band performing a chorus.
+
+\subsection{Phrase}
+
+\noindent A musical phrase is a subset of the song that has a complete musical sense of its own. One could think of phrases as musical sentences, whereas a voice could be considered a paragraph. As a side effect a musical phrase can be played independently and still be considered as a song albeit an incomplete one. 
+
+\subsection{Meter}
+
+\noindent The meter of a song is an expression of the rhythmic structure of a song. In context of western classical music, its a representation of the patterns of accents heard in the recurrence of measures of stressed and unstressed beats. Meters dictate the rhythm or tempo in which a song is played. In western music 
+
+\subsection{Key/Tonality}
+
+\noindent Tonality or key of a song is a musical system in which pitches or chords are arranged so as to include a hierarchy of relation between musical pitches, stabilities and attractions between various pitches. For example if the song is in the key of C, C is the most stable pitch in that song and other pitches like B have a tendency to go towards C (also called resolution of a phrase) to inculcate a sense of completeness. Moreover other pitches in relation to this pitches have various degrees of stability. \\\\
+The tonality of a song is the most hardest thing to quantify. But significant research has been done in Music Cognition domain such 

@@ -1,7 +1,40 @@
 \chapter{Literature Review}
 
-\noindent Music Information Retrieval is an active and vibrant community. Both academia and industry diligently pursue it albeit with different goals in mind. While academia's primary aim is to explore particular problems (e.g cover song detection, estimating chords from chroma vectors \cite{chord-detection} ) etc. Whereas Industry is primarily interested in solving problems like song recommendation and similarity searches. For this purpose, both communities have created an extensive set of software for solving these problems. The author presents an overview of such software and the problems they attempt to address. \\\\
+\noindent Music Information Retrieval is an active and vibrant community. Both academia and industry diligently pursue it albeit with different goals in mind. While academia's primary aim is to explore particular problems (e.g cover song detection, estimating chords from chroma vectors \cite{chord-detection} ) etc. Whereas Industry is primarily interested in solving problems like song recommendation and similarity searches. The following sections outlines the software efforts and research problems tackled by MIR community in general. \\\\
+
+\section{Current MIR Software}
+\noindent Both Industry and Academia have created an extensive set of software for solving these problems. The author presents an overview of such software and the problems they attempt to address. The following software packages were investigated 
 
 \subsection{jMIR}
 
-\noindent jMIR, or Java Music Information Retrieval tool set \cite{jMIR} is a collection of java code, GUI, API and CLI tools for the purpose of feature extraction from variety of music sources (in particular audio, midi) and mine cultural information from the web.
+\noindent jMIR  \cite{jMIR}, or Java Music Information Retrieval tool set is a collection of java code, GUI, API and CLI tools for the purpose of feature extraction from variety of music sources (in particular audio, midi) and mine cultural information from the web. jMIR extracts and exhaustive set of features that can be used in machine learning tasks. The primary use of jMIR is automatic music classification and feature extraction and not similarity computations per se (which is one of Modulo7's core goals). Moreover jMIR does not scale to myriad sources of music in existence. Unlike Modulo7 jMIR also relies on faithful recordings and does not attempt to fill up missing information (like key signature not being encoded etc). Nevertheless its one of the best Open Source MIR software in existence especially for MIR research. 
+
+\subsection{Marsyas}
+
+\noindent marsyas \cite{marsyas} (Music Analysis, Retrieval and Synthesis for Audio Signals) is a software stack for audio processing with specific emphasis on Music Information Retrieval and music signal extraction. Marsyas is a heavily developed and a widely developed state of the art framework for audio processing but also has a steep learning curve. Modulo7 has different goals (multiple format support, music similarity etc). 
+
+\subsection{SIMILIE}
+
+\noindent SIMILIE \cite{similie} is a set of tools for music similarity measures used for single  melodies and features multiple ways to construct vector space models for melodies. The techniques used in SIMILIE are novel. Modulo7 uses a subset of these similarity measures as basis for an extended and improved model of similarities based on polyphonic music and harmonic elements. Moreover SIMILIE needs its own file format (called .mcsv) for analysis. Although the software package gives a converter for different sources, its not as variegated as Modulo7's format support is.
+
+\subsection{Echo Nest APIs}
+
+\noindent Echo Nest is a company that specializes in big data music intelligence. Echo Nest power many music platforms like last.fm, Spotify etc. In particular Echo Nest provides APIs for extraction of audio features, acquiring artists similar to a particular artist etc. Echo Nest API is used for some sub tasks in Modulo7 (which is discussed in the Software Architecture Chapter). \\\\
+Echo Nest also maintains the worlds biggest music database as well as data mined from them along with extracted audio features, web mined information, user preference etc). 
+
+\subsection{Humdrum}
+
+\noindent Humdrum \cite{humdrum} is a set of tools for assistant in music research. Humdrum has the capability for solving very complex questions using music theoretic concepts. Humdrum supports its own file format for analysis. Humdrum is specifically designed for musicologists for automating tasks that they otherwise would have required manual analysis and not music classification or music similarity analysis as an end goal.
+
+
+\subsection{Gamera}
+
+\noindent Gamera \cite{gamera} is Optical Symbol Recognition Open Source software based on supervised and hybrid learning approaches for training. Gamera is designed with the particular aim of symbol recognition of old documents. Gamera also supports creating of new plugins for custom tasks. For the purpose of Music Information Retrieval, gamera can be used to solve the problem of Optical Music Recogntion (OMR) since sheet music images are also a format for music source.
+
+\subsection{Audiveris}
+
+\noindent Audiveris is an Open source software for Optical Music Recognition. Unlike Gamera, Audiveris can be directly consumed as a service for the purpose of OMR.  Audiveris is used as service in many leading Notation Platforms like Musescore etc. As such, Audiveris is used as a subcomponent of Modulo7's architecture for OMR. 
+
+\section{Typical problems of MIR}
+
+On top of the generic software created by researchers and industry experts, researchers have tackled specific problems in Music Cognition, Classification 
