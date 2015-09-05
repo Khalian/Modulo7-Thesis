@@ -69,5 +69,19 @@ Parsing digitized sheet music is an extremely challenging task. It requires a so
 Just like Western Sheet music and midi, music XML is a symbolic format as well. Music XML is also a transcription format which specifies how a score should be played. 
 
 \subsection{MP3 format}
-\noindent For the sake of completeness, Modulo7 also supports an audio format called mp3. Its an audio encoding format
+\noindent For the sake of completeness, Modulo7 also supports an audio format called mp3. Its an audio encoding format that uses lossy compression to encode audio data. Mp3 gives a reasonably good approximation to other digital audio formats of music storage with a significant savings in space for storage. Its one of the defacto standards of digital music compression and transfer and playback on most digital audio players. 
+
+\section{Modulo7 Internal Representation}
+
+\noindent Modulo7 consists of converters that convert data into Modulo7's internal representation. This representation can be thought of a document representation on which similarity measures described in Chapter 4 can be applied to. 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{DocumentStructureOfModulo7.png}
+\makeatletter
+\let\@currsize\normalsize
+\caption{Modulo7 internal representation}
+\label{fig:figure}
+\end{figure}
+
 
