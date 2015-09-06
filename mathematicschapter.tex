@@ -7,13 +7,11 @@
 
 \noindent In traditional text based information retrieval retrieval systems, documents are indexed and a vector space representation of documents are created. Typical approaches for counting term frequencies or some weighting scheme like Term Frequency-Inverse Document Frequency Approach (TF-IDF). Analogous to text based IR, Music data can also be expressed as a vector space based on the approach taken. Some of these approaches are taken from the SIMILIE \cite{similietechnicalmanual} but generalized for polyphonic music. Many approaches are novel based on the author's music theoretic studies. 
 
-\subsection{Vector Space Models per voice}
+\subsection{Vector Space Models for Monophonic Music}
 
-Certain vector space models are with respect to a single voice. This allows vector space models to be 
-
-\subsection{Pitch Vector}
-
-\noindent A voice can be expressed as a sequence of pitches $n_i$ = ($p_i, t_i$) where $p_i$ is the pitch and/or the set of pitches at instant of time $t_i$. The symbolic representation of music essentially discretizes these values from music sources and hence a vector representation can be made. A voice V can be represented as a vector :-
+\noindent Certain vector space models are with respect to a single voice. This allows vector space models to be represented as arrays with simple methods of computation that can be applied on top of it. First define pitch as a real number/string depending on context such that at given instant time $t_i$ either frequency $p_i$ is being played or its note representation $p_i$ is being played. With this simple definition of pitch and onset time we can define our vector space models as follows:-\\
+ 
+\noindent \textbf{Pitch Vector:} A voice can be expressed as a sequence of pitches $n_i$ = ($p_i, t_i$) where $p_i$ is the pitch and/or the set of pitches at instant of time $t_i$. The symbolic representation of music essentially discretizes these values from music sources and hence a vector representation can be made. A voice V can be represented as a vector :-
 
 \begin{equation}
 P = <n_1, n_2, ... n_n>
@@ -25,22 +23,28 @@ P = <n_1, n_2, ... n_n>
 R = <p_1, p_2, ..., p_n>
 \end{equation}
 
-\subsection{Pitch Interval Vector}
-
-\noindent Another way to look at elements is the interval spacing between elements. This is same as the interval concept in the music theory chapter. Mathematically an interval is defined as $\Delta p_i = p_i - p_{i-1}$. And thus an pitch interval vector is defined as :-
+\noindent \textbf{Pitch Interval Vector:} Another way to look at elements is the interval spacing between elements. This is same as the interval concept in the music theory chapter. Mathematically an interval is defined as $\Delta p_i = p_i - p_{i-1}$. And thus an pitch interval vector is defined as :-
 
 \begin{equation}
 PI = <\Delta p_1, \Delta p_2, ... , \Delta p_n>
 \end{equation}
 
-\subsection{Rhythmically weighted Pitch Interval Vector}
-
-\noindent In order to include the rhythmic information in the pitch interval Vector, define rhythmically weighted pitch as $rp_i = \Delta p_i \times t_i$. Now the rhythmically weighted pitch vector can be represented as:-
+\noindent \textbf{Rhythmically weighted Pitch Interval Vector:} In order to include the rhythmic information in the pitch interval Vector, define rhythmically weighted pitch as $rp_i = \Delta p_i \times t_i$. Now the rhythmically weighted pitch vector can be represented as:-
 
 \begin{equation}
 RPI = <rp_1, rp_2, ... rp_n>
 \end{equation}
 
-\subsection{Normalized Tonal Histogram Vector}
+\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the total number of times that interval has occurred in a voice. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{\Delta p_i}{\Delta P^{voice}}$. Thus we can define the normalized tonal histogram vector as :-
 
-\noindent The tonal histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the total number of times that interval has occurred in a voice. Mathematically define $\Delta P_i^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$. Moreover 
+\begin{equation}
+NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_n>
+\end{equation}
+
+\subsection{Vector Space Models for Polyphonic Music} 
+
+While vector space models per voices are useful in single melody similarity, its not enough to ascertain similarities or compute statistics about songs when songs have more than one voice. As such certain extensions are proposed to the voice vector representation that allow for similarity computations for polyphonic music.
+
+\noindent Moreover we can define the cumulative intervals across all voices as \\ $\Delta P_{song} = \sum_{i = 1}^{num(voices)} \Delta P^{voice_j}$. 
+
+\subsection{Similarity Measures}
