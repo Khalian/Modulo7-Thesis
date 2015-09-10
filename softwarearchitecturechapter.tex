@@ -1,4 +1,4 @@
-\chapter{Software architecture}
+\chapter{Software architecture and Methodology}
 The following sections present the software architecture of Modulo7.
 \section{Server Side architecture}
 \noindent Modulo7 is designed with the purpose of scalability. A block diagram of the components of the server side architecture is presented below :-
@@ -73,7 +73,14 @@ Just like Western Sheet music and midi, music XML is a symbolic format as well. 
 
 \section{Modulo7 Internal Representation}
 
-\noindent Modulo7 consists of converters that convert data into Modulo7's internal representation. This representation can be thought of a document representation on which similarity measures described in Chapter 4 can be applied to. 
+\noindent Modulo7 consists of converters that convert data into Modulo7's internal representation. This representation can be thought of a document representation on which similarity measures described in Chapter 4 can be applied to. Moreover the internal representation can be thought of as an indexed meta data structure for any source of song from which relevant information can be acquired. Hence Modulo7 indexing schematic is a symbolic representation of music much like music xml and sheet music. The converters are responsible for converting different music sources to this representation format. Its important to note that depending on there source one or more of the subcomponents of the internal representation may be missing or wrong. Modulo7 indexes songs based on each of these criteria and on top of these boolean queries can be formulated. The components are broadly categorized as the following:-\\
+
+\noindent \textbf{Song Metadata:} The metadata aspects in a song e.g. The name of the song/ the composer/performer's name, Key Signature of the Song, Meter of the Song etc. These are global properties of the song. \\
+
+\noindent \textbf{Voices in a song:} Similar to the Voices in Music theory, Voices in Modulo7 represent the same symbolic data as is present in the sources from which the information is parsed.\\
+
+\noindent \textbf{Lyrics of a song:} The textual representation (along with delimiters for line breaks) for the lyrics of a song. Lyrics can live independently as separate entities (if the input to Modulo7 is a text file containing the lyrics and no other information). However midi/musicxml and sheet music have optional lyrics elements present in their transcriptions and Modulo7 transcribes from those. \\\\
+In most cases though lyrics exists as a separate entity from songs. In such cases, Modulo7 separately indexes lyrics. In certain datasets, the lyrics representation is different (for example the million song dataset has a representation format as a bag of words with counts of the words occuring for each format \cite{msd}). Modulo7 accomodates such formats as well.
 
 \begin{figure}
 \centering
@@ -84,4 +91,10 @@ Just like Western Sheet music and midi, music XML is a symbolic format as well. 
 \label{fig:figure}
 \end{figure}
 
+\section{Methodology}
 
+\noindent This section contains the methodology followed in the information retrieval phase and then the indexing steps taken after the domain specific conversion is completed by Modulo7's adapters
+
+\begin{enumerate}
+\item Given a root directory, Modulo7 parses all the sheet music image files, mp3, midi and 
+\end{enumerate}

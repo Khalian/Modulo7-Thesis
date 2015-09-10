@@ -43,8 +43,33 @@ NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_n>
 
 \subsection{Vector Space Models for Polyphonic Music} 
 
-While vector space models per voices are useful in single melody similarity, its not enough to ascertain similarities or compute statistics about songs when songs have more than one voice. As such certain extensions are proposed to the voice vector representation that allow for similarity computations for polyphonic music.
+\noindent While vector space models per voices are useful in single melody similarity, its not enough to ascertain similarities or compute statistics about songs when songs have more than one voice. As such certain extensions are proposed to the voice vector representation that allow for similarity computations for polyphonic music.\\\\
+\noindent \textbf{Normalized Song Tonal Histogram Vector:}  \noindent Consider the normalized tonal histogram in section. We can define the cumulative intervals across all voices as \\ $\Delta P_{song} = \sum_{i = 1}^{num(voices)} \Delta P^{voice_j}$. Define interval fraction over song as $\Delta p^{fs}_i = \frac{\Delta p_i}{\Delta P^{song}}$   Now define the normalized tonal histogram vector for the song as the follows:-
 
-\noindent Moreover we can define the cumulative intervals across all voices as \\ $\Delta P_{song} = \sum_{i = 1}^{num(voices)} \Delta P^{voice_j}$. 
+\begin{equation}
+NSTH = <\Delta p^{fs}_1, \Delta p^{fs}_2, ... , \Delta p^{fs}_n>
+\end{equation}
 
-\subsection{Similarity Measures}
+\section{Similarity Measures}
+
+\noindent Similarity is defined in Modulo7 as a function which takes as input two voices or songs and outputs a value between 0 to 1 where 0 stands for least similar and 1 stands for most similar. Similarity measures are a cornerstone of recommendations and many recommender engines are based on rank similarity measures for different criteria. Mathematically :-
+\begin{equation}
+Sim_{song}(S_1, S_2) \in (0, 1)
+\end{equation}
+\begin{equation}
+Sim_{voice}(V_1, V_2) \in (0, 1)
+\end{equation}
+
+\subsection{Similarity Measures for Monophonic Music}
+
+Similarity measures can be d
+
+\subsection{Similarity of voices of unequal length} 
+
+\noindent Its almost certain that two voices will  never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$. Let i be an index running from 0 to len(A) - len(B) and $C_i$ be defined as the sub component of a melody (also called submelody) which contains voice elements $A[i] \ to \ A[i + len(B)]$. Then similarity measure $S_{unequal}(S_{original}, A, B)$ can be defined as the following :-
+
+\begin{equation}
+S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A) - len(A)\}
+\end{equation}
+
+\noindent This procedure is a basic modification of the concept of Horizontal Shifting\cite{similietechnicalmanual}. Here we keep shifting the smaller melody along the longer melody successively for faster computation.
