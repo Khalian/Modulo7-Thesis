@@ -1,8 +1,16 @@
 \chapter{Experimental Evaluation}
 
 \noindent For the purposes of evaluating Modulo7, test cases have been designed into two formats. One category of testing is micro testing, for validating correctness and precision recall for small sets of data. This ensures verifiability of algorithms and similarity measures on small datasets as well as novel explorations of data. Most MIR research is done on small scale datasets and hence falls in the purview of micro testing. The other format is macro testing which involves large datasets such as the million song dataset \cite{msd}. \\\\
-A few assumptions that are made in testing are as follows :-\\
+A few assumptions that are made in testing are as follows :-
 \begin{enumerate}
 % TOD0 : Finish this section
-\item In order to estimate ground truth values, the author assumed 
+\item In order to estimate ground truth values, the author assumed ground truth values presented in datasets used / or subjective judgements to which songs are similar to each other. These subjective judgements are procured from existing literature.
+\item If the song metadata (such as keysignature, timesignature, total duration of song) is not encoded, its estimated by the parsers. This estimation id done by existing algorithms in literature. However if metadata is encoded, its assumed to be correct. 
+\item Most tests are against file formats of the similar types (for example midi is tested against other symbolic files). This is due to the inherent complexity of symbolic decoding of audio formats like mp3. Also its easier to compare symbolic data against other symbolic data.
+\item In the event of parsing data, there can be legal issues (e.g. the song can be copyrighted). For that reason custom parsers to build alternate research datasets (e.g the million song dataset has already derived features that Modulo7 intended to derive for Mp3 files. \cite{msd})
+\item All evaluations are done against research datasets which are published in academia or exposed as public datasets in industry. 
 \end{enumerate}
+
+\section{Results of Index Compression}
+
+\noindent The Modulo7 representation can be thought of an indexed meta data version of the song. True to all indexed data, Modulo7 represents the song in a much smaller size than the original source. The following chart demonstrates the average compression of indexed data as compared to source files on the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}:-

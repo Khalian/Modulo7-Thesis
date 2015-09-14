@@ -19,7 +19,7 @@ P = <n_1, n_2, ... n_n>
 
 \noindent A similar vector representation could be when the time information is eschewed in favor on only the pitches. This vector is called the raw pitch vector and is denoted as the follows :-
 
-\begin{equation}
+\begin{equation} \label{eq:rawpitch}
 R = <p_1, p_2, ..., p_n>
 \end{equation}
 
@@ -62,14 +62,31 @@ Sim_{voice}(V_1, V_2) \in (0, 1)
 
 \subsection{Similarity Measures for Monophonic Music}
 
-Similarity measures can be d
+\noindent Similarity measures are different concepts for monophonic and polyphonic music as it stems from comparing different vector representations. For the following sections assume vectors of equal length. In a further section \ref{sim:unequal} we extend standard similarity measures to vectors of unequal length. \\
 
-\subsection{Similarity of voices of unequal length} 
+\noindent \textbf{Edit Distance on Raw Pitch Vector Representation:} Consider the raw pitch vector in equation \ref{eq:rawpitch}. This vector is essentially a vector of tokens or equivalently a string. Hence standard edit distance algorithms in normal text IR can be applied to it (e.g Leveinstein Distance, Wagner–Fischer algorithm etc \cite{simtour}).
 
-\noindent Its almost certain that two voices will  never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$. Let i be an index running from 0 to len(A) - len(B) and $C_i$ be defined as the sub component of a melody (also called submelody) which contains voice elements $A[i] \ to \ A[i + len(B)]$. Then similarity measure $S_{unequal}(S_{original}, A, B)$ can be defined as the following :-
+\subsection{Similarity Measures for Polyphonic Music}
+
+\noindent In order to incorporate 
+
+\subsection{Similarity of vectors of unequal length} \label{sim:unequal}
+
+\noindent Its almost certain that two voices will  never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$. Let i be an index running from 0 to len(A) - len(B) and $C_i$ be defined as the sub component of a melody (also called submelody) which contains voice elements $A[i] \ to \ A[i + len(B)]$. Then similarity measure $S_{unequal}(S_{original}, A, B)$ can be defined as the following
 
 \begin{equation}
-S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A) - len(A)\}
+S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A) - len(B)\}
 \end{equation}
 
-\noindent This procedure is a basic modification of the concept of Horizontal Shifting\cite{similietechnicalmanual}. Here we keep shifting the smaller melody along the longer melody successively for faster computation.
+\noindent This procedure is a basic modification of the concept of Horizontal Shifting\cite{similietechnicalmanual}. Here we keep shifting the smaller melody along the longer melody successively for faster computation. This technique is best used when one melody's vector space representation is completely contained in another (for an example a phrase of a voice compared with a voice itself).
+
+\subsection{Meta Data based similarity}
+
+\noindent All the similarity measures considered so far is based on similarity on voices and sets of voices in a a song. However there are other global properties of a song such as the key signature or  the time signature of a song. This global information can give us context about a song's particular characteristics (for example songs in Minor scale are generally sadder than songs in the Major scale). Hence estimates can be more quickly derived by comparing meta data features rather than voices (whose computation). These similarity measures can be used for a additional purposes(for example completing incomplete meta data). 
+
+\noindent \textbf{text}
+
+\subsection{Tonal Similarity}
+
+
+
