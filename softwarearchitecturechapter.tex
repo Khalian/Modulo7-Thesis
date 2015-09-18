@@ -35,7 +35,7 @@ An API will also be exposed to the client along a remote invocation procedure. T
 \item double compareAverageAttack(String musicXMLFile)
 \end{enumerate}
 
-This API can be consumed for specific song analysis. As design this API will not work on a bulk of files like its sql counterpart. \\
+\noindent This API can be consumed for specific song analysis. As design this API will not work on a bulk of files like its sql counterpart. \\
 
 Moreover the client also exposes a highly customized search engine based on the custom vector space representation of features extracted by Modulo7.
 
@@ -48,7 +48,7 @@ A symbolic representation is a codification of music which acts a higher level o
 Midi is one of the easier formats to parse for musical specifications. Moreover there is a big volunteer community of midi encoders. As such acquiring and parsing non trivial amounts of midi data is not a very challenging task. 
 
 \subsection{Western Sheet Music}
-Sheet music is one of the oldest forms of music in existence. Its a hand written or printed form of music that uses a specific script (a set of musical symbols on a manuscript paper) to ascribe music. Music Composers from Medieval and Modern periods of the western world use western sheet scripting to codify their work while performers play from these sources. A vast body of older work and particularly orchestral work is codified in sheet music. \\
+\noindent Sheet music is one of the oldest forms of music in existence. Its a hand written or printed form of music that uses a specific script (a set of musical symbols on a manuscript paper) to ascribe music. Music Composers from Medieval and Modern periods of the western world use western sheet scripting to codify their work while performers play from these sources. A vast body of older work and particularly orchestral work is codified in sheet music. \\
 Like midi, sheet music is also symbolic in nature. However unlike midi, its an expression of how a score should be played, rather than what is being played.  Modulo7 converts digitized versions of these sheet music (e.g sheet music stored .tiff, .png. jpeg etc formats)\\\\
 
 A very simple example of sheet music for describing a melody is shown below. 
@@ -62,7 +62,7 @@ A very simple example of sheet music for describing a melody is shown below.
 \label{fig:figure}
 \end{figure}
 
-Parsing digitized sheet music is an extremely challenging task. It requires a solid understanding on Computer Vision and even the state of the art software in existence today cant handle all scores (especially a poorly digitized formats). Given the amount of domain knowledge required, Modulo7 uses a third party library (insert TPL here). 
+Parsing digitized sheet music is an extremely challenging task. It requires a solid understanding on Computer Vision and even the state of the art software in existence today cant handle all scores (especially a poorly digitized formats). Given the amount of domain knowledge required, Modulo7 uses a third party library called Audiveris . 
 
 \subsection{Music XML format}
 \noindent Music XML format is a standard open format for exchanging digital sheet music. A music XML format is unusual as its a format that is easy to parse for computers and easy for humans to understand it. MusicXML formats are heavily used by music notation applications. Music XML format is a symbolic format and can be considered a modernization of the Sheet music format. Its disadvantage however is unlike sheet music, a performer cant read the piece and play it on the spot directly. \\
@@ -96,5 +96,13 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 \noindent This section contains the methodology followed in the information retrieval phase and then the indexing steps taken after the domain specific conversion is completed by Modulo7's adapters
 
 \begin{enumerate}
-\item Given a root directory, Modulo7 parses all the sheet music image files, mp3, midi and 
+\item Given a root directory, Modulo7 recursively parses all the sheet music image files, mp3, midi and music xml files. Depending on the file type individual parser modules are invoked and an internal representation is created in memory and serialized to disk (depending on user preference)
+\item Modulo7 then indexes all the objects created on specific meta data (such as key signature, time signature and artist of a song). Moreover it also creates a lucene index on lyrics extracted. It stores all these indices in memory. 
+\item Modulo7 then exposes a prompt to the consumer which contains a set of standard querying options along with a SQL like querying interface. Consumer can then choose the option they like and query the constructed database.
 \end{enumerate}
+
+\subsection{Modulo7 standard query set}
+
+\noindent Modulo7 exposes a standard set of querying features to the consumer. These queries are useful to extract simple information from the uploaded dataset to Modulo7. 
+
+\subsection{Modulo7 SQL Algebra Specifications}

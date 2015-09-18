@@ -3,15 +3,21 @@
 
 \noindent The following sections describe the mathematical concepts used and implemented in Modulo7.
 
+\section{Preprocessing Steps}
+
+\noindent It might be that the input sources require certain preprocessing for any mathematical model to work. The following sub sections describe certain preprocessing operations that can be done in order to prepare input data to be transcribed into a vector space model. \\
+
+\noindent \textbf{Tonality Alignment :} In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically consider Songs $S_1$ and $S_2$ with their respective keys being $K_1$ and $K_2$. Define intervalic distance between keys as $K_{intervalic} = $
+
 \section{Vector Space Models of Music}
 
 \noindent In traditional text based information retrieval retrieval systems, documents are indexed and a vector space representation of documents are created. Typical approaches for counting term frequencies or some weighting scheme like Term Frequency-Inverse Document Frequency Approach (TF-IDF). Analogous to text based IR, Music data can also be expressed as a vector space based on the approach taken. Some of these approaches are taken from the SIMILIE \cite{similietechnicalmanual} but generalized for polyphonic music. Many approaches are novel based on the author's music theoretic studies. 
 
 \subsection{Vector Space Models for Monophonic Music}
 
-\noindent Certain vector space models are with respect to a single voice. This allows vector space models to be represented as arrays with simple methods of computation that can be applied on top of it. First define pitch as a real number/string depending on context such that at given instant time $t_i$ either frequency $p_i$ is being played or its note representation $p_i$ is being played. With this simple definition of pitch and onset time we can define our vector space models as follows:-\\
+\noindent Certain vector space models are with respect to a single voice. This allows vector space models to be represented as arrays with simple methods of computation that can be applied on top of it. First define pitch as a real number/string depending on context such that at given instant time $t_i$ either frequency $p_i$ is being played or its note representation $p_i$ is being played. With this simple definition of pitch and onset time we can define our vector space models as follows\\
  
-\noindent \textbf{Pitch Vector:} A voice can be expressed as a sequence of pitches $n_i$ = ($p_i, t_i$) where $p_i$ is the pitch and/or the set of pitches at instant of time $t_i$. The symbolic representation of music essentially discretizes these values from music sources and hence a vector representation can be made. A voice V can be represented as a vector :-
+\noindent \textbf{Pitch Vector:} A voice can be expressed as a sequence of pitches $n_i$ = ($p_i, t_i$) where $p_i$ is the pitch and/or the set of pitches at instant of time $t_i$. The symbolic representation of music essentially a discretized version of these values from music sources and hence a vector representation can be made. A voice V can be represented as a vector
 
 \begin{equation}
 P = <n_1, n_2, ... n_n>
@@ -23,22 +29,28 @@ P = <n_1, n_2, ... n_n>
 R = <p_1, p_2, ..., p_n>
 \end{equation}
 
-\noindent \textbf{Pitch Interval Vector:} Another way to look at elements is the interval spacing between elements. This is same as the interval concept in the music theory chapter. Mathematically an interval is defined as $\Delta p_i = p_i - p_{i-1}$. And thus an pitch interval vector is defined as :-
+\noindent \textbf{Pitch Interval Vector:} Another way to look at elements is the interval spacing between elements. This is same as the interval concept in the music theory chapter. Mathematically an interval is defined as $\Delta p_i = p_i - p_{i-1}$. And thus an pitch interval vector is defined as
 
 \begin{equation}
 PI = <\Delta p_1, \Delta p_2, ... , \Delta p_n>
 \end{equation}
 
-\noindent \textbf{Rhythmically weighted Pitch Interval Vector:} In order to include the rhythmic information in the pitch interval Vector, define rhythmically weighted pitch as $rp_i = \Delta p_i \times t_i$. Now the rhythmically weighted pitch vector can be represented as:-
+\noindent \textbf{Rhythmically weighted Pitch Interval Vector:} In order to include the rhythmic information in the pitch interval Vector, define rhythmically weighted pitch as $rp_i = \Delta p_i \times t_i$. Now the rhythmically weighted pitch vector can be represented as
 
 \begin{equation}
 RPI = <rp_1, rp_2, ... rp_n>
 \end{equation}
 
-\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the total number of times that interval has occurred in a voice. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{\Delta p_i}{\Delta P^{voice}}$. Thus we can define the normalized tonal histogram vector as :-
+\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of 12 distinct intervals present in western music theory and the number of time. Each position in the vector corresponds to the total number of times that interval has occurred in a voice. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{\Delta p_i}{\Delta P^{voice}}$. Thus we can define the normalized tonal histogram vector as
 
 \begin{equation}
 NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_n>
+\end{equation}
+
+\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a voice. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\Delta t_i}{\Delta T^{voice}}$. Thus we can define the normalized tonal duration histogram vector as
+
+\begin{equation}
+NTDH = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_n>
 \end{equation}
 
 \subsection{Vector Space Models for Polyphonic Music} 
@@ -68,12 +80,16 @@ Sim_{voice}(V_1, V_2) \in (0, 1)
 
 \subsection{Similarity Measures for Polyphonic Music}
 
-\noindent In order to incorporate 
+\noindent In order to incorporate vector space models to polyphonic similarity, monophonic measures can be extended in order to accomodate for polyphony. Another approach would be to apply measures.
+
+\noindent {Generic maximal voice similarity} An approach would be to take pairwise voice similarities between two voices of a song, and then representing the max of these pairwise computed similarities. This model is especially useful in cases where comparing a melody against a song which contains a similar melody. Mathematically 
+\begin{equation}
+GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_j \in S_2
+\end{equation}
 
 \subsection{Similarity of vectors of unequal length} \label{sim:unequal}
 
 \noindent Its almost certain that two voices will  never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$. Let i be an index running from 0 to len(A) - len(B) and $C_i$ be defined as the sub component of a melody (also called submelody) which contains voice elements $A[i] \ to \ A[i + len(B)]$. Then similarity measure $S_{unequal}(S_{original}, A, B)$ can be defined as the following
-
 \begin{equation}
 S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A) - len(B)\}
 \end{equation}
@@ -82,11 +98,34 @@ S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A
 
 \subsection{Meta Data based similarity}
 
-\noindent All the similarity measures considered so far is based on similarity on voices and sets of voices in a a song. However there are other global properties of a song such as the key signature or  the time signature of a song. This global information can give us context about a song's particular characteristics (for example songs in Minor scale are generally sadder than songs in the Major scale). Hence estimates can be more quickly derived by comparing meta data features rather than voices (whose computation). These similarity measures can be used for a additional purposes(for example completing incomplete meta data). 
-
-\noindent \textbf{text}
+\noindent All the similarity measures considered so far is based on similarity on voices and sets of voices in a a song. However there are other global properties of a song such as the key signature or the time signature of a song. This global information can give us context about a song's particular characteristics (for example songs in Minor scale are generally sadder than songs in the Major scale). Hence estimates can be more quickly derived by comparing meta data features rather than voices (whose computation). These similarity measures can be used for a additional purposes(for example completing incomplete meta data). 
 
 \subsection{Tonal Similarity}
 
+\noindent Often pieces of one key are similar to pieces on a different key, simply based on the fact that the keys themselves are similar. 
 
+
+\section{Criteria Analysis}
+
+\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic predicate. Some example problems of such sorts are if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the STAB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements on top of similarity measures or alternatively if certain pieces just satisfies a one or more criteria. Following are the criteria implemented in Modulo7
+
+\subsection{Simple criteria} 
+
+\noindent Simple criteria are based on simple global level properties of the song. \\
+
+\noindent \textbf{Polyphonic Criteria:} Its a simple criteria which decides whether a piece of music is polyphonic or not. This is decided on the basis of the number of voices in the song. Mathematically
+
+\[ PC(Song) =  \begin{cases} 
+      true & num_{voices}(Song) = 1 \\
+      false &  otherwise \\
+   \end{cases}
+\] \\
+
+\noindent \textbf{Key Signature Equality Criteria:} Its a simple criteria that checks if a song is in a particular key or not. Mathematically
+
+\[ KSC(Song, desiredKeySig) =  \begin{cases} 
+      true & Key_Signature(Song) = desiredKeySig \\
+      false &  otherwise \\
+   \end{cases}
+\] \\
 

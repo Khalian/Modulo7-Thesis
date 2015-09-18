@@ -1,6 +1,6 @@
 \chapter{Literature Review}
 
-\noindent Music Information Retrieval is an active and vibrant community. Both academia and industry diligently pursue it albeit with different goals in mind. While academia's primary aim is to explore particular problems (e.g cover song detection, estimating chords from chroma vectors \cite{chord-detection} ) etc. Whereas Industry is primarily interested in solving problems like song recommendation and similarity searches. The following sections outlines the software efforts and research problems tackled by MIR community in general. \\\\
+\noindent Music Information Retrieval is an active and vibrant community. Both academia and industry diligently pursue it albeit with different goals in mind. While academia's primary aim is to explore particular problems (e.g cover song detection, estimating chords from chroma vectors \cite{chord-detection} ) etc. Whereas Industry is primarily interested in solving problems like song recommendation and similarity searches. The following sections outlines the software efforts and research problems tackled by MIR community in general. 
 
 \section{Current MIR Software}
 \noindent Both Industry and Academia have created an extensive set of software for solving these problems. The author presents an overview of such software and the problems they attempt to address. The following software packages were investigated 
@@ -41,14 +41,27 @@ Echo Nest also maintains the worlds biggest music database as well as data mined
 
 \noindent \textbf{GUIDO :} GUIDO musical notation format is a computer notation format that is made to logically represent symbolic musical information that is easily readable by both humans and computers and can be stored as a text file. This example has been taken from wikipedia which shows the ease with which GUIDO represents a musical phrase. 
 
-
 \section{Typical problems of MIR}
 
 \noindent On top of the generic software created by researchers and industry experts, researchers have tackled specific problems in Music Cognition, Classification, Cover song identification, Query by Humming Systems etc. Only certain approaches have been incorporated in Modulo7 which help completing metadata information (e.g. if the key signature of a song is not present, Modulo7 estimates it using ). Broadly speaking though, the problem statement falls in the following broad categories :- 
 
 \subsection{Music Classification / Genre Identification}
 
-\noindent The problem of music classification is to assign a tag (also called a genre to a song) which broadly categorizes it according to some criteria. While the genre definitions for songs are often vague, it helps in giving information about which songs are relevant. Companies like Pandora and Microsoft assign genres to songs via musicologists \cite{genreclassification} which means highly trained people manually classify music. Such approaches are expensive in terms of human labor and prone to error. 
+\noindent The problem of music classification is to assign a tag (also called a genre to a song) which broadly categorizes it according to some criteria. While the genre definitions for songs are often vague, it helps in giving information about which songs are relevant. Companies like Pandora and Microsoft assign genres to songs via musicologists \cite{genreclassification} which means highly trained people manually classify music. Such approaches are expensive in terms of human labor and prone to error. Automatic Music Classification takes a different approach using different algorithms and machine learning approaches like jMIR \cite{jMIR} does to classify music. 
+
+\subsection{Music Similarity Analysis}
+
+\noindent The problem of music similarity analysis lies at the heart of a large number other applications like Song Identification, Query by humming systems etc. Most literature have addressed the problem of melodic similarity \cite{simsurvey} and not on generic polyphonic similarity. There are many systems and music databases in existence for the purpose of music similarity analysis.
+
+\subsection{Automated Musicological Research}
+
+\noindent In many cases musicological research is pursued manually by applying rules and music theoretic criteria. An example would be applying counterpoint analysis techniques given in a treatise\cite{theorytreatise} to music sheet manually. This is labor intensive and the research community tries to address automated analysis of music. A significant effort is done by the Humdrum community. \cite{humdrum} in automated musicological research. 
+
+\subsection{Audio processing and feature extraction}
+
+\noindent Most music is represented in Audio format rather than symbolic format, as consumption of music is primarily for the layman or the musically uninitiated. One such task would be music transcription(also known as melody extraction \cite{mel}). 
+
+\subsection{Intelligent archiving and Retrieval}
 
 
 
