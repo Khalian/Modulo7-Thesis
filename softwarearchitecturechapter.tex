@@ -17,7 +17,7 @@ The following sections present the software architecture of Modulo7.
 \makeatletter
 \let\@currsize\normalsize
 \caption{Modulo7 architectural design}
-\label{fig:figure}
+\label{fig:Architectural Design}
 \end{figure}
 \newpage
 \section{Client architecture}
@@ -49,9 +49,8 @@ Midi is one of the easier formats to parse for musical specifications. Moreover 
 
 \subsection{Western Sheet Music}
 \noindent Sheet music is one of the oldest forms of music in existence. Its a hand written or printed form of music that uses a specific script (a set of musical symbols on a manuscript paper) to ascribe music. Music Composers from Medieval and Modern periods of the western world use western sheet scripting to codify their work while performers play from these sources. A vast body of older work and particularly orchestral work is codified in sheet music. \\
-Like midi, sheet music is also symbolic in nature. However unlike midi, its an expression of how a score should be played, rather than what is being played.  Modulo7 converts digitized versions of these sheet music (e.g sheet music stored .tiff, .png. jpeg etc formats)\\\\
 
-A very simple example of sheet music for describing a melody is shown below. 
+\noindent Like midi, sheet music is also symbolic in nature. However unlike midi, its an expression of how a score should be played, rather than what is being played.  Modulo7 converts digitized versions of these sheet music (e.g sheet music stored .tiff, .png. jpeg etc formats)\\
 
 \begin{figure}
 \centering
@@ -59,10 +58,10 @@ A very simple example of sheet music for describing a melody is shown below.
 \makeatletter
 \let\@currsize\normalsize
 \caption{Jingle bells melody sheet music representation	}
-\label{fig:figure}
+\label{fig:sheet music example}
 \end{figure}
 
-Parsing digitized sheet music is an extremely challenging task. It requires a solid understanding on Computer Vision and even the state of the art software in existence today cant handle all scores (especially a poorly digitized formats). Given the amount of domain knowledge required, Modulo7 uses a third party library called Audiveris . 
+\noindent Parsing digitized sheet music is an extremely challenging task. It requires a solid understanding on Computer Vision and even the state of the art software in existence today cant handle all scores (especially a poorly digitized formats). Given the amount of domain knowledge required, Modulo7 uses a third party library called Audiveris . 
 
 \subsection{Music XML format}
 \noindent Music XML format is a standard open format for exchanging digital sheet music. A music XML format is unusual as its a format that is easy to parse for computers and easy for humans to understand it. MusicXML formats are heavily used by music notation applications. Music XML format is a symbolic format and can be considered a modernization of the Sheet music format. Its disadvantage however is unlike sheet music, a performer cant read the piece and play it on the spot directly. \\
@@ -88,7 +87,7 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 \makeatletter
 \let\@currsize\normalsize
 \caption{Modulo7 internal representation}
-\label{fig:figure}
+\label{fig:figureDocStruct}
 \end{figure}
 
 \section{Methodology}
@@ -103,6 +102,40 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 
 \subsection{Modulo7 standard query set}
 
-\noindent Modulo7 exposes a standard set of querying features to the consumer. These queries are useful to extract simple information from the uploaded dataset to Modulo7. 
+\noindent Modulo7 exposes a standard set of querying features to the consumer. These queries are useful to extract simple information from the parsed dataset from Modulo7. The following are the sample queries that can be relevant for a user :-
 
-\subsection{Modulo7 SQL Algebra Specifications}
+\begin{enumerate}
+\item Return all songs that are in the key of CMajor
+\item Return all songs that are in in the Minor scale
+\item Return a ranked order of lyrics given an input string (for example a verse in the song) while treating lyrics like a normal document
+\item Return all songs that are performed by Led Zepplin
+\item Return all polyphonic songs in the Database
+\item Return all music xml files that have been transcribed with a treble clef
+\item Return song with a melodic repetition factor above a given thresh hold
+\item Return all songs that are of species two counterpoint. 
+\end{enumerate}
+
+\noindent The simple query framework has limited expressiveness in querying options but is an example set to the user on what can be queried. Modulo7 also exposes a slightly harder to use SQL like query syntax to concatenate boolean expressions of these example queries and more (boolean combinations of all criteria and statistics defined in criteria \ref{criteria} and statistic \ref{statistic} sections)
+
+\subsection{Modulo7 SQL Language Specifications}
+
+\noindent On top of the standard set of query set defined as an example set, Modulo7 also supports a custom query language for extracting relevant information from a parsed and indexed data set. This language is similar to SQL but its internal processing is radically different. A generic expression can be expressed as follows
+\begin{equation}
+\textbf{select input\_src\_list  from DATABASENAME where expr\_list}
+\end{equation}
+
+\noindent Here input list is a set of music sources to be parsed. An expression list is a boolean conjunctive or distinctive list that outputs a subset of the original set of songs in the database. The definitions for the terms are as follows:-
+
+\begin{enumerate}
+\item \textbf{input\_src\_list} : An argument list of all the acceptable formats of is any combination of songs : midi, musicxml, sheet and mp3. This clears out all the formats that are irrelevant to the consumer. 
+
+\item \textbf{DATABASENAME} : The name of the Modulo7 Database. Its an internal consistency check to determine if the consumer is querying against the right Modulo7 database. 
+
+\item \textbf{expr\_list} : A conjunctive and/or disjunctive list of boolean queries on statistics and criteria defined in sections \ref{criteria} and \ref{statistic}. This allows for a greater degree of customization as compared to the other frameworks in literature as well as expose a structured query language for querying (which is sorely lacking in other frameworks). The elements of the expr\_list are defined as follows:-
+
+\begin{enumerate}
+\item \textbf{criteria is or is not true} : Returns a subset of songs from a candidate state which either satisfy or dont satisfy a given criteria. The argument criteria is replaced by an implemented criteria in \ref{criteria}
+\item \textbf{statistic relational\_op doubleValue} : Returns a subset of a songs from candidate set which satisfy this criteria : When a statistic is applied on a song in a candidate set, the returned value of the statistic satisfies a relational operation to the given value. The arguments to this expression is a statistic implemented in \ref{statistic}, a relational operator and a double value.
+\item \textbf{statistic between doubleValue1 and doubleValue2} : This form is a range query. This query returns the subset of songs from a candidate set which satisfy this criteria : When a statistic is applied on a song in a candidate set, the returned values lies in between doubleValue1 and doubleValue2. 
+\end{enumerate}
+\end{enumerate}

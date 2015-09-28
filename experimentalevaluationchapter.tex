@@ -22,7 +22,12 @@ A few assumptions that are made in testing are as follows :-
 \caption{Modulo7 architectural design}
 \label{fig:figure}
 \end{figure}
-As expected Modulo7's serialized format expresses a song in less disk space than its source formats while keeping the symbolic information intact. The results are positive as there is a 4 time decrease in size of expressing symbolic information as compared to midi files. \\
-A similar transformation was also done on the wikifonia dataset 
+As expected Modulo7's serialized format expresses a song in less disk space than its source formats while keeping the symbolic information intact. The results are positive as there is a 4 time decrease in size of expressing symbolic information as compared to midi files. \\\\
+A similar transformation was also done on a direct downloadable subset of the wikifonia dataset in order to compare Modulo7 internal representation against normal 
+
+\section{Result on Memory and Disk space \\ usage}
+
+\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features. However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. 
+
 
 \section{Results on similarity measures}

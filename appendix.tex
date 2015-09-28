@@ -8,6 +8,29 @@
 
 \noindent There are certain algorithms in literature that are directly implemented in Modulo7. These algorithms facilitate the smooth functioning of Modulo7's indexing in face of incomplete metadata. Some notable algorithms that have been used are briefly described in the following subsections. 
 
-\section{KK Tonality Profiles - Key Estimation}
+\section{KK Tonality Profiles and a Key Estimation Algorithm}
 
-\noindent Many music sources have the key signature inscribed in it. For example a midi file might have the key signature bytes transcribed. 
+\noindent Many music sources have the key signature inscribed in it. For example a midi file might have the key signature bytes transcribed. In the event that this information is not present, it must be inferred from the recording. This is required for certain similarity measures that need the key signature of the song for preprocessing steps  in particular for tonality alignment (\ref{sim:unequal}). \\
+
+\noindent The premise of the KK tonality profile stems from experiments done in \cite{kkTonalityKeyFinding} and \cite{kkcognitive} which estimate how likely a user is to ascribe a note to a series on notes played on a melody or an incomplete harmonic element in different keys. The notes guessed correlate to the relative prominence of a note in a given key(what this the frequency and total duration a note is played in a song in a given key). After many experiments, the experimenters collected the aggregate duration for each note for each key. This experiment was  repeated for all 12 major and 12 minor keys. They were able to acquire 24 profiles (vectors of real numbers) which represent a quantitative measure of the key. For example the profiles for C Major and C Minor are respectively \cite{kkcognitive}.
+\begin{equation}
+\begin{aligned}
+  CMajor = <6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88> \\
+  CMinor = <6.33, 2.68, 3.52, 5.38, 2.60, 3.53, 2.54, 4.75, 3.98, 2.69, 3.34, 3.17>, 
+\end{aligned}
+\end{equation}
+
+\noindent The profiles of the other keys can be achieved by rotating the vector by the intervalic distance of the root notes of the key and root note their reference Key(CMajor for major keys and CMinor for minor keys). \\
+
+\noindent The key estimation algorithm leverages the kk tonality profiles as input. The algorithm is as follows:-
+
+\begin{algorithmic}
+\If {$i\geq maxval$}
+    \State $i\gets 0$
+\Else
+    \If {$i+k\leq maxval$}
+        \State $i\gets i+k$
+    \EndIf
+\EndIf
+\end{algorithmic}
+

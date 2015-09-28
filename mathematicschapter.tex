@@ -3,11 +3,13 @@
 
 \noindent The following sections describe the mathematical concepts used and implemented in Modulo7.
 
-\section{Preprocessing Steps}
+\section{Preprocessing Steps} \label{sim:preprocess}
 
 \noindent It might be that the input sources require certain preprocessing for any mathematical model to work. The following sub sections describe certain preprocessing operations that can be done in order to prepare input data to be transcribed into a vector space model. \\
 
-\noindent \textbf{Tonality Alignment :} In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically consider Songs $S_1$ and $S_2$ with their respective keys being $K_1$ and $K_2$. Define intervalic distance between keys as $K_{intervalic} = $
+\noindent \textbf{Tonality Alignment :} In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically consider Songs $S_1$ and $S_2$ with their respective keys being $K_1$ and $K_2$. Define intervalic distance between keys as $K_{intervalic} = $ \\
+
+\noindent \textbf{Voice to Melodic Representation Coversion: } \label{voicemelconv} Given a voice, various instants inside the voice can be either single notes (melodic notes) or chords (stacks of notes). Often in order to apply pure melodic techniques a voice, a conversion is required from a generic voice to a melody. In order to do that, every chord in the voice is replaced by the root note of the chord. 
 
 \section{Vector Space Models of Music}
 
@@ -105,7 +107,7 @@ S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A
 \noindent Often pieces of one key are similar to pieces on a different key, simply based on the fact that the keys themselves are similar. 
 
 
-\section{Criteria Analysis}
+\section{Criteria Analysis} \label{criteria}
 
 \noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic predicate. Some example problems of such sorts are if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the STAB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements on top of similarity measures or alternatively if certain pieces just satisfies a one or more criteria. Following are the criteria implemented in Modulo7
 
@@ -113,19 +115,26 @@ S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A
 
 \noindent Simple criteria are based on simple global level properties of the song. \\
 
-\noindent \textbf{Polyphonic Criteria:} Its a simple criteria which decides whether a piece of music is polyphonic or not. This is decided on the basis of the number of voices in the song. Mathematically
+\noindent \textbf{Polyphonic Criteria:} Its a simple criteria which decides whether a piece of music is polyphonic or not. This is decided on the basis of the number of voices in the song. \\
 
-\[ PC(Song) =  \begin{cases} 
-      true & num_{voices}(Song) = 1 \\
-      false &  otherwise \\
-   \end{cases}
-\] \\
+\noindent \textbf{Key Signature Equality Criteria:} Its a simple criteria that checks if a song is in a particular key or not.
 
-\noindent \textbf{Key Signature Equality Criteria:} Its a simple criteria that checks if a song is in a particular key or not. Mathematically
+\section{Statistics Analysis} \label{statistic}
 
-\[ KSC(Song, desiredKeySig) =  \begin{cases} 
-      true & Key_Signature(Song) = desiredKeySig \\
-      false &  otherwise \\
-   \end{cases}
-\] \\
+\noindent A statistic when applied to a given song outputs a real number. Alternatively statistics could be thought of a non trivial extracted single value features. Mathematically a feature can be defined as:-
 
+\begin{equation}
+Criteria(Song) = x \ s.t \ x \in \mathbb{R}
+\end{equation}
+
+\noindent The following are the features implemented in Modulo7.  \\
+
+\noindent \textbf{Melodic Repeatability Fraction: } Given a voice, compute a sub voice that repeats the maximum number of times within the voice and then take the fraction between the length sub voice which satisfies this criteria against the length of the voice. This measure also uses the pre-processing step \\
+
+\noindent \textbf{Interval Index: } An interval index is the fraction of intervals being played in a song divided by the total number of intervals present in the song. These statistics are coarse measures of a song. There are three classes of interval indices :-
+
+\begin{enumerate}
+\item Happiness Index : The happiness index of a song is the number of major intervals in a song divided by the total number of intervals. A major interval sounds "happy" to a layman hence a higher concentration of them makes a song happier. 
+\item Sadness Index : The sadness index of a song is the number of minor intervals in a song divided by the total number of intervals. A minor interval sounds "sad" to a layman hence a higher concentration of them makes a song sadder. 
+\item Power Index : The power index of a song is the number of perfect interval in a song divided by the total number of intervals. Perfect melodic intervals are very prevalent in a rock and metal songs and are an expression of a neutral/powerful tone. 
+\end{enumerate}
