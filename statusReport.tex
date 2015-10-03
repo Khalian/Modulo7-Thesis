@@ -140,34 +140,21 @@
 \section*{Code and Design Level Progress}
 
 \begin{enumerate}
-\item Implemented basic similarity measures and vector space models for polyphonic and Monophonic Music. These vector space models are based on expressions of pitch, rhythm and overall charecteristics like pitch duration
-\item Implemented a templated based key signature algorithm
-\item Completed feature extraction from all Music sources and sanity tested them.
-\item Completed database internal database creation. 
-\item Completing indexing lyrics based on document frequency and songs on metadata terms
-\item \textbf{Next phase:} Work on more similarity measures and estimate precision and recall on ground truth data. Work on time signature estimation algorithm \textbf{ETA : 28 September 2015}
-\item \textbf{Further direction of work:} Design SQL like query system for Modulo7 \textbf{ETA : 15 October 2015}
+\item Implemented basic similarity measures and vector space models for polyphonic and Monophonic Music. These vector space models are based on expressions of pitch, melodic contour, tonal histograms etc.
+\item Implemented basic statistics (features that you can extract from a song). This includes concepts like interval indices (an expression of overall mood.), longest repeating melodic fraction etc (denoting a sense of complexity of the song).
+\item Completed indexing on basic attributes like key, scale polyphony.
+\item Implemented basic text IR analogues for similarity. (edit distance of melodies etc)
+\item Completed a basic set of queries and big part of the modulo7 base querying system. 
+\item Currently working on advanced similarity measures on contour and implementing a multithreaded database engine and indexer. 
 \end{enumerate}
-
 
 \section*{Experimental Progress}
 
 \begin{enumerate}
-\item Completed acquisition of certain small published datasets for analysis.
-\item Completed test cases on indexing on key signature and time signature. Given presence of key and time signature in encoding, tested correctness of program.
-\item Completed testing compression factor Modulo7 from midi and mp3 sources (while preserving core symbolic information. This data is for 50 tracks which are encoded in midi and mp3 and converted into the Modulo7 format. Attached bar graph for your perusal on the next page. Results are positive and as expected. 
-\item \textbf{Complete compression factor test cases for all sources} Design and run test cases for similarity measures. \textbf{ETA : 28 September 2015}
-\item \textbf{Further direction of work:} Run test cases on the million song dataset. 
-\textbf{This would require CPU cycles on CLSP servers so I will require permission} \textbf{ETA : 30 October 2015}
- 
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{Modulo7SMDBarGraph.png}
-\makeatletter
-\let\@currsize\normalsize
-\caption{Modulo7 architectural design}
-\label{fig:figure}
-\end{figure}
+\item Acquisition of ground truth results for melodic similarity are delayed as many datasets are proprietary. 
+\item Indexing tested on the SAAD dataset. Basic queries are sanity tested.
+\item Custom query testing for basic cases is halfway done (queries like select midi work)
+\item I tried to run the indexer on top of the million song dataset. I ran into memory issues. Will investigate further and if required need your help with permissions for the same. 
 
 
 \end{enumerate}

@@ -55,6 +55,28 @@ NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_n>
 NTDH = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_n>
 \end{equation}
 
+\subsubsection{Contour}
+
+\noindent A contour is a quantitative representation of the direction of motion of a given voice / melody. Contours are clearly defined for melodies as a concept and hence the preprocessing steps of converting generic voices to pure melodies.\ref{voicemelconv}. There are many different representations of contour in literature and Modulo7 implements the following representations of contour. \\
+
+\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the sucessive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice.\\
+
+\noindent \textbf{Natural Contour : } The natural contour of a song is similar to the gross contour with a difference that the intervalic distance between subsequent notes are calculated instead of ignored as in gross contour. Define the gradient between succesive notes N1 and N2 as 
+
+\begin{equation}
+gr(N_1, N2_2) = Interval_{dist}(N_1, N_2)
+\end{equation}
+
+Thus then the natural contour can be defined as:-
+
+\begin{equation}
+NC(Voice) = (gr(N_0, N_1), gr(N_1, N_2), .... gr(N_{len_{Voice} - 1}, N_{len_{Voice}}))
+\end{equation}
+
+where $N_i$ is the $i^{th}$ note in the voice after converting it into a melody \ref{voicemelconv}
+
+
+
 \subsection{Vector Space Models for Polyphonic Music} 
 
 \noindent While vector space models per voices are useful in single melody similarity, its not enough to ascertain similarities or compute statistics about songs when songs have more than one voice. As such certain extensions are proposed to the voice vector representation that allow for similarity computations for polyphonic music.\\\\
