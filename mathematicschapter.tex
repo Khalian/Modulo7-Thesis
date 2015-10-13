@@ -5,11 +5,24 @@
 
 \section{Preprocessing Steps} \label{sim:preprocess}
 
-\noindent It might be that the input sources require certain preprocessing for any mathematical model to work. The following sub sections describe certain preprocessing operations that can be done in order to prepare input data to be transcribed into a vector space model. \\
+\noindent It might be that the input sources require certain preprocessing for any mathematical model to work. The following sub sections describe certain preprocessing operations that can be done in order to prepare input data to be transcribed into a vector space model. 
 
-\noindent \textbf{Tonality Alignment :} In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically consider Songs $S_1$ and $S_2$ with their respective keys being $K_1$ and $K_2$. Define intervalic distance between keys as $K_{intervalic} = $ \\
+\subsection{Tonality Alignment} \label{tonalityalignment}
 
-\noindent \textbf{Voice to Melodic Representation Coversion: } \label{voicemelconv} Given a voice, various instants inside the voice can be either single notes (melodic notes) or chords (stacks of notes). Often in order to apply pure melodic techniques a voice, a conversion is required from a generic voice to a melody. In order to do that, every chord in the voice is replaced by the root note of the chord. 
+\noindent In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically consider Songs $S_1$ and $S_2$ with their respective keys being $K_1$ and $K_2$. Define intervalic distance between keys as $K_{intervalic} = $ 
+
+\subsection{Voice to Melodic Representation Coversion} \label{voicemelconv} 
+
+\noindent Given a voice, various instants inside the voice can be either single notes (melodic notes) or chords (stacks of notes). Often in order to apply pure melodic techniques a voice, a conversion is required from a generic voice to a melody. In order to do that, every chord in the voice is replaced by the root note of the chord. 
+
+\subsection{Contourization} \label{contourization}
+
+\noindent A contour is a quantitative representation of the direction of motion of a given voice / melody. Contours are clearly defined for melodies as a concept and hence the preprocessing steps of converting generic voices to pure melodies.\ref{voicemelconv}. There are many different representations of contour in literature and Modulo7 implements the following representations of contour. \\
+
+\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the sucessive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice.\\
+
+\noindent \textbf{Natural Contour : } The natural contour of a song is similar to the gross contour with a difference that the intervalic distance between subsequent notes are calculated instead of ignored as in gross contour. Define the gradient between succesive notes N1 and N2 as 
+
 
 \section{Vector Space Models of Music}
 
@@ -43,26 +56,6 @@ PI = <\Delta p_1, \Delta p_2, ... , \Delta p_n>
 RPI = <rp_1, rp_2, ... rp_n>
 \end{equation}
 
-\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of 12 distinct intervals present in western music theory and the number of time. Each position in the vector corresponds to the total number of times that interval has occurred in a voice. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{\Delta p_i}{\Delta P^{voice}}$. Thus we can define the normalized tonal histogram vector as
-
-\begin{equation}
-NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_n>
-\end{equation}
-
-\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a voice. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\Delta t_i}{\Delta T^{voice}}$. Thus we can define the normalized tonal duration histogram vector as
-
-\begin{equation}
-NTDH = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_n>
-\end{equation}
-
-\subsubsection{Contour}
-
-\noindent A contour is a quantitative representation of the direction of motion of a given voice / melody. Contours are clearly defined for melodies as a concept and hence the preprocessing steps of converting generic voices to pure melodies.\ref{voicemelconv}. There are many different representations of contour in literature and Modulo7 implements the following representations of contour. \\
-
-\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the sucessive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice.\\
-
-\noindent \textbf{Natural Contour : } The natural contour of a song is similar to the gross contour with a difference that the intervalic distance between subsequent notes are calculated instead of ignored as in gross contour. Define the gradient between succesive notes N1 and N2 as 
-
 \begin{equation}
 gr(N_1, N2_2) = Interval_{dist}(N_1, N_2)
 \end{equation}
@@ -75,18 +68,28 @@ NC(Voice) = (gr(N_0, N_1), gr(N_1, N_2), .... gr(N_{len_{Voice} - 1}, N_{len_{Vo
 
 where $N_i$ is the $i^{th}$ note in the voice after converting it into a melody \ref{voicemelconv}
 
-
-
 \subsection{Vector Space Models for Polyphonic Music} 
 
-\noindent While vector space models per voices are useful in single melody similarity, its not enough to ascertain similarities or compute statistics about songs when songs have more than one voice. As such certain extensions are proposed to the voice vector representation that allow for similarity computations for polyphonic music.\\\\
-\noindent \textbf{Normalized Song Tonal Histogram Vector:}  \noindent Consider the normalized tonal histogram in section. We can define the cumulative intervals across all voices as \\ $\Delta P_{song} = \sum_{i = 1}^{num(voices)} \Delta P^{voice_j}$. Define interval fraction over song as $\Delta p^{fs}_i = \frac{\Delta p_i}{\Delta P^{song}}$   Now define the normalized tonal histogram vector for the song as the follows:-
+\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of 12 distinct intervals present in western music theory and the number of time. Each position in the vector corresponds to the total number of times that interval has occurred in a song. This is the total summation of the intervals over each individual voice. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$ and for a song $\Delta P^{song} = \sum_{voice_j} \Delta P^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{sum_i \Delta p_i}{\Delta P^{song}}$ where $p_i$ stands for the interval quantity = i. Thus we can define the normalized tonal histogram vector as
 
 \begin{equation}
-NSTH = <\Delta p^{fs}_1, \Delta p^{fs}_2, ... , \Delta p^{fs}_n>
+NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_{12}>
 \end{equation}
 
-\section{Similarity Measures}
+\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a song.This is the total summation of the duration of intervals over each individual voice for the entire song. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and for a song $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\sum_i \Delta t_i}{\Delta T^{song}}$ where the sum in the numerator stands for the cumulative duration for which an interval quantity = i is played. Thus we can define the normalized tonal duration histogram vector as
+
+\begin{equation}
+NTDH = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_{12}>
+\end{equation}
+
+\noindent \textbf{Normalized Pitch Duration Histogram Vector:}  The pitch duration histogram is a vector or map of 12 distinct pitches present in western music theory. Each position in the vector corresponds to the cumulative duration for which that pitch has occurred in a voice and for a song it is the summation of cumulative durations over all the voices. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^p_i = \frac{\sum_i \Delta p_i}{\Delta T^{voice}}$. Here the summation in the numerator is the cumulative time for which the pitch in the $i^{th}$ position of the western music chromatic scale is played. Thus we can define the normalized tonal duration histogram vector as
+
+\begin{equation} \label{NPDH}
+NPDH = <\Delta t^p_1, \Delta t^p_2, ... , \Delta t^p_{12}>
+\end{equation}
+
+
+\section{Similarity Measures} \label{similarity}
 
 \noindent Similarity is defined in Modulo7 as a function which takes as input two voices or songs and outputs a value between 0 to 1 where 0 stands for least similar and 1 stands for most similar. Similarity measures are a cornerstone of recommendations and many recommender engines are based on rank similarity measures for different criteria. Mathematically :-
 \begin{equation}

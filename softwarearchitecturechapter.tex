@@ -136,6 +136,29 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 \begin{enumerate}
 \item \textbf{criteria is or is not true} : Returns a subset of songs from a candidate state which either satisfy or dont satisfy a given criteria. The argument criteria is replaced by an implemented criteria in \ref{criteria}
 \item \textbf{statistic relational\_op doubleValue} : Returns a subset of a songs from candidate set which satisfy this criteria : When a statistic is applied on a song in a candidate set, the returned value of the statistic satisfies a relational operation to the given value. The arguments to this expression is a statistic implemented in \ref{statistic}, a relational operator and a double value.
-\item \textbf{statistic between doubleValue1 and doubleValue2} : This form is a range query. This query returns the subset of songs from a candidate set which satisfy this criteria : When a statistic is applied on a song in a candidate set, the returned values lies in between doubleValue1 and doubleValue2. 
+\item \textbf{statistic between value1 and value2} : This form is a range query. This query returns the subset of songs from a candidate set which satisfy this criteria : When a statistic is applied on a song in a candidate set, the returned values lies in between value1 and value2. 
 \end{enumerate}
+\end{enumerate}
+
+\noindent Each of these basic query component returns a subset of songs that satisfy the query component. These query components can be concatenated conjunctively or disjunctively to form a boolean query. So a query is effectively $Q = \cup_i | \cap_i (qc)$, where qc is a query component described above and Q is the resultant query. \\
+
+\subsection{Modulo7 Similarity Engine}
+
+\noindent On top of Modulo 7 supporting custom queries, it also acts in a ranked search engine mode. However the ranking model of the search engine is based on similarity measures based on the structural analysis of the music sources and are described in \ref{similarity}
+
+\subsection{Modulo7 Lyrics Analyzer Architecture}
+
+\noindent The modulo indexer also indexes lyrics, but treats lyrics objects as text components. So the standard model of text Information Retreival techniques can be used type analyze lyrics. Modulo7 implements lyrics indexing and standard NLP operations on lyrics.
+
+\begin{enumerate}
+\item Modulo7 parses lyrics components from some of its sources (for example musicxml and midi have embedded lyrics structures inside it). This is stored along with the song object
+\item Modulo7 also parses independent lyrics structures provided to it. This allows for increased flexibility for Modulo7 to just parse lyrics objects
+\item Modulo7 creates a lucene index of the lyrics objects once parsed from its sources. This allows for users to make standard text queries via Lucene. 
+
+Modulo7 also provides support for rudimentary Natural Language Processing operations on top of the lyrics obtained. Two supported operations for lyrics are :-
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Language ID} : Modulo7 can detect what language the song's lyrics is written in. It does this via an language ID call to alchemy \ref{Alchemy}. 
+\item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). 
 \end{enumerate}

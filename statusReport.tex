@@ -123,6 +123,7 @@
 \newcommand{\So}{s}
 \usepackage{algpseudocode, caption}
 \usepackage[ruled]{algorithm}
+\usepackage{hyperref}
 %\begin{document}
 %\def\DoubleSpace{\baselineskip=24pt}
 %\DoubleSpace \sloppy
@@ -130,34 +131,16 @@
 \begin{document}
 
 
-\title{Modulo7 Status Report : Progress of Master's Essay}
-\author{\textbf{Arunav Sanyal}}
+\title{Modulo7 Write Up: Request for ground truth data from MIREX 2005}
 
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Code and Design Level Progress}
+\noindent Modulo7 is a new framework currently under construction to measure similarities across songs of different sources, extract features and observe music theoretic criteria satisfaction for disparate song sources. Modulo7 outputs quantitative similarities between two music sources as one of its components.\\\\
+In order to facilitate evaluation of these measures, ground truth information is needed for song similarities. One such ground truth measure was established in the MIREX competition (Music Information Retrieval Evaluation eXchange ). While most of the datasets is proprietary hosted in UIUC, the 2005 version was downloadable for the task of Symbolic Melodic similarity \href{http://www.music-ir.org/mirex/wiki/2005:Symbolic_Melodic_Similarity}{Link to dataset description}. \\\\
+The data that was originally hosted is taken down. Is it possible to get a copy of the dataset for this research?
 
-\begin{enumerate}
-\item Implemented basic similarity measures and vector space models for polyphonic and Monophonic Music. These vector space models are based on expressions of pitch, melodic contour, tonal histograms etc.
-\item Implemented basic statistics (features that you can extract from a song). This includes concepts like interval indices (an expression of overall mood.), longest repeating melodic fraction etc (denoting a sense of complexity of the song).
-\item Completed indexing on basic attributes like key, scale polyphony.
-\item Implemented basic text IR analogues for similarity. (edit distance of melodies etc)
-\item Completed a basic set of queries and big part of the modulo7 base querying system. 
-\item Currently working on advanced similarity measures on contour and implementing a multithreaded database engine and indexer. 
-\end{enumerate}
-
-\section*{Experimental Progress}
-
-\begin{enumerate}
-\item Acquisition of ground truth results for melodic similarity are delayed as many datasets are proprietary. 
-\item Indexing tested on the SAAD dataset. Basic queries are sanity tested.
-\item Custom query testing for basic cases is halfway done (queries like select midi work)
-\item I tried to run the indexer on top of the million song dataset. I ran into memory issues. Will investigate further and if required need your help with permissions for the same. 
-
-
-\end{enumerate}
 \end{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
