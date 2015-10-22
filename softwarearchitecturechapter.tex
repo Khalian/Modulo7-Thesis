@@ -1,5 +1,5 @@
 \chapter{Software architecture and Methodology}
-The following sections present the software architecture and the methodology of Modulo7
+The following sections present the software architecture and the methodology of Modulo7 and also the limitations of Modulo7
 \section{Server Side architecture}
 \noindent Modulo7 is designed with the purpose of scalability. A block diagram of the components of the server side architecture is presented below :-
 \begin{enumerate}
@@ -161,4 +161,14 @@ Modulo7 also provides support for rudimentary Natural Language Processing operat
 \begin{enumerate}
 \item \textbf{Language ID} : Modulo7 can detect what language the song's lyrics is written in. It does this via an language ID call to alchemy \ref{Alchemy}. 
 \item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). 
+\end{enumerate}
+
+\section{Limitations of Modulo7}
+
+While Modulo7 attempts to solve a large set of problems (custom query specification based on structural aspects of music, similarity analysis, logical indexing scheme), there are some fundamental limitations to what Modulo7 can or cannot do. Some of the notable ones are listed as follows:-
+
+\begin{enumerate}
+\item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
+\item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for songs.
+\item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques havent solved the problem of polyphony and symbolic faithfully  \cite{melextract}
 \end{enumerate}
