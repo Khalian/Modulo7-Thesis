@@ -37,7 +37,7 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 
 \noindent There are certain algorithms in literature that are directly implemented in Modulo7. These algorithms facilitate the smooth functioning of Modulo7's indexing in face of incomplete metadata. Some notable algorithms that have been used are briefly described in the following subsections
 
-\section{KK Tonality Profiles and a Key Estimation Algorithm}
+\section{KK Tonality Profiles and a Key Estimation Algorithm} \label{kktonality}
 
 \noindent Many music sources have the key signature inscribed in it. For example a midi file might have the key signature bytes transcribed. In the event that this information is not present, it must be inferred from the recording. This is required for certain similarity measures that need the key signature of the song for preprocessing steps  in particular for tonality alignment (\ref{sim:unequal}). There are many methods for achieving this including non trivial tree representations of polyphonic music to estimate key \cite{treemodel}. However in Modulo7, the author has implemented a simpler model for tonality estimation based on templates called KK tonality profiles \cite{kkTonalityKeyFinding} \\
 

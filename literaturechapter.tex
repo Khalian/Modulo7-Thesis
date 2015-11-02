@@ -11,20 +11,20 @@
 
 \subsection{Marsyas}
 
-\noindent marsyas \cite{marsyas} (Music Analysis, Retrieval and Synthesis for Audio Signals) is a software stack for audio processing with specific emphasis on Music Information Retrieval and music signal extraction. Marsyas is a heavily developed and a widely developed state of the art framework for audio processing but also has a steep learning curve. Modulo7 has different goals (multiple format support, music similarity etc). 
+\noindent marsyas \cite{marsyas} (Music Analysis, Retrieval and Synthesis for Audio Signals) is a software stack for audio processing with specific emphasis on Music Information Retrieval and music signal extraction. Marsyas is a heavily developed and a widely utilized state of the art framework for audio processing but also has a steep learning curve. Modulo7 has different goals (multiple format support, music similarity, structured querying etc) as compared to marsyas.
 
 \subsection{SIMILIE}
 
-\noindent SIMILIE \cite{similie} is a set of tools for music similarity measures used for single  melodies and features multiple ways to construct vector space models for melodies. The techniques used in SIMILIE are novel. Modulo7 uses a subset of these similarity measures as basis for an extended and improved model of similarities based on polyphonic music and harmonic elements. Moreover SIMILIE needs its own file format (called .mcsv) for analysis. Although the software package gives a converter for different sources, its not as variegated as Modulo7's format support is.
+\noindent SIMILIE \cite{similie} is a set of tools for music similarity measures used for single  melodies and features multiple ways to construct vector space models for melodies. The techniques used for melodic similarity analyss in SIMILIE are novel. Modulo7 uses a subset of these similarity measures as basis for an extended and improved model of similarities based on polyphonic music and harmonic elements. Moreover SIMILIE needs its own file format (called .mcsv) for analysis. Although the software package gives a converter for different sources, its not as variegated as Modulo7's format support is (which directly parses different music source files).
 
 \subsection{Echo Nest APIs}
 
-\noindent Echo Nest is a company that specializes in big data music intelligence. Echo Nest power many music platforms like last.fm, Spotify etc. In particular Echo Nest provides APIs for extraction of audio features, acquiring artists similar to a particular artist etc. Echo Nest API is used for some sub tasks in Modulo7 (which is discussed in the Software Architecture Chapter). \\\\
+\noindent Echo Nest is a company that specializes in big data music intelligence. Echo Nest APIs and backend powers many music platforms like last.fm, Spotify etc. In particular Echo Nest provides APIs for extraction of audio features, acquiring artists similar to a particular artist etc. Echo Nest API is used for some sub tasks in Modulo7 (which is discussed in the Software Architecture Chapter). \\\\
 Echo Nest also maintains the worlds biggest music database as well as data mined from them along with extracted audio features, web mined information, user preference etc). 
 
 \subsection{Humdrum}
 
-\noindent Humdrum \cite{humdrum} is a set of tools for computer based automation and assistance in music research. Humdrum has the capability for solving very complex questions using music theoretic concepts. Humdrum supports its own file format for analysis. Humdrum is specifically designed for musicologists for automating tasks that they otherwise would have required manual analysis and not gathering statistic, music classification or music similarity analysis as an end goal.
+\noindent Humdrum \cite{humdrum} is a set of tools for computer based automation and assistance in music research. Humdrum has the capability for solving very complex questions using music theoretic concepts. Humdrum supports its own file format for analysis. Humdrum is specifically designed for musicologists for automating tasks that they otherwise would have required manual analysis and not gathering statistic, music classification or music similarity analysis as an end goal.The fundamental difference of Modulo7 over humdrum is modulo7 acts as a bulk analysis tool while humdrum is designed for specific analysis of songs.
 
 
 \subsection{Gamera}
@@ -39,7 +39,9 @@ Echo Nest also maintains the worlds biggest music database as well as data mined
 
 \noindent Modulo7 parses multiple formats for music. But there are many other sources that are worth mentioning. \\
 
-\noindent \textbf{GUIDO :} GUIDO musical notation format is a computer notation format that is made to logically represent symbolic musical information that is easily readable by both humans and computers and can be stored as a text file. This example has been taken from wikipedia which shows the ease with which GUIDO represents a musical phrase. 
+\noindent \textbf{GUIDO :} GUIDO musical notation format is a computer notation format that is made to logically represent symbolic musical information that is easily readable by both humans and computers and can be stored as a text file. \\
+
+\noindent \textbf{KERN :} The kern format is used in humdrum to symbolically denote events in columns while voices are represented in rows. \cite{humdrum}. This facilitates a columnar representation of music on which humdrum can perform some sort of music theoretic analysis. 
 
 \section{Typical problems of MIR}
 
@@ -61,15 +63,13 @@ Echo Nest also maintains the worlds biggest music database as well as data mined
 
 \noindent Most music is represented in Audio format rather than symbolic format, as consumption of music is primarily for the layman or the musically uninitiated. One such task would be music transcription(also known as melody extraction \cite{melextract}). This is needed for an accurate transcription of audio music to symbolic format. However researchers have only found success in melody extraction where one voice is clearly dominant in a recording \cite{melextract}. Researchers have also worked on quantitatively defining the concept of timbre (a peculiar tone of a voice independent of pitch and loudness) with varying degrees of success both qualitatively \cite{timbrequal} and computationally \cite{musiclisteningthesis}. 
 
-\subsection{Intelligent archiving and Retrieval}
+\subsection{Intelligent Music Archiving and Retrieval}
 
 \noindent Key to music information retrieval are efficient and novel techniques to archive musical sources so that they meaningful queries can be made against these archives. Many libraries and library sciences programs work actively in this regard. Our very own Johns Hopkins University Eisenhower Library has a vast collection of Sheet music on American Popular music called the "Lester Levy Sheet Music Collection" \cite{Levy:Collection:Online} . There are many such collections worldwide. There are many labs and institutions which work towards archiving digitized sheet music, notable among them are the DDMAL lab in McGill University \cite{DDMAL} which works in archiving medieval sheet music in a digitized form as well as perform statistical analysis on it. 
 
 \subsection{Music Recommendation}
 
-\noindent Perhaps the most commercialized application of Music Information Retrieval is the task of music recommendation i.e. intelligent suggesting of songs to a user given his or her preferences and past listening history. Music recommendation is an end goal in itself and not a distinct problem compared to the previous sections. In order to facilitate this various music databases and query systems are built and comparisons are based on lyrics genre tags and other properties of music data \cite{musicrecSurvey}. Most approaches have been based on collaborative filtering contextual metadata (information based on community of users) and sparingly from low level features extracted from a song. 
-
-\subsection{title}
+\noindent Perhaps the most commercialized application of Music Information Retrieval is the task of music recommendation i.e. intelligent suggestion of songs to a user given his or her preferences and past listening history. Music recommendation is an end goal in itself and not a distinct problem compared to the previous problems discussed in this section. In order to facilitate this various music databases and query systems are built and comparisons are based on lyrics genre tags and other properties of music data \cite{musicrecSurvey}. Most approaches have been based on collaborative filtering contextual metadata (information based on community of users) and sparingly from low level features extracted from a song. 
 
 
 

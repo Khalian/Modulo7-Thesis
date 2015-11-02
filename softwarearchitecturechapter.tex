@@ -6,7 +6,7 @@ The following sections present the software architecture and the methodology of 
 \item Source Converter : Converts music sources (e.g. music XML, midi etc) into modulo7's binary representation.
 \item Music Theory Models : The model is a description of music theoretic criteria that can be applied on top of a song. Examples would be melodic contour, tonal histogram etc. 
 \item Distributed Storage Mechanism : The modulo7 internal representation is a conversion to create a song representation with all the meta data of the song (Key, Scale,  etc) along with the sequences of note events stored as lists. This representation is then serialized and stored in and Hadoop Distributed File System. This allows for fault tolerance and a distributed deployment of the input data.
-\item Lyrics Indexer : A distributed index of songs lyrics. This acts as a base on which standard techniques for similarity analysis might be applied. Alternatively it can provide a framework on which custom models (e.g. semantic intent of the song, correlation between music theory models and lyrics might also be applied).  
+\item Lyrics Indexer : A distributed index of songs lyrics. This acts as a base on which standard techniques for similarity analysis might be applied. Alternatively it can provide a framework on which custom models (e.g. semantic intent of the song, correlation between music theory models and lyrics might also be applied).
 \item Lyrics similarity models : A set of similarity models that can be applied to an index. 
 \item Query Engine : An SQL like interface to a client that allows you to gather and ascertain useful information (based on music theoretic criteria). 
 \end{enumerate}
@@ -171,4 +171,5 @@ While Modulo7 attempts to solve a large set of problems (custom query specificat
 \item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
 \item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for songs.
 \item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques havent solved the problem of polyphony and symbolic faithfully  \cite{melextract}
+\item Modulo7 does not mine cultural data or perform any sort of collaborative filtering.  
 \end{enumerate}

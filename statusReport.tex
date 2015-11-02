@@ -131,15 +131,25 @@
 \begin{document}
 
 
-\title{Modulo7 Write Up: Request for ground truth data from MIREX 2005}
+\title{Arunav Sanyal Status Report on thesis project : Modulo7 }
 
 \maketitle
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\noindent Modulo7 is a new framework currently under construction to measure similarities across songs of different sources, extract features and observe music theoretic criteria satisfaction for disparate song sources. Modulo7 outputs quantitative similarities between two music sources as one of its components.\\\\
-In order to facilitate evaluation of these measures, ground truth information is needed for song similarities. One such ground truth measure was established in the MIREX competition (Music Information Retrieval Evaluation eXchange ). While most of the datasets is proprietary hosted in UIUC, the 2005 version was downloadable for the task of Symbolic Melodic similarity \href{http://www.music-ir.org/mirex/wiki/2005:Symbolic_Melodic_Similarity}{Link to dataset description}. \\\\
-The data that was originally hosted is taken down. Is it possible to get a copy of the dataset for this research?
+\begin{enumerate}
+
+\item Completed the playback module as requested (plays back songs present in the similar songs returned). \textbf{There is a depreciable lack of quality for some formats e.g. musicxml and midi, would that be appropriate or should I write a crawler which finds an equivalent mp3 and plays it?}. 
+
+\item I successfully ran my first large scale experiment. The experiment involved estimating key signatures for 1314 music xml songs via an algorithm implemented in Modulo7 and reported accuracy of 85.9 where the baseline is 50 percent. 
+
+\item Implementing reporting similarity scores while running the similarity metric mode for Modulo7. \textbf{Smith Waterman Algorithm reports alignment scores in large integer numbers instead of the similarity defined between 0 and 1, I will fix that}
+
+\item Implemented a couple of n gram similarity measures SCM Trigam similarity and ukkonnen measure successfully
+
+\item Experiments for melodic similarity (the ultimate goal for this project) are in a bit of a pickle. I still am not able to get hand of the data present in literature due to non responsive authors. \text{Perhaps you can drop them a mail}. I reached out to peabody faculty to help me out in this matter as well.
+
+\end{enumerate}
 
 \end{document}
 

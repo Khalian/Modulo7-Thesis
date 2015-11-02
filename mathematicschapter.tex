@@ -19,7 +19,7 @@
 
 \noindent A contour is a quantitative representation of the direction of motion of a given voice / melody. Contours are clearly defined for melodies as a concept and hence the preprocessing steps of converting generic voices to pure melodies.\ref{voicemelconv}. There are many different representations of contour in literature and Modulo7 implements the following representations of contour. \\
 
-\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the sucessive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice.\\
+\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the successive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice.\\
 
 \noindent \textbf{Natural Contour : } The natural contour of a song is similar to the gross contour with a difference that the intervalic distance between subsequent notes are calculated instead of ignored as in gross contour. Define the gradient between succesive notes N1 and N2 as 
 
@@ -116,12 +116,10 @@ GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_
 
 \subsection{Similarity of vectors of unequal length} \label{sim:unequal}
 
-\noindent Its almost certain that two voices will  never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$. Let i be an index running from 0 to len(A) - len(B) and $C_i$ be defined as the sub component of a melody (also called submelody) which contains voice elements $A[i] \ to \ A[i + len(B)]$. Then similarity measure $S_{unequal}(S_{original}, A, B)$ can be defined as the following
-\begin{equation}
-S_{unequal}(S_{original}, A, B) = max_i (C_i, B) \text{ where } i \in \{0, len(A) - len(B)\}
-\end{equation}
+\noindent Its almost certain that two voices will never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Moreover, its also important to judge which regions of one melody are maximally similar to which other regions of the other melody (also called as alignment) . Modulo7 takes inspiration from bio informatics domain and uses 
 
-\noindent This procedure is a basic modification of the concept of Horizontal Shifting\cite{similietechnicalmanual}. Here we keep shifting the smaller melody along the longer melody successively for faster computation. This technique is best used when one melody's vector space representation is completely contained in another (for an example a phrase of a voice compared with a voice itself).
+Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$.
+
 
 \subsection{Meta Data based similarity}
 
