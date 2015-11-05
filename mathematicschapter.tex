@@ -116,10 +116,29 @@ GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_
 
 \subsection{Similarity of vectors of unequal length} \label{sim:unequal}
 
-\noindent Its almost certain that two voices will never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Moreover, its also important to judge which regions of one melody are maximally similar to which other regions of the other melody (also called as alignment) . Modulo7 takes inspiration from bio informatics domain and uses 
+\noindent Its almost certain that two voices will never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Moreover, its also important to judge which regions of one melody are maximally similar to which other regions of the other melody (also called as alignment) . Modulo7 takes inspiration from bio informatics domain and uses the smith waterman algorithm modified for voice similarity \cite{smithWatermanBook}. The algorithm is as follows:-
 
-Consider two voices $\vec{A}$ and $\vec{B}$. Without loss of generality assume $len(A) > len(B)$.
+\begin{algorithm}
 
+\label{CHalgorithm}
+\begin{algorithmic}[1]
+\Procedure{Smith Waterman Voice Similarity(V1, V2, InSim)} {}
+\State Define WM = Array[len(V1)][len(V2)]
+\For {i in 1 to len(V1)}
+\State WM[i][0] = 0
+\EndFor
+\For {j in 1 to len(V2)}
+\State WM[0][j] = 0
+\EndFor
+\For {i in 1 to len(V1)}
+\For {j in 1 to len(V2)}
+\State WM[i][j] = max(0, WM[i - 1][j - 1] + InSim(V1(i), V2(j)), WM[i - 1, j] + InSim(V1(i), $\phi$), WM[i, j - 1] + InSim($\phi$,V2(j))
+\EndFor
+\EndFor
+\State return WM[len(V1), WM(len(V2))] / max(len(V1), len(V2)
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 \subsection{Meta Data based similarity}
 
