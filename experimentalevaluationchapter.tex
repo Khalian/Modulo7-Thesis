@@ -4,11 +4,11 @@
 A few assumptions that are made in testing are as follows :-
 \begin{enumerate}
 % TOD0 : Finish this section
-\item In order to estimate ground truth values, the author assumed ground truth values presented in datasets used / or subjective judgements to which songs are similar to each other. These subjective judgements are procured from existing literature.
-\item If the song metadata (such as keysignature, timesignature, total duration of song) is not encoded, its estimated by the parsers. This estimation id done by existing algorithms in literature. However if metadata is encoded, its assumed to be correct. 
+\item In order to estimate ground truth values, the author assumed ground truth values presented in datasets used / or subjective judgments about which songs are similar to each other. These subjective judgments are procured from existing literature.
+\item If the song meta data (such as key-signature, time-signature, total duration of song) is not encoded, its estimated by the individual parsers for the data source. This estimation id done by existing algorithms in literature. However if meta data is encoded in the input, its assumed to be correct and no such estimations are carried out. 
 \item Most tests are against file formats of the similar types (for example midi is tested against other symbolic files). This is due to the inherent complexity of symbolic decoding of audio formats like mp3. Also its easier to compare symbolic data against other symbolic data.
-\item In the event of parsing data, there can be legal issues (e.g. the song can be copyrighted). For that reason custom parsers to build alternate research datasets (e.g the million song dataset has already derived features that Modulo7 intended to derive for Mp3 files. \cite{msd})
-\item All evaluations are done against research datasets which are published in academia or exposed as public datasets in industry. 
+\item In the event of parsing data, there can be legal issues (e.g. the song can be copyrighted). For that reason custom parsers to build alternate research datasets (e.g the million song dataset has already derived features that Modulo7 intended to derive for Mp3 files and has its own parser written by the authors. \cite{msd})
+\item All evaluations are done against research datasets which are published in academia or exposed as public data sets in industry. As such no proprietary data sets are used for the purpose of evaluation.
 \end{enumerate}
 
 \section{Results of Index Compression}
@@ -31,11 +31,11 @@ A similar transformation was also done on a direct downloadable subset of the wi
 
 \section{Results on similarity measures}
 
-\noindent This set of experiments determine the precision and recall values for the similarities defined in \ref{similarity} on ground truth data extracted from \cite{msd}. Modulo7 does not claim to improve on the state of the art when it comes to similarity metrics. However the following tests are carried out : 
+\noindent This set of experiments determine the precision and recall values for the similarities defined in \ref{similarity} on ground truth data extracted from \cite{msd}. Modulo7 does not claim to improve on the state of the art when it comes to similarity metrics or does not intend to create a new similarity metric. Rather this set of experiments are a test of efficiency in execution and accuracy of existing methods on large scale datasets. The following tests are conducted as part of the benchmarking:-
 
 \begin{enumerate}
 \item Benchmarks are done against the SIMILIE software stack \cite{similie} after taking into account the inherent speed difference between R\cite{similietechnicalmanual} and Java for specific melodies
-\item The state of the art similarity measures for melodies are generalized to polyphonic music and tested against newer datasets as compared to \cite{msd} to ascertain recall and precision values
+\item The state of the art similarity measures for melodies are generalized to polyphonic music and tested against newer datasets like \cite{msd} to ascertain recall and precision values
 \item 
 \end{enumerate}  
 
@@ -46,4 +46,8 @@ After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the t
 
 \section{Results on lyrics similarity and statistics analysis}
 
-\noindent On top of the experiments done for Song sources incorporating tonal information, there were specific experiments that were carried out for lyrics similarities in general. The ground truth for these experiments is the musix match lyrics dataset present in the million song dataset present in literature : \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts like a great baseline for set based similarities of lyrics. The experiment involved calculating the expected word count from the ground truth data and with that form a basis for comparing songs with the ground truth data. There are measures defined in literature \cite{lyricsRanking} which define similarity and accuracy of lyrics based on expected counts of words and observed counts of words in lyrics.
+\noindent On top of the experiments done for Song sources incorporating tonal information, there were specific experiments that were carried out for lyrics similarities in general. The ground truth for these experiments is the musix match lyrics dataset present in the million song data set \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts like a great baseline for set based similarities of lyrics. The experiment involved calculating the expected word count from the ground truth data and with that form a basis for comparing songs with the ground truth data. There are measures defined in literature \cite{lyricsRanking} which define similarity and accuracy of lyrics based on expected counts of words and observed counts of words in lyrics. However for this experiment we have decided to extract the tags from the last fm dataset of the Million Song Data set \cite{msd} to acquire the tags that occur frequently for a given song and then build a predictive model that outputs the tags for a newly seen song. \\\\
+These tags could indicate the language, genre etc of the songs. As such this comparison allows for predicting various meta data regarding a newly seen lyric cs of a song. \\\\
+Consider $T(S_i)$ be defined as  the set of tags for the $S_i$ which is the $i^{th}$ song in the music match dataset. Let $S_{new}$ be a new song for which tags need to be predicted and get L(S) represent the lyrics of a song. Hence $L_{new}$ should be similar to some $L(S_k)$ for their tags to be similar. Let $S_{sim} = {S_i | isSim(S_i, S_new) = true} $ be the set of all the songs similar to $S_new$. We define $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim}\}$. In other words the tags of the new song is the union of the tags in the songs similar to the new song. This method is called the \textbf{naive tag estimation}. \\\\
+This method does not capture the strength of similarity a song has to another. 
+ 
