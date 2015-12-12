@@ -146,7 +146,7 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 
 \noindent On top of Modulo 7 supporting custom queries, it also acts in a ranked search engine mode. However the ranking model of the search engine is based on similarity measures based on the structural analysis of the music sources and are described in \ref{similarity}
 
-\subsection{Modulo7 Lyrics Analyzer Architecture}
+\subsection{Modulo7 Lyrics Analyzer Architecture} \label{lyricsarch}
 
 \noindent The modulo indexer also indexes lyrics, but treats lyrics objects as text components. So the standard model of text Information Retreival techniques can be used type analyze lyrics. Modulo7 implements lyrics indexing and standard NLP operations on lyrics.
 
@@ -163,13 +163,30 @@ Modulo7 also provides support for rudimentary Natural Language Processing operat
 \item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). 
 \end{enumerate}
 
-\section{Limitations of Modulo7}
+\noindent On top of these features, the lyrics analyzer provides support for meta data (also called as tag) prediction. Given a data set with tags annotated to songs along with lyrics, Modulo7 can predict tags for new input lyrics. The following tag estimation schemes are implemented in Modulo7:-
 
-While Modulo7 attempts to solve a large set of problems (custom query specification based on structural aspects of music, similarity analysis, logical indexing scheme), there are some fundamental limitations to what Modulo7 can or cannot do. Some of the notable ones are listed as follows:-
+\subsection{Naive Tag Membership}
+
+\noindent Consider $T(S_i)$ be defined as the set of tags for the $S_i$ which is the $i^{th}$ song in the music match dataset. Let $S_{new}$ be a new song for which tags need to be predicted and get L(S) represent the lyrics of a song. Hence $L_{new}$ should be similar to some $L(S_k)$ for their tags to be similar. Let $S_{sim} = {S_i | isSim(S_i, S_new) = true} $ be the set of all the songs similar to $S_new$. We define $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim}\}$. In other words the tags of the new song is the union of the tags in the songs similar to the new song. This estimation scheme is called the \textbf{naive tag estimation}. \\\\
+This scheme does not capture the strength of similarity a song has to another, or the relative prevalence of tag membership to a song. In order to address this issue, we introduce two non trivial schemes.
+
+\subsection{Weighted Tag Membership}
+
+\noindent In the previous scheme, there are no considerations for the weights associated with the tags. In order to accommodate we assume the existence of tag weights associated for tags in the song meta data. 
+set $WT(S_i)$ be defined as set of tag weight pairs (tag with associated weight) for a given song and $w_k$ is the weight of $k^{th}$ tag. Let $WS_{sim} = sort_v({S_i, \alpha_i WT(S_i) | isSim(S_i, S_new) = v})$ be the weighted set of Song and tag pairs where $\alpha_i$ is a scaling factor which is defined $\alpha_i = \frac{sizeof(WT(S_i)) - i}{sizeof(WT(S_i))}$. $\alpha_i$ is a fraction which is multiplied with every weight associated with tags of song $S_i$. \\\\
+This scheme takes into account both the rank of the songs in based on a similarity metric and and also the weight associated with each individual tag. The scheme can retain only a subset of the maximal weighted tags in the resulted weighted tag set for the input song.
+
+\subsection{Most frequently occuring tags}
+
+\noindent In the previous scheme, the frequency of tags occurring inside the dataset is ignored. In order to accommodate that let 
+
+\section{Limitations of Modulo7} 
+
+\noindent While Modulo7 attempts to solve a large set of problems (custom query specification based on structuralhe  aspects of music, similarity analysis, logical indexing scheme), there are some fundamental limitations to what Modulo7 can or cannot do. Some of the notable ones are listed as follows:-
 
 \begin{enumerate}
 \item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
 \item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for songs.
-\item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques havent solved the problem of polyphony and symbolic faithfully  \cite{melextract}
-\item Modulo7 does not mine cultural data or perform any sort of collaborative filtering.  
+\item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques have not solved the problem of polyphonic symbolic transcription faithfully  \cite{melextract}
+\item Modulo7 does not mine cultural data or perform any sort of collaborative filtering directly. However it supports meta data estimation based on pre-existing tags in a given lyrics dataset.
 \end{enumerate}
