@@ -173,20 +173,19 @@ This scheme does not capture the strength of similarity a song has to another, o
 \subsection{Weighted Tag Membership}
 
 \noindent In the previous scheme, there are no considerations for the weights associated with the tags. In order to accommodate we assume the existence of tag weights associated for tags in the song meta data. 
-set $WT(S_i)$ be defined as set of tag weight pairs (tag with associated weight) for a given song and $w_k$ is the weight of $k^{th}$ tag. Let $WS_{sim} = sort_v({S_i, \alpha_i WT(S_i) | isSim(S_i, S_new) = v})$ be the weighted set of Song and tag pairs where $\alpha_i$ is a scaling factor which is defined $\alpha_i = \frac{sizeof(WT(S_i)) - i}{sizeof(WT(S_i))}$. $\alpha_i$ is a fraction which is multiplied with every weight associated with tags of song $S_i$. \\\\
+set $WT(S_i)$ be defined as set of tag weight pairs (tag with associated weight) for a given song and $w_k$ is the weight of $k^{th}$ tag. Let $WS_{sim} = sort_v({S_i, \alpha_i WT(S_i) | isSim(S_i, S_{new}) = v})$ be the weighted set of Song and tag pairs where $\alpha_i$ is a scaling factor which is defined $\alpha_i = \frac{sizeof(WT(S_i)) - i}{sizeof(WT(S_i))}$. $\alpha_i$ is a fraction which is multiplied with every weight associated with tags of song $S_i$. \\\\
 This scheme takes into account both the rank of the songs in based on a similarity metric and and also the weight associated with each individual tag. The scheme can retain only a subset of the maximal weighted tags in the resulted weighted tag set for the input song.
 
-\subsection{Most frequently occuring tags}
+\subsection{Most frequently occurring tags}
 
-\noindent In the previous scheme, the frequency of tags occurring inside the dataset is ignored. In order to accommodate that let 
+\noindent In the previous scheme, the frequency of tags occurring inside the dataset is ignored. In order to accommodate that let the frequency of tags along with the tags for a song be defined as $FT(S_i)$. Let $f_k(S_i)$ be the total frequency of tag k for the set S where S = $S_{sim} = {S_i | isSim(S_i, S_new) = true}.$ Hence we can define the set of estimated tags as $FT_{sim}(S_i) = sort_{f_k(S_i)}(k)$
 
 \section{Limitations of Modulo7} 
 
-\noindent While Modulo7 attempts to solve a large set of problems (custom query specification based on structuralhe  aspects of music, similarity analysis, logical indexing scheme), there are some fundamental limitations to what Modulo7 can or cannot do. Some of the notable ones are listed as follows:-
+\noindent While Modulo7 attempts to solve a large set of problems (custom query specification based on structural aspects of music, similarity analysis, logical indexing scheme), there are some fundamental limitations to what Modulo7 can or cannot do. Some of the notable ones are listed as follows:-
 
 \begin{enumerate}
 \item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
 \item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for songs.
 \item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques have not solved the problem of polyphonic symbolic transcription faithfully  \cite{melextract}
-\item Modulo7 does not mine cultural data or perform any sort of collaborative filtering directly. However it supports meta data estimation based on pre-existing tags in a given lyrics dataset.
 \end{enumerate}
