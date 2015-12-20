@@ -22,7 +22,7 @@ A few assumptions that are made in testing are as follows :-
 \label{fig:figure}
 \end{figure}
 As expected Modulo7's serialized format expresses a song in less disk space than its source formats while keeping the symbolic information intact. The results are positive as there is a 4 time decrease in size of expressing symbolic information as compared to midi files. \\\\
-A similar transformation was also done on a direct download able subset of the wikifonia dataset in order to compare Modulo7 internal representation against the compressed xml representation of the wikifonia dataset. A plot of disk space requirements are plotted in ascending order:- 
+A similar transformation was also done on a direct download able subset of the wikifonia dataset in order to compare Modulo7 internal representation against the compressed xml representation of the wikifonia dataset. A plot of disk space requirements are plotted in ascending order of the wikifonia dataset file sizes:- 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{M7Graph.png}
@@ -32,6 +32,7 @@ A similar transformation was also done on a direct download able subset of the w
 \label{fig:figure}
 \end{figure}
 
+\noindent As expected, Modulo7 is extremely space efficient for storing symbolic information.
 \section{Results on similarity measures}
 
 \noindent This set of experiments determine the precision and recall values for the similarities defined in \ref{similarity} on ground truth data extracted from \cite{msd}. Modulo7 does not claim to improve on the state of the art when it comes to similarity metrics or does not intend to create a new similarity metric. Rather this set of experiments are a test of efficiency in execution and accuracy of existing methods on large scale datasets. The million song dataset was chosen for experimental evaluation \cite{msd} for pre computed symbolic transcriptions of mp3 data and the last fm data set for ascertaining similar songs to build a ground truth for evaluation. Due to the constraints of hardware for evaluation, we took a scaled down subset of the original 584,897 songs to a more manageable 10000 songs, with similar songs edited to fit this dataset. The songs were chosen randomly from the dataset with the only criteria being that they are monophonic(since polyphonic transcription from audio files is not a fully solved problem \cite{melextract}). As a consequence only the monophonic similarity measures are used for these experiments. 
@@ -50,15 +51,19 @@ In order to estimate the accuracy of the tag prediction models, the extracted da
 \begin{equation}
 J(T_{est}, T_{obs}) = \frac{\mid T_{est} \cap T_{obs} \mid}{\mid T_{est} \cup T_{obs} \mid}
 \end{equation}
-The following table lists out the observed average agreement over all songs of the test set:-
+The following table lists out the observed average agreement over all songs of the test set:-\\
 
-\begin{center}
-\begin{tabular}{ c c c }
- cell1 & cell2 & cell3 \\ 
- cell4 & cell5 & cell6 \\  
- cell7 & cell8 & cell9    
+\begin{tabular}{ |p{4cm}||p{3cm}|p{3cm}|p{3cm}|  }
+ \hline
+ \multicolumn{4}{|c|}{Precision and recall values based for lyrics estimation schemes} \\
+ \hline
+ Estimation Scheme     or Area Name& ISO ALPHA 2 Code &ISO ALPHA 3 Code&ISO numeric Code\\
+ \hline
+ Naive Estimation   & AF    &AFG&   004\\
+ Weighted Estimation &   AX  & ALA   &248\\
+ Albania &AL & ALB&  008\\
+ \hline 
 \end{tabular}
-\end{center}
 
 \section{Result on Memory and Disk space usage against jMIR}
 
