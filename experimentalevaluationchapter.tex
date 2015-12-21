@@ -67,4 +67,19 @@ The following table lists out the observed average agreement over all songs of t
 
 \section{Result on Memory and Disk space usage against jMIR}
 
-\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features. However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. 
+\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features(although that is not an end goal for Modulo7). However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. Out of the total 111 features that are implemented in jSymbolic \cite{jSymbolic}, 23 features were identified as implemented as internal computation within the Modulo7 indexers and/or querying engine. \textbf{Its important to note that unlike jMIR, Modulo7 is not an exhaustive feature extractor}. The features identified  
+\begin{enumerate}
+\item 1 feature for duration of song
+\item 2 features for average melodic intervals, note duration
+\item 1 feature for Meter classification (simple or compound)
+\item 1 feature for lengths of melodic archs in midi files
+\item 1 feature for initial tempo of song
+\item 4 features for melodic intervals (thirds, fifths, octaves and intervals in the bass line)
+\item 2 features for maximum and minimum durations of notes in the song
+\item 3 features for most commonly occurring pitch, pitch class and melodic interval
+\item 3 features for ranges, namely primary register, range of highest and lowest voices
+\item 1 feature for time signature
+\item 4 features for checking for voice equality in the following categories : melodic leaps, note duration, number of notes and range
+\end{enumerate}
+\noindent In order to compare the frameworks, the author used jProfiler to profile for average CPU and Memory usage and time taken for both frameworks over different sized subsets of the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}. In order to protect against background process interference, the frameworks were ran on AWS EC2 m4x.large instances (dual core 2.4 GHz Intel Xeon® E5-2676 v3 (Haswell) processors
+and 8 GB DDR3 RAM). We plot the average memory consumed, CPU load and time taken in seconds as a function of dataset size (over monotonically increasing subset sizes of the SMD dataset). We ignore IO performance since in this experiment, IO is only utilized when pushing output to disk, which is not taken as a metric of evaluation. 
