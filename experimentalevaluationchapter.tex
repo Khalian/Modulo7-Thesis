@@ -82,4 +82,7 @@ The following table lists out the observed average agreement over all songs of t
 \item 4 features for checking for voice equality in the following categories : melodic leaps, note duration, number of notes and range
 \end{enumerate}
 \noindent In order to compare the frameworks, the author used jProfiler to profile for average CPU and Memory usage and time taken for both frameworks over different sized subsets of the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}. In order to protect against background process interference, the frameworks were ran on AWS EC2 m4x.large instances (dual core 2.4 GHz Intel Xeon® E5-2676 v3 (Haswell) processors
-and 8 GB DDR3 RAM). We plot the average memory consumed, CPU load and time taken in seconds as a function of dataset size (over monotonically increasing subset sizes of the SMD dataset). We ignore IO performance since in this experiment, IO is only utilized when pushing output to disk, which is not taken as a metric of evaluation. 
+and 8 GB DDR3 RAM). We plot the average memory consumed, CPU load and time taken in seconds as a function of dataset size (over monotonically increasing subset sizes of the SMD dataset). We ignore IO performance since in this experiment, IO is only utilized when pushing output to disk, which is not taken as a metric of evaluation. No data sets involving music xml files were chosen, as jSymbolic does not support music xml files. 
+The plot for time taken (in seconds) for both jSymbolic and Modulo7 is plotted as a function of dataset size :-
+
+
