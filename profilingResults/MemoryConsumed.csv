@@ -1,0 +1,17 @@
+For Modulo7 (most stable steady state memory consumed)
+
+Memory Used(MB),  DataSet Size(KB)
+399.36, 2458
+306.5,  1741
+327.5, 1226
+342.5, 750
+187.5, 159
+
+For jSymbolic
+
+Memory Used(MB),  DataSet Size(KB)
+675.84, 2458
+620.4,  1741
+450.56, 1226
+443.5, 750
+314.1, 159
