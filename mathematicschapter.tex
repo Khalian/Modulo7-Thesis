@@ -146,7 +146,11 @@ GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_
 
 \subsection{Tonal Similarity}
 
-\noindent Often pieces of one key are similar to pieces on a different key, simply based on the fact that the keys themselves are similar. 
+\noindent Often pieces of one key are similar to pieces on a different key, simply based on the fact that the keys themselves are similar. As a result a similarity measure could be developed which takes into account the differences in the key signature of a song
+
+\begin{equation}
+Sim(K_1, K_2) = 1 if (K1 == K2) ; 0 otherwise
+\end{equation}
 
 
 \section{Criteria Analysis} \label{criteria}

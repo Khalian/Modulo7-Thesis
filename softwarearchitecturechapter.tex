@@ -146,6 +146,8 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 
 \noindent On top of Modulo 7 supporting custom queries, it also acts in a ranked search engine mode. However the ranking model of the search engine is based on similarity measures based on the structural analysis of the music sources and are described in \ref{similarity}
 
+The similarity engine functions by 
+
 \subsection{Modulo7 Lyrics Analyzer Architecture} \label{lyricsarch}
 
 \noindent The modulo indexer also indexes lyrics, but treats lyrics objects as text components. So the standard model of text Information Retreival techniques can be used type analyze lyrics. Modulo7 implements lyrics indexing and standard NLP operations on lyrics.
@@ -163,22 +165,22 @@ Modulo7 also provides support for rudimentary Natural Language Processing operat
 \item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). 
 \end{enumerate}
 
-\noindent On top of these features, the lyrics analyzer provides support for meta data (also called as tag) prediction. Given a data set with tags annotated to songs along with lyrics, Modulo7 can predict tags for new input lyrics. The following tag estimation schemes are implemented in Modulo7:-
+\section{Lyrics Based Genre Estimation} \label{genreestimation}
 
-\subsection{Naive Tag Membership}
+\noindent On top of these features, the lyrics analyzer provides support for genres prediction . Given a data set with genre annotations to songs along with lyrics, Modulo7 can predict genre annotations for new input lyrics. The following genre estimation schemes are implemented in Modulo7:-
 
-\noindent Consider $T(S_i)$ be defined as the set of tags for the $S_i$ which is the $i^{th}$ song in the music match dataset. Let $S_{new}$ be a new song for which tags need to be predicted and get L(S) represent the lyrics of a song. Hence $L_{new}$ should be similar to some $L(S_k)$ for their tags to be similar. Let $S_{sim} = {S_i | isSim(S_i, S_new) \geq \epsilon} $ be the set of all the songs similar to $S_new$(Here $\epsilon$ is some thresh hold value and isSim is a similarity function that compares lyrics of two songs). We define $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim}\}$. In other words the tags of the new song is the union of the tags in the songs similar to the new song. This estimation scheme is called the \textbf{naive tag estimation}. \\\\
-A further optimization could be done 
+\subsection{Naive Genre Estimation} \label{NaiveGenre}
 
-\subsection{Weighted Tag Membership}
+\noindent Consider $T(S_i)$ be defined as the set of genre annotations for the $S_i$ which is the $i^{th}$ song in the music match dataset. Let $S_{new}$ be a new song for which genre annotations need to be predicted and get L(S) represent the lyrics of a song. Hence $L_{new}$ should be similar to some $L(S_k)$ for their genres to be deemed identical. Let $S_{sim} = {S_i | isSim(S_i, S_new) \geq \epsilon} $ be the set of all the songs similar to $S_new$(Here $\epsilon$ is some thresh hold value and isSim is a similarity function that compares lyrics of two songs). We define $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim}\}$. In other words the genres of the new song is the union of the genre labels in the songs similar to the new song up to a particular thresh hold.
 
-\noindent In the previous scheme, there are no considerations for the weights associated with the tags. In order to accommodate we assume the existence of tag weights associated for tags in the song meta data. 
-set $WT(S_i)$ be defined as set of tag weight pairs (tag with associated weight) for a given song and $w_k$ is the weight of $k^{th}$ tag. Let $WS_{sim} = sort_v({S_i, \alpha_i WT(S_i) | isSim(S_i, S_{new}) = v})$ be the weighted set of Song and tag pairs where $\alpha_i$ is a scaling factor which is defined $\alpha_i = \frac{sizeof(WT(S_i)) - i}{sizeof(WT(S_i))}$. $\alpha_i$ is a fraction which is multiplied with every weight associated with tags of song $S_i$. \\\\
-This scheme takes into account both the rank of the songs in based on a similarity metric and and also the weight associated with each individual tag. The scheme can retain only a subset of the maximal weighted tags in the resulted weighted tag set for the input song.
+\subsection{Weighted Genre Estimation} \label{WeightedGenre}
 
-\subsection{Most frequently occurring tags}
+\noindent In the previous scheme, there are no considerations for the weights associated with the degree of similarity between lyrics. In order to accommodate this we assume the existence of tag weights associated for tags in the song meta data. Let $T(S_i)$ be defined as the genre annotations for song $S_i$. Let $S_{sim} = sort_v^{desc}({S_i, | isSim(S_i, S_{new}) = v})$ be the rank ordered set of genre labels based on descending order of similarity values. Out of these top we choose the top k $S_{sim(k)} = first_{k} (S_{sim})$ songs. The genre estimation can then be defined as $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim(k)}\}$ \\\\
+This scheme takes into account both the rank of the songs in based on a similarity metric. The scheme can retain only a subset of the maximal weighted tags in the resulted weighted tag set for the input song.
 
-\noindent In the previous scheme, the frequency of tags occurring inside the dataset is ignored. In order to accommodate that let the frequency of tags along with the tags for a song be defined as $FT(S_i)$. Let $f_k(S_i)$ be the total frequency of tag k for the set S where S = $S_{sim} = {S_i | isSim(S_i, S_new) = true}.$ Hence we can define the set of estimated tags as $FT_{sim}(S_i) = sort_{f_k(S_i)}(k)$
+\subsection{Most frequently occurring tags} \label{MaxFrequencyGenre}
+
+\noindent In the previous scheme, the frequency of genre labels occurring inside the dataset is ignored. In order to accommodate that let $f_x(S_i)$ be the total frequency of genre label x for the set S where S = $S_{sim} = {S_i | isSim(S_i, S_new) \geq \epsilon}$ where isSim and $\epsilon$ is defined identically in \ref{NaiveGenre}.  Hence we can define the set of estimated tags as $T_{new} = first_{k} sort_{f_x(S_i)}(x)$ where k is defined identically in \ref{WeightedGenre}
 
 \section{Limitations of Modulo7} 
 
@@ -187,5 +189,5 @@ This scheme takes into account both the rank of the songs in based on a similari
 \begin{enumerate}
 \item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
 \item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for songs. Also Modulo7 does not take into account atonal music (as a key signature leads to transforms that are needed in similarity metrics)
-\item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques have not solved the problem of polyphonic symbolic transcription faithfully.  \cite{melextract}
+\item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques have not solved the problem of polyphonic symbolic transcription faithfully. \cite{melextract}
 \end{enumerate}
