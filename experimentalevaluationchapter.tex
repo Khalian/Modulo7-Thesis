@@ -29,7 +29,7 @@ A similar transformation was also done on a direct download able subset of the w
 \makeatletter
 \let\@currsize\normalsize
 \caption{Modulo7 comparative file sizes}
-\label{fig:figure}
+\label{fig:filesizes}
 \end{figure}
 
 \noindent As expected, Modulo7 is extremely space efficient for storing symbolic information.
@@ -45,38 +45,31 @@ After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the t
 \section{Results on lyrics similarity and genre estimation}
 
 \noindent On top of the experiments done for Song sources incorporating tonal information, there were specific experiments that were carried out for lyrics similarities in general. The ground truth for these experiments is the musix match lyrics dataset present in the million song data set \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts as baseline for set based similarities of lyrics. The experiment involved calculating the expected word count from the ground truth data and with that form a basis for comparing songs with the ground truth data. There are measures defined in literature \cite{lyricsRanking} which define similarity and accuracy of lyrics based on expected counts of words and observed counts of words in lyrics. However for this experiment we have decided to extract the genre labels from the tag tratum genre annotations dataset of the Million Song Data set \cite{msd} to acquire the genre labels that are observed for a given song and then build a predictive model that outputs genre labels for a newly seen song. \\\\
-Out of the 210,519 songs with lyrics provided in the million song data set and 280,831 songs with corresponding genre labels annotated, 55726 songs were identified with both lyrics and genre labels present, so this set of songs are considered the ground truth for estimating genre labels for novel lyrics. The lyrics in this dataset are in the bag of words document representation format and hence standard set based similarity measures like cosine and dice similarity can be used for comparing lyrics. The lyrics in the million song dataset are already stemmed via the Porter stemmer \cite{msd}  so no explicit stemming is conducted as a part of this experiment.\\\\
+Out of the 210,519 songs with lyrics provided in the million song data set and 280,831 songs with corresponding genre labels annotated, 55726 songs were identified with both lyrics and genre labels present, so this set of songs are considered the ground truth for estimating genre labels for novel lyrics \\\\ 
+The lyrics in this dataset are in the bag of words document representation format and hence standard set based similarity measures like cosine and dice similarity can be used for comparing lyrics. The lyrics in the million song dataset are already stemmed via the Porter stemmer \cite{msd} so no explicit stemming is conducted as a part of this experiment.\\\\
 In order to estimate the accuracy of the tag prediction models, the extracted data was divided into 10 percent test data and 90 percent training data and 10 fold cross validation was performed. Each lyrics in the test data was compared to the training data and a ranked order of the trained songs are presented based on the similarity metric used. Tags are then estimated based on the tag estimation mechanisms presented in \ref{genreestimation}. \\\\
-Parameters which determines the degree of permissible agreement are the thresh hold value $\epsilon$ defined in \ref{NaiveGenre} and \ref{MaxFrequencyGenre} and top k songs chosen in \ref{WeightedGenre} and \ref{MaxFrequencyGenre}. For the purposes of experimental evaluation, these hyper parameters were manually tweaked and the most optimal configuration is presented. \\\\
-\noindent The following table lists out the observed average precision and recall values over all songs of the test set after 10 fold cross validation:- \\
+Parameters which determines the degree of permissible agreement are the thresh hold value $\epsilon$ defined in \ref{NaiveGenre} and \ref{MaxFrequencyGenre} and top k songs chosen in \ref{WeightedGenre} and \ref{MaxFrequencyGenre}. For the purposes of experimental evaluation, these hyper parameters were tweaked to produce a precision recall curve for the weighted genre estimation , as its an ordered ranked list and ROC (Receiver operating characteristic curve) for max frequency and naive genre estimation \\
+\noindent This plot indicates the Precision Recall curve for weighted genre estimation method
 
-\begin{tabular}{ |p{4cm}||p{3cm}|p{3cm}|p{3cm}|  }
- \hline
- \multicolumn{4}{|c|}{Average Precision for lyrics estimation schemes} \\
- \hline
- Estimation Scheme & Dice Sim & Cosine Similarity & Jacard Sim\\
- \hline
- Naive Estimation   & 0.0    & 0.9 &   0.0\\
- Weighted Estimation & 0.0  & 0.0 & 0.0\\
- Albania &0.0 & 0.0 &  0.0\\
- \hline 
-\end{tabular}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{precRec.jpg}
+\makeatletter
+\let\@currsize\normalsize
+\caption{Precision Recall Curve for Weighted Genre Estimation}
+\label{fig:precRec}
+\end{figure}
 
-The average recall values are listed \\ 
+\noindent This plot indicates the ROC curve for max frequency genre estimation and naive genre estimation
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{roc.jpg}
+\makeatletter
+\let\@currsize\normalsize
+\caption{ROC curve for max frequency and naive genre estimation}
+\label{fig:roccurve}
+\end{figure}
 
-\begin{tabular}{ |p{4cm}||p{3cm}|p{3cm}|p{3cm}|  }
- \hline
- \multicolumn{4}{|c|}{Average Recall for lyrics estimation schemes} \\
- \hline
- Estimation Scheme & Dice Sim & Cosine Similarity & Jacard Sim\\
- \hline
- Naive Estimation   & 0.0    & 0.0&   0.0\\
- Weighted Estimation &   0.0  & 0.0   & 0.0\\
- Albania & 0.0 & 0.0 &  0.0\\
- \hline 
-\end{tabular}
-
-Optimal configurations for hyper parameters :-
 
 \section{Result on Memory and Disk space usage against jMIR}
 
@@ -94,7 +87,7 @@ Optimal configurations for hyper parameters :-
 \item 1 feature for time signature
 \item 4 features for checking for voice equality in the following categories : melodic leaps, note duration, number of notes and range
 \end{enumerate}
-\noindent In order to compare the frameworks, the author used jProfiler to profile for average CPU and Memory usage and time taken for both frameworks over different sized subsets of the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}. In order to protect against background process interference, the frameworks were ran on AWS EC2 m4x.large instances (dual core 2.4 GHz Intel Xeon® E5-2676 v3 (Haswell) processors
+\noindent In order to compare the frameworks, jProfiler was to profile for max CPU utilization, average Java Heap Memory usage and time taken for both frameworks over different sized subsets of the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}. In order to protect against background process interference, the frameworks were ran on AWS EC2 m4x.large instances (dual core 2.4 GHz Intel Xeon® E5-2676 v3 Haswell processors).
 and 8 GB DDR3 RAM). We plot the average memory consumed, CPU load and time taken in seconds as a function of dataset size (over monotonically increasing subset sizes of the SMD dataset). We ignore IO performance since in this experiment, IO is only utilized when pushing output to disk, which is not taken as a metric of evaluation. No data sets involving music xml files were chosen, as jSymbolic does not support music xml files. 
 
 \begin{figure}
