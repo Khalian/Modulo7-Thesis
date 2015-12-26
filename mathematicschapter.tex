@@ -9,7 +9,7 @@
 
 \subsection{Tonality Alignment} \label{tonalityalignment}
 
-\noindent In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically consider Songs $S_1$ and $S_2$ with their respective keys being $K_1$ and $K_2$. Define intervalic distance between keys as $K_{intervalic} = $ 
+\noindent In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied.
 
 \subsection{Voice to Melodic Representation Coversion} \label{voicemelconv} 
 
@@ -99,7 +99,7 @@ Sim_{song}(S_1, S_2) \in (0, 1)
 Sim_{voice}(V_1, V_2) \in (0, 1)
 \end{equation}
 
-\subsection{Similarity Measures for Monophonic Music}
+\subsection{Similarity Measures for Monophonic Music} \label{monophonicSim}
 
 \noindent Similarity measures are different concepts for monophonic and polyphonic music as it stems from comparing different vector representations. For the following sections assume vectors of equal length. In a further section \ref{sim:unequal} we extend standard similarity measures to vectors of unequal length. \\
 
@@ -177,10 +177,10 @@ Criteria(Song) = x \ s.t \ x \in \mathbb{R}
 
 \noindent \textbf{Melodic Repeatability Fraction: } Given a voice, compute a sub voice that repeats the maximum number of times within the voice and then take the fraction between the length sub voice which satisfies this criteria against the length of the voice. This measure also uses the pre-processing step \\
 
-\noindent \textbf{Interval Index: } An interval index is the fraction of intervals being played in a song divided by the total number of intervals present in the song. These statistics are coarse measures of a song. There are three classes of interval indices:-
+\noindent \textbf{Interval Index: } \label{intervals} An interval index is the fraction of intervals being played in a song divided by the total number of intervals present in the song. These statistics are coarse measures of a song. There are three classes of interval indices:-
 
 \begin{enumerate}
 \item Happiness Index : The happiness index of a song is the number of major intervals in a song divided by the total number of intervals. A major interval sounds "happy" to a layman hence a higher concentration of them makes a song happier \cite{majorvsminorintervals}. 
 \item Sadness Index : The sadness index of a song is the number of minor intervals \cite{minorintervalssad}  in a song divided by the total number of intervals. A minor interval sounds "sad" to a layman hence a higher concentration of them makes a song sadder \cite{majorvsminorintervals}. 
-\item Power Index : The power index of a song is the number of perfect interval in a song divided by the total number of intervals. Perfect melodic intervals are very prevalent in a rock and metal songs and are an expression of a neutral/powerful tone. 
+\item Power Index : The power index of a song is the number of perfect interval in a song divided by the total number of intervals. Perfect melodic intervals are very prevalent in a rock and metal songs and are an expression of a neutral/powerful tone. This stems from the fact that perfect fifths along with perfect unison or perfect octaves, which are very common in rock music \cite{foundationsOfRock} 
 \end{enumerate}
