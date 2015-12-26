@@ -1,13 +1,13 @@
 \chapter{Literature Review}
 
-\noindent Music Information Retrieval is an active and vibrant community. Both academia and industry diligently pursue it albeit with different goals in mind. While academia's primary aim is to explore particular problems (e.g cover song detection, estimating chords from chroma vectors \cite{chord-detection} ) etc. Whereas Industry is primarily interested in solving problems like song recommendation and similarity searches. The following sections outlines the software efforts and research problems tackled by MIR community in general. 
+\noindent Music Information Retrieval is an active and vibrant community. Both academia and industry diligently pursue it albeit with different goals in mind. While academia's primary aim is to explore particular problems (e.g cover song detection, estimating chords from chroma vectors \cite{chord-detection} ) etc, the Industry is primarily interested in solving problems like song recommendation and similarity searches for mass consumption. The following sections outlines the software efforts and research problems tackled by MIR community in general. 
 
 \section{Current MIR Software}
-\noindent Both Industry and Academia have created an extensive set of software for solving these problems. The author presents an overview of such software and the problems they attempt to address. The following software packages were investigated 
+\noindent Both Industry and Academia have created an extensive set of software for solving these problems. The following is an overview of such software and the problems they attempt to address.
 
 \subsection{jMIR}
 
-\noindent jMIR  \cite{jMIR}, or Java Music Information Retrieval tool set is a collection of java code, GUI, API and CLI tools for the purpose of feature extraction from variety of music sources (in particular audio, midi) and mine cultural information from the web. jMIR extracts and exhaustive set of features that can be used in machine learning tasks. The primary use of jMIR is automatic music classification and feature extraction and not similarity computations per se (which is one of Modulo7's core goals). Moreover jMIR does not scale to myriad sources of music in existence. Unlike Modulo7 jMIR also relies on faithful recordings and does not attempt to fill up missing information (like key signature not being encoded etc). Nevertheless its one of the best Open Source MIR software in existence especially for MIR research. 
+\noindent jMIR  \cite{jMIR}, or Java Music Information Retrieval tool set is a collection of Java code, GUI, API and CLI tools for the purpose of feature extraction from variety of music sources (in particular audio, midi file formats) and mine cultural information from the web. jMIR extracts an exhaustive set of features that can be used in machine learning tasks. The primary use of jMIR is automatic music classification and feature extraction and not similarity computations per se (which is one of Modulo7's core goals). Moreover jMIR does not scale to myriad sources of music in existence. Unlike Modulo7, jMIR also relies on faithful recordings and does not attempt to fill up missing information (like key signature not being encoded etc). Nevertheless its one of the best Open Source MIR software in existence especially for MIR research involving machine learning approaches. 
 
 \subsection{Marsyas}
 
@@ -15,7 +15,7 @@
 
 \subsection{SIMILIE}
 
-\noindent SIMILIE \cite{similie} is a set of tools for music similarity measures used for single  melodies and features multiple ways to construct vector space models for melodies. The techniques used for melodic similarity analyss in SIMILIE are novel. Modulo7 uses a subset of these similarity measures as basis for an extended and improved model of similarities based on polyphonic music and harmonic elements. Moreover SIMILIE needs its own file format (called .mcsv) for analysis. Although the software package gives a converter for different sources, its not as variegated as Modulo7's format support is (which directly parses different music source files).
+\noindent SIMILIE \cite{similie} is a set of tools for music similarity measures used for single  melodies and features multiple ways to construct vector space models for melodies. The techniques used for melodic similarity analysis in SIMILIE are novel and derive from many subfields like Natural Language Processing. Modulo7 uses a subset of these similarity measures as basis for an extended and improved model of similarities based on polyphonic music and harmonic elements. Moreover SIMILIE needs its own file format (called .mcsv) for analysis. Although the software package gives a converter for different sources, its not as variegated as Modulo7's format support is (which directly parses different music source files).
 
 \subsection{Echo Nest APIs}
 
@@ -24,56 +24,56 @@ Echo Nest also maintains the worlds biggest music database as well as data mined
 
 \subsection{Humdrum}
 
-\noindent Humdrum \cite{humdrum} is a set of tools for computer based automation and assistance in music research. Humdrum has the capability for solving very complex questions using music theoretic concepts. Humdrum supports its own file format for analysis. Humdrum is specifically designed for musicologists for automating tasks that they otherwise would have required manual analysis and not gathering statistic, music classification or music similarity analysis as an end goal.The fundamental difference of Modulo7 over humdrum is modulo7 acts as a bulk analysis tool while humdrum is designed for specific analysis of songs.
+\noindent Humdrum \cite{humdrum} is a set of tools for computer based automation and assistance in music research. Humdrum has the capability for solving very complex questions using music theoretic concepts. Humdrum supports its own file format for analysis. Humdrum is specifically designed for musicologists for automating tasks that they otherwise would have required manual analysis but gathering statistics, music classification or music similarity analysis are not end goals for Humdrum. The fundamental difference of Modulo7 over humdrum is Modulo7 acts as a bulk analysis tool while humdrum is designed for specific and in depth analysis of songs.
 
 
 \subsection{Gamera}
 
-\noindent Gamera \cite{gamera} is Optical Symbol Recognition Open Source software based on supervised and hybrid learning approaches for training. Gamera is designed with the particular aim of symbol recognition of old documents. Gamera also supports creating of new plugins for custom tasks. For the purpose of Music Information Retrieval, gamera can be used to solve the problem of Optical Music Recogntion (OMR) since sheet music images are also a format for music source.
+\noindent Gamera \cite{gamera} is Optical Symbol Recognition Open Source software based on supervised and hybrid learning approaches for training. Gamera is designed with the particular aim of symbol recognition of old documents and is extensible to scriptures and languages. Gamera also supports creating of new plugins for custom tasks. For the purpose of Music Information Retrieval, gamera can be used to solve the problem of Optical Music Recogntion (OMR) since sheet music images are also a format for music sources.
 
 \subsection{Audiveris}
 
-\noindent Audiveris is an Open source software for Optical Music Recognition. Unlike Gamera, Audiveris can be directly consumed as a service for the purpose of OMR.  Audiveris is used as service in many leading Notation Platforms like Musescore etc. As such, Audiveris is used as a subcomponent of Modulo7's architecture for OMR. 
+\noindent Audiveris \cite{audiverishandbook} is an Open source software for Optical Music Recognition. Unlike Gamera, Audiveris can be directly consumed as a service for the purpose of OMR.  Audiveris is used as service in many leading Notation Platforms like Musescore etc. As such, Audiveris is used as a subcomponent of Modulo7's architecture for OMR. 
 
 \section{Music Representation Formats}
 
-\noindent Modulo7 parses multiple formats for music. But there are many other sources that are worth mentioning. \\
+\noindent Modulo7 parses multiple formats for music. But there are many other sources prevalent in academia that are worth mentioning. \\
 
 \noindent \textbf{GUIDO :} GUIDO musical notation format is a computer notation format that is made to logically represent symbolic musical information that is easily readable by both humans and computers and can be stored as a text file. \\
 
-\noindent \textbf{KERN :} The kern format is used in humdrum to symbolically denote events in columns while voices are represented in rows. \cite{humdrum}. This facilitates a columnar representation of music on which humdrum can perform some sort of music theoretic analysis. 
+\noindent \textbf{KERN :} The kern format is used in humdrum to symbolically denote events in columns while voices are represented in rows. \cite{humdrum}. This facilitates a columnar representation of music on which humdrum can perform  different kinds of music theoretic analysis. 
 
 \section{Typical problems of MIR}
 
-\noindent On top of the generic software created by researchers and industry experts, researchers have tackled specific problems in Music Cognition, Classification, Cover song identification, Query by Humming Systems etc. Only certain approaches have been incorporated in Modulo7 which help completing metadata information (e.g. if the key signature of a song is not present, Modulo7 estimates it using ). Broadly speaking though, the problem statement falls in the following broad categories :- 
+\noindent On top of the generic software created by researchers and industry experts, researcher have tackled specific problems in Music Cognition, Classification, Cover song identification, Query by Humming Systems etc. Only certain approaches have been incorporated in Modulo7 which help completing meta data information (e.g. if the key signature of a song is not present, Modulo7 estimates it using the KKTonality profiles algorithm \cite{kkTonalityKeyFinding}). Broadly speaking though, the problem statement falls in the following broad categories
 
 \subsection{Music Classification / Genre Identification}
 
-\noindent The problem of music classification is to assign a tag (also called a genre to a song) which broadly categorizes it according to some criteria. While the genre definitions for songs are often vague, it helps in giving information about which songs are relevant. Companies like Pandora and Microsoft assign genres to songs via musicologists \cite{genreclassification} which means highly trained people manually classify music. Such approaches are expensive in terms of human labor and prone to error. Automatic Music Classification takes a different approach using different algorithms and machine learning approaches like jMIR \cite{jMIR} does to classify music. 
+\noindent The problem of music classification is to assign a tag (also called a genre to a song) which broadly categorizes it according to some criteria. While the genre definitions for songs are often vague, it helps in giving information about which songs are relevant. Companies like Pandora and Microsoft assign genres to songs via musicologists \cite{genreclassification} which means highly trained people manually classify music. Such approaches are expensive in terms of human labor and prone to errors. Automatic Music Classification takes a different approach using algorithms and machine learning approaches like jMIR \cite{jMIR} does to classify music. 
 
 \subsection{Music Similarity Analysis}
 
-\noindent The problem of music similarity analysis lies at the heart of a large number other applications like Song Identification, Query by humming systems etc. Most literature have addressed the problem of melodic similarity \cite{simsurvey} and not on generic polyphonic similarity. There are many systems and music databases in existence for the purpose of music similarity analysis.
+\noindent The problem of music similarity analysis lies at the heart of a large number other applications like Song Identification, Query by humming systems etc. Most literature have addressed the problem of monophonic melodic similarity \cite{simsurvey} and not on generic polyphonic similarity. There are many systems and music databases in existence for the purpose of music similarity analysis.
 
 \subsection{Automated Musicological Research}
 
-\noindent In many cases musicological research is pursued manually by applying rules and music theoretic criteria. An example would be applying counterpoint analysis techniques given in a treatise \cite{theorytreatise} to music sheet manually. This is labor intensive and the research community tries to address automated analysis of music. A significant effort is done by the Humdrum community. \cite{humdrum} in automated musicological research. 
+\noindent In many cases musicological research is conducted manually by applying rules and music theoretic criteria. An example would be applying counterpoint analysis techniques given the rules in a treatise \cite{theorytreatise} to music sheet manually. This is labor intensive and the research community tries to address this inefficiency via techniques to automate analysis of music. A significant effort is done by the Humdrum community. \cite{humdrum} in automated musicological research. 
 
 \subsection{Audio processing and feature extraction}
 
-\noindent Most music is represented in Audio format rather than symbolic format, as consumption of music is primarily for the layman or the musically uninitiated. One such task would be music transcription(also known as melody extraction \cite{melextract}). This is needed for an accurate transcription of audio music to symbolic format. However researchers have only found success in melody extraction where one voice is clearly dominant in a recording \cite{melextract}. Researchers have also worked on quantitatively defining the concept of timbre (a peculiar tone of a voice independent of pitch and loudness) with varying degrees of success both qualitatively \cite{timbrequal} and computationally \cite{musiclisteningthesis}. 
+\noindent Most music is represented in Audio format rather than symbolic format, as consumption of music is primarily for the layman or the musically uninitiated. One task would be music transcription(also known as melody extraction \cite{melextract}) to convert audio to symbolic formats. However researchers have only found success in melody extraction where one voice is clearly dominant in a recording \cite{melextract}. Researchers have also worked on quantitatively defining the concept of timbre (a peculiar tone of a voice independent of pitch and loudness) with varying degrees of success both qualitatively \cite{timbrequal} and computationally \cite{musiclisteningthesis}. 
 
 \subsection{Intelligent Music Archiving and Retrieval}
 
-\noindent Key to music information retrieval are efficient and novel techniques to archive musical sources so that they meaningful queries can be made against these archives. Many libraries and library sciences programs work actively in this regard. Our very own Johns Hopkins University Eisenhower Library has a vast collection of Sheet music on American Popular music called the "Lester Levy Sheet Music Collection" \cite{Levy:Collection:Online} . There are many such collections worldwide. There are many labs and institutions which work towards archiving digitized sheet music, notable among them are the DDMAL lab in McGill University \cite{DDMAL} which works in archiving medieval sheet music in a digitized form as well as perform statistical analysis on it. 
+\noindent Key to music information retrieval are efficient and novel techniques to archive musical sources so that meaningful queries can be made against these archived sources. Many libraries and library sciences programs work actively in this regard. Our very own Johns Hopkins University Eisenhower Library has a vast collection of Sheet music on American Popular music called the "Lester Levy Sheet Music Collection" \cite{Levy:Collection:Online} . There are many such collections worldwide. There are many labs and institutions which work towards archiving digitized sheet music, notable among them are the DDMAL lab in McGill University \cite{DDMAL} which works in archiving medieval sheet music in a digitized form as well as perform statistical analysis on it. 
 
 \subsection{Music Recommendation}
 
-\noindent Perhaps the most commercialized application of Music Information Retrieval is the task of music recommendation i.e. intelligent suggestion of songs to a user given his or her preferences and past listening history. Music recommendation is an end goal in itself and not a distinct problem compared to the previous problems discussed in this section. In order to facilitate this various music databases and query systems are built and comparisons are based on lyrics genre tags and other properties of music data \cite{musicrecSurvey}. Most approaches have been based on collaborative filtering contextual metadata (information based on community of users) and sparingly from low level features extracted from a song. 
+\noindent Perhaps the most commercialized application of Music Information Retrieval is the task of music recommendation i.e. intelligent suggestion of songs to a user given his or her preferences and/or past listening history. Music recommendation is an end goal in itself and not a distinct problem compared to the previous problems discussed in this section. In order to facilitate this various music databases and query systems are built and comparisons are based on lyrics genre tags and other properties of music data \cite{musicrecSurvey}. Most approaches have been based on collaborative filtering based on contextual meta data (information extracted from a community of user's judgments and comments on music) and sparingly from low level features extracted from a song. 
 
 \subsection{Audio Fingerprinting and Song ID}
 
-\noindent A very industry relevant problem statement involves fingerprinting audio files and matching the finger print to an input(melody or fragment of a song) fingerprint. This is a subclass of the query by humming problem, with an exact match emphasized as the end goal. Many commercial systems are in existence including companies like Shazam \cite{shazam} which have developed sophistated algorithms and systems dedicated to solve this problem.
+\noindent A very industry relevant problem statement involves fingerprinting audio files and matching the finger print to an input(melody or fragment of a song) fingerprint. This is a subclass of the query by humming problem, with an exact match emphasized as the end goal. Many commercial systems are in existence including companies like Shazam \cite{shazam} which have developed sophisticated algorithms and systems dedicated to solve this problem.
 
 
 
