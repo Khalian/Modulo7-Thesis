@@ -76,9 +76,43 @@ Parameters which determines the degree of permissible agreement are the thresh h
 
 \subsection{Results on exploratory query analysis}
 
-\noindent In order to estimate the efficacy of the Modulo7 SQL querying, certain customized querying experiments are conducted. In order to ascertain the relevance of the statistic extraction \ref{statistic} and criteria estimation \ref{criteria}, certain queries were designed and cross checked with the tags associated with that song (since meta data tags come along with the songs in the million song data set). For example based on a prior statement made about intervals expressing the mood of a song in \ref{intervals} , we can estimate a rock song based on a query : select mp3 from database where power index > k where k is some thresh hold. This particular experiment involves exploring for a reasonable estimate of k to ascertain rock songs from non-rock songs. The ground truth would be the genre labels extracted in \ref{genrelabels} or the last fm dataset tags \cite{msd} depending on the query context. \\
+\noindent In order to estimate the efficacy of the Modulo7 SQL querying, certain customized querying experiments are conducted. In order to ascertain the relevance of the statistic extraction \ref{statistic} and criteria estimation \ref{criteria}, certain queries were designed and cross checked with the tags associated with that song (since meta data tags come along with the songs in the million song data set). For example based on a prior statement made about intervals expressing the mood of a song in \ref{intervals} , we can estimate a rock song based on a query : select mp3 from database where power index > k where k is some thresh hold. This particular experiment involves exploring for a reasonable estimate of k to ascertain rock songs from non-rock songs. The ground truth would be the genre labels extracted in \ref{genrelabels} or the last fm dataset tags \cite{msd} depending on the query context. \textbf{Its important to note that this experiment is exploratory and novel in nature and hence there is no pre-existing framework/methodology or approach to compare against.}\\
 
-\noindent The query and their equivalent statement are listed and the accuracies are listed below. 
+\noindent The query and their equivalent statement are listed and the accuracies for simple queries are listed below:-
+
+\begin{enumerate}
+\item Rock Song ID query
+\begin{enumerate}
+\item select mp3 from default\_database where powerindex > k;
+\item Assertion : Acquire all the rock/metal songs in the given data base
+\item Precision : 0.13 , Recall : 0.98 (based on best F-measure over all values of k)
+\item Most optimal value of k = 0.61
+\item Ground truth estimate : Any song with the genre or tag pop\_rock and/or rock
+\end{enumerate}
+\item Sad Song query id
+\begin{enumerate}
+\item select mp3 from default\_database where sadnessindex > k and scaleequalto = minor;
+\item Assertion : Estimate songs which have a sad mood
+\item Precision : 0.2 , Recall : 0.44 (based on best F-measure over all values of k)
+\item Most optimal value of k = 0.15
+\item Ground truth estimate : Any song with a meta data tag that contains "sad" or "sad song"
+\end{enumerate}
+\item Happy Song query id
+\begin{enumerate}
+\item select mp3 from default\_database where happinessindex > k and scaleequalto = major;
+\item Assertion : Estimate songs which have a happy mood
+\item Precision : 0.18 , Recall : 0.4 (based on best F-measure)
+\item Most optimal value of k = 0.11
+\item Ground truth estimate : Any song with a meta data tag that contains "happy" or "happy song"
+\end{enumerate}
+
+\end{enumerate}
+
+From this we can conclude the following : 
+
+\begin{enumerate}
+\item 
+\end{enumerate}
 
 \section{Results on KK Tonality Profiles algorithm for Key Estimation}
 
