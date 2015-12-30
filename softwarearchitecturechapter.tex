@@ -28,19 +28,10 @@
 \item select $ num\_voices \ from \ Database \ where \ songName = someSong.midi$ 
 \end{enumerate}
 
-An API will also be exposed to the client along a remote invocation procedure. The API would primarily target single sources for specifics. Some example API would be :-
-\begin{enumerate}
-\item int getNumVoices(String midiFilePath)
-\item double melodicContourMovement(String pngSheetFilePath)
-\item double compareAverageAttack(String musicXMLFile)
-\end{enumerate}
-
-\noindent This API can be consumed for specific song analysis. As design this API will not work on a bulk of files like its sql counterpart. \\
-
-Moreover the client also exposes a highly customized search engine based on the custom vector space representation of features extracted by Modulo7.
+\noindent Moreover the client also exposes a highly customized search engine based on the custom vector space representation from features extracted by Modulo7. The search engine implements different similarity measures defined in \ref{similarity}. 
 
 \section{Song sources}
-\noindent At the heart of Modulo7's design is its song sources adaptors (or converters) into its own internal binary format. Each music source is a different representation and while certain sources ascribe what how music should be played (e.g musicxml, sheet music), other formats ascribe what is actually being played (e.g midi, mp3). There are many other music sources in existence (e.g guitar tablature, GUIDO format, humdrum format), but for the purposes of breadth and ubiquity, these four sources have been targeted as input for Modulo7. Note that acquiring features from each format is a domain specific challenge and inaccuracies are inherent because of that. The following subsections describe the individual formats in detail and the challenges encountered in parsing them.
+\noindent At the heart of Modulo7's design is its song sources adapters (or converters) into its own internal binary format. Each music source is a different representation and while certain sources ascribe what how music should be played (e.g music-xml, sheet music), other formats ascribe what is actually being played (e.g midi, mp3). There are many other music sources in existence (e.g guitar tablature, GUIDO format, humdrum format), but for the purposes of breadth and ubiquity, four sources have been targeted as input for Modulo7(mp3, sheet music as png, jpeg etc, music xml file and midi file). Its important to note that acquiring features from each format is a domain specific challenge and inaccuracies are inherent because of that. Moreover Modulo7 does not attempt to improve on state of the art feature extraction techniques. The following subsections describe the individual formats in detail and the challenges encountered in parsing them.
 
 \subsection{Midi format}
 \noindent MIDI (short for Musical Instrument Digital Interface), is a technical specification for encoding of events on a midi enabled instrument and a protocol for interfacing and communicating between various midi enabled instruments. Typically any midi enabled electronic instrument when played, relays to its internal circuitry a message. Examples of such messages could be a particular note is being hit on a keyboard, a note is being hit off after being hit on, tempo based messages on the number of ticks per second etc. While MIDI is a technical specification for encoding music the score is being played, Modulo7 treats it as a symbolic representation of music. Midi was also a simple and popular encoding format for music and gaming industry in the nineteen ninties. \\\\
@@ -72,9 +63,9 @@ Just like Western Sheet music and midi, music XML is a symbolic format as well. 
 
 \section{Modulo7 Internal Representation}
 
-\noindent Modulo7 consists of converters that convert data into Modulo7's internal representation. This representation can be thought of a document representation on which similarity measures described in Chapter 4 can be applied to. Moreover the internal representation can be thought of as an indexed meta data structure for any source of song from which relevant information can be acquired. Hence Modulo7 indexing schematic is a symbolic representation of music much like music xml and sheet music. The converters are responsible for converting different music sources to this representation format. Its important to note that depending on there source one or more of the subcomponents of the internal representation may be missing or wrong. Modulo7 indexes songs based on each of these criteria and on top of these boolean queries can be formulated. The components are broadly categorized as the following:-\\
+\noindent Modulo7 consists of converters that convert data into Modulo7's internal representation. This representation can be thought of a document representation on which similarity measures described in \ref{similarity} can be applied on. Moreover the internal representation can be thought of as an indexed meta data structure for any source of song from which relevant information can be acquired. Hence Modulo7 indexing schematic is a symbolic representation of music much like music xml and sheet music is. The converters are responsible for converting different music sources to this representation format. Its important to note that depending on there source one or more of the subcomponents of the internal representation may be missing or wrong. Modulo7 indexes songs based on certain criteria and on top of these boolean queries can be formulated. The components are broadly categorized as the following:-\\
 
-\noindent \textbf{Song Metadata:} The metadata aspects in a song e.g. The name of the song/ the composer/performer's name, Key Signature of the Song, Meter of the Song etc. These are global properties of the song. \\
+\noindent \textbf{Song Metadata:} The meta data aspects in a song e.g. The name of the song/ the composer/performer's name, Key Signature of the Song, Meter of the Song etc. These are global properties of the song. \\
 
 \noindent \textbf{Voices in a song:} Similar to the Voices in Music theory, Voices in Modulo7 represent the same symbolic data as is present in the sources from which the information is parsed.\\
 
@@ -86,7 +77,7 @@ In most cases though lyrics exists as a separate entity from songs. In such case
 \includegraphics[width=\textwidth]{DocumentStructureOfModulo7.png}
 \makeatletter
 \let\@currsize\normalsize
-\caption{Modulo7 internal representation}
+\caption{Abstract representation of the modulo7 internal representation}
 \label{fig:figureDocStruct}
 \end{figure}
 
@@ -162,7 +153,7 @@ Modulo7 also provides support for rudimentary Natural Language Processing operat
 
 \begin{enumerate}
 \item \textbf{Language ID} : Modulo7 can detect what language the song's lyrics is written in. It does this via an language ID call to alchemy \ref{Alchemy}. 
-\item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). 
+\item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). It does this . via a sentiment analysis call to \ref{Alchemy}
 \end{enumerate}
 
 \section{Lyrics Based Genre Estimation} \label{genreestimation}
@@ -175,7 +166,7 @@ Modulo7 also provides support for rudimentary Natural Language Processing operat
 
 \subsection{Weighted Genre Estimation} \label{WeightedGenre}
 
-\noindent In the previous scheme, there are no considerations for the weights associated with the degree of similarity between lyrics. In order to accommodate this we assume the existence of tag weights associated for tags in the song meta data. Let $T(S_i)$ be defined as the genre annotations for song $S_i$. Let $S_{sim} = sort_v^{desc}({S_i, | isSim(S_i, S_{new}) = v})$ be the rank ordered set of genre labels based on descending order of similarity values. Out of these top we choose the top k $S_{sim(k)} = first_{k} (S_{sim})$ songs. The genre estimation can then be defined as $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim(k)}\}$ \\\\
+\noindent In the previous scheme, there are no considerations for degree of importance of each tag for a give lyrics or about the degree of similarity between lyrics. In order to accommodate these we assume the existence of tag weights associated for tags in the song meta data. Let $T(S_i)$ be defined as the genre annotations for song $S_i$. Let $S_{sim} = sort_v^{desc}({S_i, | isSim(S_i, S_{new}) = v})$ be the rank ordered set of genre labels based on descending order of similarity values. Out of these top we choose the top k $S_{sim(k)} = first_{k} (S_{sim})$ songs. The genre estimation can then be defined as $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim(k)}\}$ \\\\
 This scheme takes into account both the rank of the songs in based on a similarity metric. The scheme can retain only a subset of the maximal weighted tags in the resulted weighted tag set for the input song.
 
 \subsection{Most frequently occurring tags} \label{MaxFrequencyGenre}
@@ -188,6 +179,6 @@ This scheme takes into account both the rank of the songs in based on a similari
 
 \begin{enumerate}
 \item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
-\item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for songs. Also Modulo7 does not take into account atonal music (as a key signature leads to transforms that are needed in similarity metrics)
+\item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for most songs. Also Modulo7 does not take into account atonal music (as a key signature leads to transforms that are needed in similarity metrics). 
 \item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques have not solved the problem of polyphonic symbolic transcription faithfully. \cite{melextract}
 \end{enumerate}

@@ -103,7 +103,7 @@ Sim_{voice}(V_1, V_2) \in (0, 1)
 
 \noindent Similarity measures are different concepts for monophonic and polyphonic music as it stems from comparing different vector representations. For the following sections assume vectors of equal length. In a further section \ref{sim:unequal} we extend standard similarity measures to vectors of unequal length. \\
 
-\noindent \textbf{Edit Distance on Raw Pitch Vector Representation:} Consider the raw pitch vector in equation \ref{eq:rawpitch}. This vector is essentially a vector of tokens or equivalently a string. Hence standard edit distance algorithms in normal text IR can be applied to it (e.g Leveinstein Distance, Wagner–Fischer algorithm etc \cite{simtour}).
+\noindent \textbf{Edit Distance on Raw Pitch Vector Representation:} Consider the raw pitch vector in equation \ref{eq:rawpitch}. This vector is essentially a vector of tokens or equivalently a string. Hence standard edit distance algorithms in normal text IR can be applied to it (e.g Leveinstein Distance, Wagner-Fischer algorithm etc \cite{simtour}).
 
 \subsection{Similarity Measures for Polyphonic Music}
 
@@ -114,13 +114,13 @@ Sim_{voice}(V_1, V_2) \in (0, 1)
 GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_j \in S_2
 \end{equation}
 
-\subsection{Similarity of vectors of unequal length} \label{sim:unequal}
+\subsection{Sub melodic similarities} \label{sim:unequal}
 
-\noindent Its almost certain that two voices will never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Moreover, its also important to judge which regions of one melody are maximally similar to which other regions of the other melody (also called as alignment) . Modulo7 takes inspiration from bio informatics domain and uses the smith waterman algorithm modified for voice similarity \cite{smithWatermanBook}. The algorithm is as follows:-
+\noindent Its almost certain that two voices will never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Moreover, its also important to judge which regions of one melody are maximally similar to which other regions of the other melody (also called as alignment). Modulo7 takes inspiration from bio informatics domain and uses the smith waterman algorithm modified for voice similarity \cite{smithWatermanBook}. The algorithm is as follows:-
 
 \begin{algorithm}
 
-\label{CHalgorithm}
+\label{SMAlgorithm}
 \begin{algorithmic}[1]
 \Procedure{Smith Waterman Voice Similarity(V1, V2, InSim)} {}
 \State Define WM = Array[len(V1)][len(V2)]
@@ -149,13 +149,15 @@ GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_
 \noindent Often pieces of one key are similar to pieces on a different key, simply based on the fact that the keys themselves are similar. As a result a similarity measure could be developed which takes into account the differences in the key signature of a song
 
 \begin{equation}
-Sim(K_1, K_2) = 1 if (K1 == K2) ; 0 otherwise
+Sim(K_1, K_2) = \begin{cases} 
+      1 & K_1 == K_2 \\
+      0 & otherwise \\  \end{cases}
 \end{equation}
 
 
 \section{Criteria Analysis} \label{criteria}
 
-\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic predicate. Some example problems of such sorts are if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the STAB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements on top of similarity measures or alternatively if certain pieces just satisfies a one or more criteria. Following are the criteria implemented in Modulo7
+\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic predicate. Some example problems of such sorts are if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the STAB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements on top of similarity measures or alternatively if certain pieces just satisfies a one or more criteria. Following are the criteria implemented in Modulo7.
 
 \subsection{Simple criteria} 
 
@@ -170,7 +172,7 @@ Sim(K_1, K_2) = 1 if (K1 == K2) ; 0 otherwise
 \noindent A statistic when applied to a given song outputs a real number. Alternatively statistics could be thought of a non trivial extracted single value features. Mathematically a feature can be defined as:-
 
 \begin{equation}
-Criteria(Song) = x \ s.t \ x \in \mathbb{R}
+Statistic(Song) = x \ s.t \ x \in \mathbb{R}
 \end{equation}
 
 \noindent The following are the statistics implemented in Modulo7. \\

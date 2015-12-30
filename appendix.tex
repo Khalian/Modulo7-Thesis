@@ -2,7 +2,7 @@
 \addcontentsline{toc}{chapter}{APPENDICES}
 \chapter{Third Party Libraries Used}
 
-\noindent Modulo7 is a significant software engineering effort. This is partly due to the fact that Modulo7 tends to address speed related issues that are prevalent in other frameworks and partly due to the disparate sources of music that it supports. As such Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned below:-
+\noindent Modulo7 is a significant software engineering effort. This is partly due to the fact that Modulo7 tends to address speed and efficiency  related issues that are prevalent in other frameworks and partly due to the disparate sources of music that it supports. As such Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned as the follows
 
 \section{Apache Lucene}
 
@@ -36,6 +36,10 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 \section{Apache JCS (Java Caching System)}
 
 \noindent Apache JCS is used as a distributed in memory cache to cache the results of Modulo7 custom queries and similarity results for the queries made in the past. 
+
+\section{Apache Commons IO and Math}
+
+\noindent Apache Commons IO and Math libraries are helper libraries used throughout the Modulo7 code base for low level operations. 
 
 \chapter{Algorithms in use in Modulo7}
 
@@ -92,4 +96,33 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 
 \subsection{Chord Identification from Chromagram}
 
-\noindent A chromagram \cite{chromagramtutorial} is a representation of a song in frequency domain with relative intensities of notes in a short window frames of analysis in songs. This chromagram representation is central to acquiring symbolic description from audio sources. Once a chromagram is acquired, ascertaining chords in it becomes important(in particular because harmonic elements are non trivial to ascertain in a given chromagram). Modulo7 implements an algorithm described in \cite{chord-detection} in order to detect chords in chromagrams. This procedure is based on chromagram templates of different chords and correlation of current chromagram with these templates.
+\noindent A chromagram \cite{chromagramtutorial} is a representation of a song in frequency domain with relative intensities of notes in a short window frames of analysis in songs. This chromagram representation is central to acquiring symbolic description from audio sources. Once a chromagram is acquired, ascertaining chords in it becomes important(in particular because harmonic elements are non trivial to ascertain in a given chromagram). Modulo7 implements an algorithm described in \cite{chord-detection} in order to detect chords in chromagrams. This procedure is based on chromagram bitmap representations of different chords and "similarity" of current chromagram with the various bit map representations. \\
+
+\noindent In order to completely understand this approach, a bit mask for a chord is defined as a 12 dimensional vector in which there is a 1 entry for a present note[on its position on the chromagram] and a 0 entry for an absent note[on its position]. So for example the C major chord has three notes in it : C, E, G and as a consequence the bit mask for this chord would be : [1,0,0,0,1,0,0,1,0,0,0,0] as the positions for C, E and G are 1, 5 and 8 respectively in the chromagram representation. \\
+
+\noindent Given a set of candidate chords $T$ which contain bit mask representations of all chord and a chromagram, we define chromagram distance $\delta_i$ as \cite{chord-detection}:-
+
+\begin{equation}
+\delta_i = \frac{\sqrt{\sum_{n = 0}^{P - 1} T_i(n)C(n)^2}}{P - N_i}
+\end{equation}
+
+\noindent Here C is the chromagram vector, n stands for the entry number/index in the vector, P = 12 (the number of semi tones in an octave), and $T_i$ is the $i^{th}$ in the candidate chord set. The chord membership can then be defined as 
+
+\begin{equation}
+MCC(C) = arg_{min} \delta_i (T_i) \ \ \ \forall \ \ \ T_i
+\end{equation}
+
+\noindent Modulo7 a heuristic extension for ascertaining a chord/note from a chromagram. Define max chromagram entry as 
+
+\begin{equation}
+MCE(C) = arg_{max_n}(C(n)) \ \ \ \forall c \ \ \ \in (1, P)
+\end{equation}
+
+\noindent The voice instant (note/chord) assignment for a particular chromagram would be 
+
+\begin{equation}
+VI(C) = \begin{cases}
+      MCE(C) & MCA(n) \geq 0.5 \\
+      MCC(C) & otherwise \\  \end{cases}
+\end{equation}
+

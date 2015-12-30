@@ -5,7 +5,7 @@ A few assumptions that are made in testing are as follows :-
 \begin{enumerate}
 \item In order to estimate ground truth values, ground truth values presented in datasets (such as tagged meta data or subjective jugdments for song similarity ) are assumed as a base line.
 \item If the song meta data (such as key-signature, time-signature, total duration of song) is not encoded, its estimated by the individual parsers for the data source. This estimation is done by existing algorithms in literature. However if meta data is encoded in the input, its assumed to be correct and no such estimations are carried out. 
-\item Most tests are against file formats of similar types (for example midi is tested against other symbolic files). This is due to the inherent complexity of symbolic decoding of audio formats like mp3. Also its easier to compare symbolic music data against other symbolic data.
+\item Most tests are against file formats of similar types (for example midi is tested against other symbolic files). This is due to the inherent complexity of symbolic decoding of audio formats like mp3.
 \item In the event of parsing data, there can be legal issues (e.g. the song can be copyrighted). For that reason custom parsers are built for alternate research dataset format (e.g the million song dataset has already derived features that Modulo7 intended to derive for Mp3 files and has its own parser written by the creators of the data sets. \cite{msd})
 \item All evaluations are done against research datasets which are published in academia or exposed as public data sets in industry. As such no proprietary data sets are used for the purpose of any evaluation metric.
 \end{enumerate}
@@ -33,9 +33,9 @@ A similar transformation was also done on a direct download able subset of the w
 \end{figure}
 
 \noindent As expected, Modulo7 is extremely space efficient for storing symbolic information.
-\section{Experiments on the Million Song \\ Dataset}
+\section{Million Song Dataset Experiments}
 
-\noindent The million song dataset was chosen for experimental evaluation \cite{msd} for pre-computed symbolic transcriptions of Mp3 files and the last fm data set for ascertaining similar songs to build a ground truth for evaluation. Due to the constraints of hardware for evaluation, we took a scaled down subset of the original 584,897 songs to a more manageable 10000 songs(offered as a direct down loadable subset in the Million song data set website \cite{msddownloadable}), with similar songs edited to fit this dataset. This data set is used for both melodic similarity computation and exploratory querying for determining best fit queries for certain criteria.
+\noindent The million song dataset was chosen for experimental evaluation \cite{msd}. MSD contains pre-computed symbolic transcriptions of Mp3 files and the last fm data set for ascertaining similar songs to build a ground truth for evaluation. Due to the constraints of hardware for evaluation, we took a scaled down subset of the original 584,897 songs to a more manageable 10000 songs(offered as a direct down loadable subset in the Million song data set website \cite{msddownloadable}), with similar songs edited to fit this dataset. This data set is used for both melodic similarity computation and exploratory querying for determining best fit queries for certain criteria.
 
 \subsection{Results on melodic similarity analysis}
 
@@ -57,33 +57,40 @@ THR(S_1, S_2) = \sum_{t_i \in T(S_1)} \sum_{t_j \in T(S_2)} \begin{cases}
 
 \noindent Based on this measure, each song in the test set can be compared against the songs in the hold out set to ascertain ground truth data, with any song have a tag hit rate score greater than 0 is considered to be a relevant song. \\
 
-\noindent In order to compare the efficiency of each of the similarity measures implemented, the average precision and recall values are listed \\
+\noindent In order to compare the efficiency of each of the similarity measures implemented, the average precision and recall values are listed for melodies present in the million song data set. Only those similarity measures are selected which do not depend on melody length (in other words melodies of unequal length can be compared with these similarity measures) \\
 
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{| l | l | l |}
     \hline
     Similarity Measure & Average Recall & Average Precision \\ \hline
-    SCM Trigram Similarity & 0 & 0 \\ \hline
-    Ukkonnen Measure & 0 & 0 \\ \hline
-    Count Distance & 0 & 0  \\
-    \hline
+    SCM Trigram & 0.308 & 0.299 \\ \hline
+    Ukkonnen & 0.339 & 0.291 \\ \hline
+    Count Distance & 0.294 & 0.283  \\ \hline
+    Tonal Histogram & 0.341 & 0.362  \\ \hline
+    Weighted Tonal Histogram & 0.302 & 0.685  \\ \hline
     \end{tabular}
 \end{center}
-\caption{\textbf{Average Precision and Recall for Melodic Similarity Measures}}
+\caption{Average Precision and Recall for Melodic Similarity Measures}
 \end{table}
 
+\noindent From the following results and observations on the data set the following can be concluded
+
+\begin{enumerate}
+\item Introducing rhythmic elements along with tonal information improves the performance of the similarity metric. 
+\item In general, the similarity metrics perform better on symbolic ground truth data \cite{mirexsym} as compared to non symbolic data in \cite{msd}, as tested in this experiment. A potential explanation for this would be the inherent complexity associated with a faithful symbolic transcription of audio data \cite{melextract}, which inadvertently reduce the precision and recall of the similarity measures. 
+\end{enumerate}
 
 \subsection{Results on lyrics similarity and genre estimation} \label{genrelabels}
 
-\noindent On top of the experiments done for Song sources incorporating tonal information, there were specific experiments that were carried out for lyrics similarities in general. The ground truth for these experiments is the musix match lyrics dataset present in the million song data set \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts as baseline for set based similarities of lyrics. The experiment involved calculating the expected word count from the ground truth data and with that form a basis for comparing songs with the ground truth data. There are measures defined in literature \cite{lyricsRanking} which define similarity and accuracy of lyrics based on expected counts of words and observed counts of words in lyrics. However for this experiment we have decided to extract the genre labels from the tag tratum genre annotations dataset of the Million Song Data set \cite{msd} to acquire the genre labels that are observed for a given song and then build a predictive model that outputs genre labels for a newly seen song. \\\\
+\noindent On top of the experiments done for song sources incorporating tonal information, there were specific experiments that were carried out for lyrics similarities in general. The ground truth for these experiments is the musix match lyrics dataset present in the million song data set \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts as baseline for set based similarities of lyrics. The experiment involved calculating the expected word count from the ground truth data and with that form a basis for comparing songs with the ground truth data. There are measures defined in literature \cite{lyricsRanking} which define similarity and accuracy of lyrics based on expected counts of words and observed counts of words in lyrics. However for this experiment we have decided to extract the genre labels from the tag tratum genre annotations dataset of the Million Song Data set \cite{msd} to acquire the genre labels that are observed for a given song and then build a predictive model that outputs genre labels for a newly seen song. \\\\
 Out of the 210,519 songs with lyrics provided in the million song data set and 280,831 songs with corresponding genre labels annotated, 55726 songs were identified with both lyrics and genre labels present, so this set of songs are considered the ground truth for estimating genre labels for novel lyrics \\\\ 
 The lyrics in this dataset are in the bag of words document representation format and hence standard set based similarity measures like cosine similarity can be used for comparing lyrics. The lyrics in the million song dataset are already stemmed via the Porter stemmer \cite{msd} so no explicit stemming is conducted as a part of this experiment.\\\\
 In order to estimate the accuracy of the tag prediction models, the extracted data was divided into 10 percent test data and 90 percent training data and 10 fold cross validation was performed. Each lyrics in the test data was compared to the training data and a ranked order of the trained songs are presented based on the similarity metric used. Tags are then estimated based on the tag estimation mechanisms presented in \ref{genreestimation}. \\\\
-Parameters which determines the degree of permissible agreement are the thresh hold value $\epsilon$ defined in \ref{NaiveGenre} and \ref{MaxFrequencyGenre} and top k songs chosen in \ref{WeightedGenre} and \ref{MaxFrequencyGenre}. For the purposes of experimental evaluation, these hyper parameters were tweaked to produce a precision recall curve for the weighted genre estimation , as its an ordered ranked list and ROC (Receiver operating characteristic curve) for max frequency and naive genre estimation \\
-\noindent This plot indicates the Precision Recall curve for weighted genre estimation method
+Parameters which determines the degree of permissible agreement are the thresh hold value $\epsilon$ defined in \ref{NaiveGenre} and \ref{MaxFrequencyGenre} and top k songs chosen in \ref{WeightedGenre} and \ref{MaxFrequencyGenre}. For the purposes of experimental evaluation, these hyper parameters were tweaked to produce a precision recall curve for the weighted genre estimation, as its an ordered ranked list and ROC (Receiver operating characteristic curve) for max frequency and naive genre estimation (as they are produced un ordered rank list). \\
 
 \begin{figure}
+
 \centering
 \includegraphics[width=\textwidth]{precRec.jpg}
 \makeatletter
@@ -92,7 +99,6 @@ Parameters which determines the degree of permissible agreement are the thresh h
 \label{fig:precRec}
 \end{figure}
 
-\noindent This plot indicates the ROC curve for max frequency genre estimation and naive genre estimation
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{roc.jpg}
@@ -102,6 +108,7 @@ Parameters which determines the degree of permissible agreement are the thresh h
 \label{fig:roccurve}
 \end{figure}
 
+\newpage 
 
 \subsection{Results on exploratory query analysis}
 
@@ -115,28 +122,32 @@ Parameters which determines the degree of permissible agreement are the thresh h
     \hline
     Purpose &  Query & precision  & recall & ground truth estimate \\ \hline
     Rock Song ID &  Q1 & 0.13  & 0.98 & Song tags : "rock" / "pop\_rock" \\ \hline
-    Sad Song ID &  Q2 & 0.2  & 0.44 & Song tags : "sad" / "sad\_song" \\ \hline
-    Happy Song ID &  Q3 & 0.18  & 0.4 & Song tags : "happy" / "happy\_song" \\
+    Sad Song ID &  Q2 & 0.02  & 0.44 & Song tags : "sad" / "sad\_song" \\ \hline
+    Happy Song ID &  Q3 & 0.018  & 0.4 & Song tags : "happy" / "happy\_song" \\
     \hline
     \end{tabular}
 \end{center}
-\caption{\textbf{Exploratory query analysis}}
+\caption{Results for the exploratory query analysis}
 \end{table}
 
-We define Q1, Q2 and Q3 as follows: -
+\noindent We define Q1, Q2 and Q3 as follows
 
 \begin{enumerate}
-\item [Q1] select mp3 from default\_database where powerindex > 0.61;
-\item [Q2] select mp3 from default\_database where sadnessindex > 0.15 and scale = minor;
-\item [Q3] select mp3 from default\_database where happinessindex > 0.11 and scale = major;
+\item [Q1] select mp3 from default\_database where powerindex $>$ 0.61;
+\item [Q2] select mp3 from default\_database where sadnessindex $>$ 0.15 and scale = minor;
+\item [Q3] select mp3 from default\_database where happinessindex $>$ 0.11 and scale = major;
 \end{enumerate}
 
 From these results we can conclude the following : 
 
 \begin{enumerate}
 \item A cursory analysis of the data set revealed that 57\% of all songs in the data set are classified as rock or pop rock. Hence the high optimal value of k for powerindex is justified given the higher concentration of rock songs. 
-\item While recall is high (especially for rock songs), precision is low. This would entail that while the relevant songs are indeed retrieved, many irrelevant songs are also retrieved which satisfy the criteria. 
+\item While recall is high (especially for rock songs), precision is low for all queries in this analysis. This would entail that while the relevant songs are indeed retrieved, many irrelevant songs are also retrieved which satisfy the criteria. This could be resolved by compounding the query with criteria/statistics which filter out the false positives. 
 \end{enumerate}
+
+\section{Results on melodic alignment and similarities over sub melodies}
+
+\noindent A micro experiment was run to show the extensibility of Modulo7 for the purpose of melodic alignment. Its often important to ascertain which regions of a melody are similar to which other regions of a melody. For this experiment, the Smith Waterman algorithm \ref{SMAlgorithm} is used for similarity computation and representing regions of melodies that are similar to each other. 
 
 \section{Results on KK Tonality Profiles algorithm for Key Estimation}
 
