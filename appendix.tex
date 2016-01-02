@@ -59,7 +59,7 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 
 \noindent The profiles of the other keys can be achieved by rotating the vector by the intervalic distance of the root notes of the key and root note their reference Key(CMajor for major keys and CMinor for minor keys). \\
 
-\noindent The key estimation algorithm leverages the kk tonality profiles as input. The algorithm is as follows:-
+\noindent The key estimation algorithm leverages the kk tonality profiles as input. The algorithm is listed below as follows \cite{kkTonalityKeyFinding}
 
 \begin{algorithm}
 
@@ -78,13 +78,13 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 \State song\_Pitch\_Hist = compute\_song\_tonal\_histogram(song) as per \ref{NPDH}
 \State best\_Key = CMin, best\_Corr = $-\infty$
 \For {key, maj\_prof in MajProf}:
-\If {correlation(maj\_prof, song\_Pitch\_Hist) > best\_Corr}
+\If {correlation(maj\_prof, song\_Pitch\_Hist) $>$ best\_Corr}
 \State best\_Key = key
 \State best\_Corr = correlation(maj\_prof, song\_Pitch\_Hist)
 \EndIf
 \EndFor
 \For {key, mij\_prof in MijProf}:
-\If {correlation(min\_prof, song\_Pitch\_Hist) > best\_Corr}
+\If {correlation(min\_prof, song\_Pitch\_Hist) $>$ best\_Corr}
 \State best\_Key = key
 \State best\_Corr = correlation(min\_prof, song\_Pitch\_Hist)
 \EndIf
@@ -94,11 +94,11 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Chord Identification from Chromagram}
+\subsection{Symbolic Transcription from Chromagrams} \label{chromagramest}
 
-\noindent A chromagram \cite{chromagramtutorial} is a representation of a song in frequency domain with relative intensities of notes in a short window frames of analysis in songs. This chromagram representation is central to acquiring symbolic description from audio sources. Once a chromagram is acquired, ascertaining chords in it becomes important(in particular because harmonic elements are non trivial to ascertain in a given chromagram). Modulo7 implements an algorithm described in \cite{chord-detection} in order to detect chords in chromagrams. This procedure is based on chromagram bitmap representations of different chords and "similarity" of current chromagram with the various bit map representations. \\
+\noindent A chromagram \cite{chromagramtutorial} is a representation of a song in frequency domain with relative intensities of notes in short window frames of analysis in songs. This chromagram representation is central to acquiring symbolic description from audio sources. Once a chromagram is acquired, ascertaining chords in it becomes important(in particular because harmonic elements are non trivial to ascertain in a given chromagram). Modulo7 implements an algorithm described in \cite{chord-detection} in order to detect chords in chromagrams. This procedure is based on chromagram bitmap representations of different chords and "similarity" of current chromagram with the various bit map representations. \\
 
-\noindent In order to completely understand this approach, a bit mask for a chord is defined as a 12 dimensional vector in which there is a 1 entry for a present note[on its position on the chromagram] and a 0 entry for an absent note[on its position]. So for example the C major chord has three notes in it : C, E, G and as a consequence the bit mask for this chord would be : [1,0,0,0,1,0,0,1,0,0,0,0] as the positions for C, E and G are 1, 5 and 8 respectively in the chromagram representation. \\
+\noindent In order to completely understand this approach, a bit mask for a chord is defined as a 12 dimensional vector in which there is a 1 entry for a present note[on its position on the chromagram] and a 0 entry for an absent note[on its position] \cite{chord-detection}. So for example the C major chord has three notes in it : C, E, G and as a consequence the bit mask for this chord would be : [1,0,0,0,1,0,0,1,0,0,0,0] as the positions for C, E and G are 1, 5 and 8 respectively in the chromagram representation. \\
 
 \noindent Given a set of candidate chords $T$ which contain bit mask representations of all chord and a chromagram, we define chromagram distance $\delta_i$ as \cite{chord-detection}:-
 

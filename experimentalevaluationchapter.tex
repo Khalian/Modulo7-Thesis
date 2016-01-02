@@ -68,7 +68,6 @@ THR(S_1, S_2) = \sum_{t_i \in T(S_1)} \sum_{t_j \in T(S_2)} \begin{cases}
     Ukkonnen & 0.339 & 0.291 \\ \hline
     Count Distance & 0.294 & 0.283  \\ \hline
     Tonal Histogram & 0.341 & 0.362  \\ \hline
-    Weighted Tonal Histogram & 0.302 & 0.685  \\ \hline
     \end{tabular}
 \end{center}
 \caption{Average Precision and Recall for Melodic Similarity Measures}
@@ -77,7 +76,7 @@ THR(S_1, S_2) = \sum_{t_i \in T(S_1)} \sum_{t_j \in T(S_2)} \begin{cases}
 \noindent From the following results and observations on the data set the following can be concluded
 
 \begin{enumerate}
-\item Introducing rhythmic elements along with tonal information improves the performance of the similarity metric. 
+\item Similarities based on music theory (tonal histogram) marginally outperform those based on n gram models. 
 \item In general, the similarity metrics perform better on symbolic ground truth data \cite{mirexsym} as compared to non symbolic data in \cite{msd}, as tested in this experiment. A potential explanation for this would be the inherent complexity associated with a faithful symbolic transcription of audio data \cite{melextract}, which inadvertently reduce the precision and recall of the similarity measures. 
 \end{enumerate}
 
@@ -147,16 +146,20 @@ From these results we can conclude the following :
 
 \section{Results on melodic alignment and similarities over sub melodies}
 
-\noindent A micro experiment was run to show the extensibility of Modulo7 for the purpose of melodic alignment. Its often important to ascertain which regions of a melody are similar to which other regions of a melody. For this experiment, the Smith Waterman algorithm \ref{SMAlgorithm} is used for similarity computation and representing regions of melodies that are similar to each other. 
+\noindent A micro experiment was run to show the extensibility of Modulo7 for the purpose of melodic alignment. Its often important to ascertain which regions of a melody are similar to which other regions of a melody. For this experiment, the Smith Waterman algorithm \ref{SMAlgorithm} is used for similarity computation and representing regions of melodies that are similar to each other. \\
+
+\noindent Its important to note that this experiment is a demonstrative experiment instead of an evaluation to show the application of \ref{SMAlgorithm} on tonality alignment. For a more in depth study of tonality alignment and sub melodic similarity, the reader should refer to \cite{smithWatermanBook}.  \\
+
+\noindent For this experiment 
 
 \section{Results on KK Tonality Profiles algorithm for Key Estimation}
 
-\noindent In order to test the KK Tonality algorithm given in \ref{kktonality}, Modulo7 is benchmarked against a big subset of the Wikifonia data set of lead sheets in the compact mxl format (variant of the music xml format) \cite{WikifoniaDataset}. The original dataset of the Wikifonia is now no longer available but a sizable subset of 6715 songs are currently down loadable and copyright free. Out of this set, 1314 have key signatures embedded in the song sources. The experiment involves comparing the key signatures embedded inside the key signatures versus the implied key signatures the KK Tonality estimates from the pitch histogram of the songs parsed from this source. A special MXL parser (a minor variant of the music xml parser) was developed for this purpose. The scoring scheme for this experiment was simple, if the key signature was correctly identified then score of 1 otherwise score of 0. In this particular dataset, key signatures are partially known (\textbf{since the number of sharps or flats in the key signatures are always encoded in music xml files} so only relative major/minor are needed to be ascertained). As a consequence only two choices are to be made between key signatures for each file giving a baseline of 50 percent. In this particular example, KK Tonality's performance is how well it can distinguish between relative minors and majors. \\\\
-After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the total 1314 key signatures are correctly identified leading to an accuracy of \text{85.9 percent}. This is commensurate with the reported accuracies in \cite{kkTonalityKeyFinding}. The novelty of this experiment stems from the fact that KKTonality profiles algorithm was not successfully run against a large scale database successfully in literature. 
+\noindent In order to test the KK Tonality algorithm given in \ref{kktonality}, Modulo7 is benchmarked against a big subset of the Wikifonia data set of lead sheets in the compact mxl format (variant of the music xml format) \cite{WikifoniaDataset}. The original dataset of the Wikifonia is now no longer available but a sizable subset of 6715 songs are currently down loadable and copyright free. Out of this set, 1314 have key signatures embedded in the song sources. The experiment involves comparing the key signatures embedded inside the key signatures versus the implied key signatures the KK Tonality estimates from the pitch histogram of the songs parsed from this source. A special MXL parser (a minor variant of the music xml parser) was developed for this purpose. The scoring scheme for this experiment was simple, if the key signature was correctly identified then score of 1 otherwise score of 0. In this particular dataset, key signatures are partially known (\textbf{since the number of sharps or flats in the key signatures are always encoded in music xml files} so only relative major/minor are needed to be ascertained). As a consequence only two choices are to be made between key signatures for each file giving a baseline of \textbf{50\%}. In this particular example, KK Tonality's performance is how well it can distinguish between relative minors and majors. \\\\
+After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the total 1314 key signatures are correctly identified leading to an accuracy of \text{85.9\%}. This is commensurate with the reported accuracies reported in \cite{kkTonalityKeyFinding}. 
 
 \section{Results on CPU and Memory and Disk space compared against jMIR}
 
-\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features(although that is not an end goal for Modulo7). However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. Out of the total 111 features that are implemented in jSymbolic \cite{jSymbolic}, 23 features were identified as implemented as internal computation within the Modulo7 indexers and/or querying engine. \textbf{Its important to note that unlike jMIR, Modulo7 is not an exhaustive feature extractor}. The features identified are stated below \\
+\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features(although that is not an end goal for Modulo7). However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. Out of the total 111 features that are implemented in jSymbolic \cite{jSymbolic}, 23 features were identified as implemented as internal computation within the Modulo7 indexers and/or querying engine. \textbf{Its important to note that unlike jMIR}. A modified version of Modulo7's basic indexing engine was used for extracting the following features. 
 \begin{enumerate}
 \item 1 feature for duration of song
 \item 2 features for average melodic intervals, note duration
@@ -206,7 +209,7 @@ After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the t
 \begin{enumerate}
 \item Modulo7 is much faster than jSymbolic when computing core features and both of them scale linearly. The rate of increase for Modulo7 is lower, and hence Modulo7 scales better for larger datasets as compared to jSymbolic.
 \item jSymbolic under utilizes CPU for computing features whereas Modulo7 is optimal in terms of CPU usage. The profiling results revealed that jSybmolic is single threaded and contains no caching mechanism for storing features (leading to re-computation of features that are dependencies of other features)
-\item jSymbolic consumes more Java Heap memory during execution on average.
+\item jSymbolic consumes more Java Heap memory during execution on average. While no conclusive evidence could be established, a code audit revealed jSymbolic uses a large number of primitive arrays \cite{jSymbolicCode} in contrast to a fewer number of dynamic allocations in Modulo7 which could lead to higher memory consumed. 
 \end{enumerate}
 
 
