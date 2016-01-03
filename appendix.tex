@@ -10,20 +10,20 @@
 
 \noindent Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned as the follows
 
-\subsection{Apache Lucene}
+\subsection{Apache Lucene} \label{lucene}
 
 \noindent Apache Lucene is a full text search engine library written in Java. Apache Lucene is used for indexing text documents, spelling correction and other such functionality. \\
 In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyrics either independently acquired from text files containing lyrics or from emdedded lyrics in the Modulo7 supported sources. 
 
-\subsection{Apache Avro}
+\subsection{Apache Avro} \label{avro}
 
 \noindent Apache Avro is a serialization library used to store Modulo7 objects to disk. This allows for faster retrieval of parsed objects instead of having to reparse entire song sources again and again.
 
-\subsection{Echo Nest jEN API}
+\subsection{Echo Nest jEN API} \label{echonestjen}
 
 \noindent The toughest challenge in all of Modulo7 was to parse symbolic information from audio sources. In order to accomplish this, Modulo7 relied on the Echo Nest's client library to convert mp3 files into chromagram representation of music \cite{chromagramtutorial}. The chromagram representation is acquired directly by converting mp3 representation into the frequency domain by Echo Nest. Modulo7 treats this process as a black box, as it is interested in finding out only the chromagram representation (from which identifying notes and chords become much simpler). 
 
-\subsection{Antlr}
+\subsection{Antlr} \label{antlr}
 
 \noindent Antlr (Another language recognition tool) is a framework used to develop lexers and parses for custom programming languages. In case of Modulo7, Antlr was used to develop the Modulo7SQL Custom query language.
 
