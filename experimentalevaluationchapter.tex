@@ -1,19 +1,20 @@
 \chapter{Experimental Evaluation}
 
-\noindent For the purposes of evaluating Modulo7, test cases have been designed into two formats. One category of testing is micro testing, for validating correctness and precision recall for small sets of data. This ensures verifiability of algorithms and similarity measures on small datasets as well as novel explorations of data. Most MIR research is done on small scale datasets and hence falls in the purview of micro testing. The other format is macro testing which involves larger datasets such as the million song dataset \cite{msd}. Due to computing resource c, subsets of larger datasets were chosen such that memory and disk requirements could be  contained in one PC. No distributed test cases were run as a part of the evaluations. \\\\
+\noindent For the purposes of evaluating Modulo7, test cases have been designed into two categories. One category of testing is micro testing, for validating correctness of certain concepts and algorithms for small sets of data \ref{kktonalexpt} \ref{melodicalignmentexpt}. This ensures verifiability of algorithms and similarity measures on small datasets as well as novel explorations of data. Most MIR research is done on small scale datasets and hence falls in the purview of micro testing. The other format is macro testing which involves larger datasets such as the million song dataset \cite{msd}. Due to computing resources, subsets of larger datasets were chosen such that memory and disk requirements could be  contained in one PC. No distributed test cases were run as a part of the evaluations. \\\\
 A few assumptions that are made in testing are as follows :-
 \begin{enumerate}
-\item In order to estimate ground truth values, ground truth values presented in datasets (such as tagged meta data or subjective jugdements for song similarity ) are assumed as a base line.
-\item If the song meta data (such as key-signature, time-signature, total duration of song) is not encoded, its estimated by the individual parsers for the data source. This estimation is done by existing algorithms in literature. However if meta data is encoded in the input, its assumed to be correct and no such estimations are carried out. 
-\item Most tests are against file formats of similar types (for example midi is tested against other symbolic files). This is due to the inherent complexity of symbolic decoding of audio formats like mp3.
-\item In the event of parsing data, there can be legal issues (e.g. the song can be copyrighted). For that reason custom parsers are built for alternate research dataset format (e.g the million song dataset has already derived features that Modulo7 intended to derive for Mp3 files and has its own parser written by the creators of the data sets. \cite{msd})
-\item All evaluations are done against research datasets which are published in academia or exposed as public data sets in industry. As such no proprietary data sets are used for the purpose of any evaluation metric.
+\item Ground truth values presented in datasets (such as tagged meta data or subjective jugdements for song similarity in \cite{msd}) are assumed as a base line for evaluations.
+\item If the song meta data (such as key-signature, time-signature, total duration of song) is not encoded, its estimated by the individual parsers for the data source \ref{metadataestimation}. This estimation is done by existing algorithms in literature. However if meta data is encoded in the input, its assumed to be correct and no such estimations are carried out. 
+\item Most of the tests are against file formats of similar types (for example midi is tested against other symbolic files). This is due to the inherent complexity of symbolic decoding of audio formats like mp3 \ref{mp3format}.
+\item In the event of parsing data, there can be legal issues (e.g. the song can be copyrighted). For that reason custom parsers are used for alternate research dataset format (e.g the million song data set has already derived features that Modulo7 intended to derive for Mp3 files and a separate parser is written for this format \cite{msd}). 
+\item All evaluations are done against research datasets \cite{WikifoniaDataset, saarlandmsd, msd} which are published in academia or exposed as public data sets in industry. As such no proprietary data sets are used for the purpose of any evaluation metric.
 \end{enumerate}
 
 \section{Results of Index Compression}
 
-\noindent The Modulo7 representation can be thought of an indexed meta data version of the song with the symbolic information of the song intact(which entails no core information is lost during the conversion). True to all indexed data, Modulo7 represents the song in a much smaller size than the original source. The following chart demonstrates the average compression of indexed data as compared to source files on the Saarland Music Data (SMD) Dataset \cite{saarlandmsd} when the modulo7 representation is persisted on disk:-
-\begin{figure}
+\noindent The Modulo7 representation \ref{fig:figureDocStruct} can be visualize as indexed meta data version of the song with the symbolic information of the song intact(which entails no core information is lost during the conversion). True to all indexed data, Modulo7 represents the song in a much smaller size than the original source when persisted to disk. The following chart demonstrates the average compression of indexed data as compared to source files on the Saarland Music Data (SMD) Dataset \cite{saarlandmsd} when the Modulo7 representation is persisted on disk 
+
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=\textwidth]{Modulo7SMDBarGraph.png}
 \makeatletter
@@ -21,9 +22,9 @@ A few assumptions that are made in testing are as follows :-
 \caption{Modulo7 architectural design}
 \label{fig:figure}
 \end{figure}
-As expected Modulo7's serialized format expresses a song in less disk space than its source formats while keeping the symbolic information intact. The results are positive as there is a 4 time decrease in size of expressing symbolic information as compared to midi files. \\\\
-A similar transformation was also done on a direct download able subset of the wikifonia dataset in order to compare Modulo7 internal representation against the compressed xml representation of the wikifonia dataset. A plot of disk space requirements are plotted in ascending order of the wikifonia dataset file sizes:- 
-\begin{figure}
+\noindent As expected Modulo7's serialized format expresses a song in less disk space than its source formats while keeping the symbolic information intact. The results are positive as there is a 4 time decrease in size of expressing symbolic information as compared to midi files. \\\\
+A similar transformation was also done on a direct download able subset of the wikifonia dataset \cite{WikifoniaDataset} in order to compare Modulo7 internal representation against the compressed xml representation of the Wikifonia dataset. A plot of disk space requirements are plotted in ascending order of the wikifonia dataset file sizes \\
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=\textwidth]{M7Graph.png}
 \makeatletter
@@ -32,16 +33,16 @@ A similar transformation was also done on a direct download able subset of the w
 \label{fig:filesizes}
 \end{figure}
 
-\noindent As expected, Modulo7 is extremely space efficient for storing symbolic information.
+\noindent As expected, Modulo7 is extremely space efficient for storing symbolic information. One observation is that modulo7 file size increases in a much smaller rate than the wikifonia data set, but the meta data storage requirement is higher for Modulo7 (approximately 4KB). 
 \section{Million Song Dataset Experiments}
 
-\noindent The million song dataset was chosen for experimental evaluation \cite{msd}. MSD contains pre-computed symbolic transcriptions of Mp3 files and the last fm data set for ascertaining similar songs to build a ground truth for evaluation. Due to the constraints of hardware for evaluation, we took a scaled down subset of the original 584,897 songs to a more manageable 10000 songs(offered as a direct down loadable subset in the Million song data set website \cite{msddownloadable}), with similar songs edited to fit this dataset. This data set is used for both melodic similarity computation and exploratory querying for determining best fit queries for certain criteria.
+\noindent The million song dataset was chosen for experimental evaluation \cite{msd} for the querying and similarity engines and the lyrics analyzer. MSD contains pre-computed chromagram transcriptions of Mp3 files and the last fm data set contains a set of tags and genres for building a  ground truth for evaluation. Due to the hardware constraints, a scaled down subset was chosen from the original 584,897 songs to a more manageable 10000 songs(offered as a direct down loadable subset in the Million song data set website \cite{msddownloadable}).
 
 \subsection{Results on melodic similarity analysis}
 
-\noindent This set of experiments determine the precision and recall values for the similarities defined in \ref{similarity} on ground truth data extracted from \cite{msd}. Modulo7 does not claim to improve on the state of the art when it comes to similarity metrics or does not intend to create a new similarity metric. Rather this set of experiments are a test of efficiency in execution and accuracy of existing methods on large scale datasets. \\
+\noindent This set of experiments determine the precision and recall values for the similarities defined in \ref{similarity} on ground truth data extracted from \cite{msd}. Modulo7 does not attempt to improve on the state of the art when it comes to similarity metrics or does not attempt to create a new similarity metric. Rather this set of experiments are a test of efficiency in execution and accuracy of existing similarity models of \ref{polyphonicsim} and \ref{ngramsim} on large scale datasets. \\
 
-\noindent For this experiment the songs that they were monophonic are retained(since polyphonic transcription from audio files is not a fully solved problem \cite{melextract}) and a subset of 3,784 songs are retained. These songs were mapped with the last fm similarity dataset and 838 songs out of the monophonic subset were identified to have at least one similar song listed in the last fm tags. This final subset was treated as the ground truth for this experiment. \\
+\noindent For this experiment the songs that they were monophonic are retained(since polyphonic transcription from audio files is not a fully solved problem \cite{melextract}) and hence subset of 3,784 songs were retained. These songs were mapped with the last fm similarity dataset and 838 songs out of the monophonic subset were identified to have at least one similar song listed in the last fm tags. 
 
 \noindent Only the monophonic similarity measures are used for these experiments from \ref{monophonicSim}. The testing was done with a 10\% test set (search queries) and 90\% hold out set (data base) and 10 fold cross validation was used. \\
 
@@ -77,18 +78,18 @@ THR(S_1, S_2) = \sum_{t_i \in T(S_1)} \sum_{t_j \in T(S_2)} \begin{cases}
 
 \begin{enumerate}
 \item Similarities based on music theory (tonal histogram) marginally outperform those based on n gram models. 
-\item In general, the similarity metrics perform better on symbolic ground truth data \cite{mirexsym} as compared to non symbolic data in \cite{msd}, as tested in this experiment. A potential explanation for this would be the inherent complexity associated with a faithful symbolic transcription of audio data \cite{melextract}, which inadvertently reduce the precision and recall of the similarity measures. 
+\item In general, the similarity metrics perform better on symbolic ground truth data \cite{mirexsym} as compared to mp3 transcribed data \cite{msd}, as tested in this experiment. A potential explanation for this would be the inherent complexity associated with a faithful symbolic transcription of audio data \cite{melextract}, which inadvertently reduce the precision and recall of the similarity measures. 
 \end{enumerate}
 
 \subsection{Results on lyrics similarity and genre estimation} \label{genrelabels}
 
-\noindent On top of the experiments done for song sources incorporating tonal information, there were specific experiments that were carried out for lyrics similarities in general. The ground truth for these experiments is the musix match lyrics dataset present in the million song data set \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts as baseline for set based similarities of lyrics. The experiment involved calculating the expected word count from the ground truth data and with that form a basis for comparing songs with the ground truth data. There are measures defined in literature \cite{lyricsRanking} which define similarity and accuracy of lyrics based on expected counts of words and observed counts of words in lyrics. However for this experiment we have decided to extract the genre labels from the tag tratum genre annotations dataset of the Million Song Data set \cite{msd} to acquire the genre labels that are observed for a given song and then build a predictive model that outputs genre labels for a newly seen song. \\\\
+\noindent On top of the experiments done for song sources incorporating tonal information, there were specific experiments that were carried out for the lyrics analyzer \ref{lyricsarch} component. The ground truth for these experiments is the musix match lyrics dataset present in the million song data set \cite{msd}. The dataset decomposes lyrics into bag of words formats (the frequencies of the top 5000 words in lyrics) along with bag of words representation of 210,519 lyrics of songs. This dataset acts as baseline for set based similarities of lyrics.For this experiment the genre labels were extracted from the tag tratum genre annotations dataset of the Million Song Data set \cite{msd} to acquire the genre labels that are observed for a given song and then build a predictive model that outputs genre labels for a newly seen song. \\\\
 Out of the 210,519 songs with lyrics provided in the million song data set and 280,831 songs with corresponding genre labels annotated, 55726 songs were identified with both lyrics and genre labels present, so this set of songs are considered the ground truth for estimating genre labels for novel lyrics \\\\ 
 The lyrics in this dataset are in the bag of words document representation format and hence standard set based similarity measures like cosine similarity can be used for comparing lyrics. The lyrics in the million song dataset are already stemmed via the Porter stemmer \cite{msd} so no explicit stemming is conducted as a part of this experiment.\\\\
-In order to estimate the accuracy of the tag prediction models, the extracted data was divided into 10 percent test data and 90 percent training data and 10 fold cross validation was performed. Each lyrics in the test data was compared to the training data and a ranked order of the trained songs are presented based on the similarity metric used. Tags are then estimated based on the tag estimation mechanisms presented in \ref{genreestimation}. \\\\
-Parameters which determines the degree of permissible agreement are the thresh hold value $\epsilon$ defined in \ref{NaiveGenre} and \ref{MaxFrequencyGenre} and top k songs chosen in \ref{WeightedGenre} and \ref{MaxFrequencyGenre}. For the purposes of experimental evaluation, these hyper parameters were tweaked to produce a precision recall curve for the weighted genre estimation, as its an ordered ranked list and ROC (Receiver operating characteristic curve) for max frequency and naive genre estimation (as they are produced un ordered rank list). \\
+In order to estimate the accuracy of the tag prediction models, the extracted data was divided into 10 percent test data and 90 percent training data and 10 fold cross validation was performed. Each lyrics in the test data was compared to the ground truth data and a ranked order of the trained songs are presented based on the similarity metric used. Tags are then estimated based on the tag estimation mechanisms presented in \ref{genreestimation}. \\\\
+Parameters which determines the degree of permissible agreement are the thresh hold value $\epsilon$ defined in \ref{NaiveGenre} and \ref{MaxFrequencyGenre} and top k songs chosen in \ref{WeightedGenre} and \ref{MaxFrequencyGenre}. For the purposes of experimental evaluation, these hyper parameters were varied to produce a precision recall curve for the weighted genre estimation, as its an ordered ranked list an ROC (Receiver operating characteristic curve) for max frequency and naive genre estimation (as they are produced an un ordered ranked list). 
 
-\begin{figure}
+\begin{figure}[!htb]
 
 \centering
 \includegraphics[width=\textwidth]{precRec.jpg}
@@ -98,7 +99,7 @@ Parameters which determines the degree of permissible agreement are the thresh h
 \label{fig:precRec}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!htb]
 \centering
 \includegraphics[width=\textwidth]{roc.jpg}
 \makeatletter
@@ -107,15 +108,14 @@ Parameters which determines the degree of permissible agreement are the thresh h
 \label{fig:roccurve}
 \end{figure}
 
-\newpage 
 
 \subsection{Results on exploratory query analysis} \label{queryexplore}
 
-\noindent In order to estimate the efficacy of the Modulo7 SQL querying, certain customized querying experiments are conducted. In order to ascertain the relevance of the statistic extraction \ref{statistic} and criteria estimation \ref{criteria}, certain queries were designed and cross checked with the tags associated with that song (since meta data tags come along with the songs in the million song data set). For example based on a prior statement made about intervals expressing the mood of a song in \ref{intervals} , we can estimate a rock song based on a query : select mp3 from database where power index > k where k is some thresh hold. This particular experiment involves exploring for a reasonable estimate of k to ascertain rock songs from non-rock songs. The ground truth would be the genre labels extracted in \ref{genrelabels} or the last fm dataset tags \cite{msd} depending on the query context. \textbf{Its important to note that this experiment is exploratory and novel in nature and hence there is no pre-existing framework/methodology or approach to compare against.}\\
+\noindent In order to estimate the efficacy of the Modulo7 SQL querying, certain customized exploratory experiments are conducted. In order to ascertain the relevance of the statistic extraction \ref{statistic} and criteria estimation \ref{criteria}, certain queries were designed and cross checked with the tags associated with that song (since meta data tags come along with the songs in the million song data set). For example based on a prior statement made about intervals expressing the mood of a song in \ref{intervals} , we can estimate a rock song based on a query : select mp3 from database where power index $>$ k where k is some thresh hold. This particular experiment involves exploring for a reasonable estimate of k to ascertain rock songs from non-rock songs. The ground truth would be the genre labels extracted in \ref{genrelabels} or the last fm dataset tags \cite{msd} depending on the query context. \textbf{Its important to note that this experiment is exploratory and novel in nature and hence there is no pre-existing framework/methodology or approach to compare against.}\\
 
-\noindent The query and their equivalent statement are -++listed and the accuracies for simple queries are listed below:- \\
+\noindent The query and their equivalent statement are listed and the accuracies for simple queries are listed below \\
 
-\begin{table}[h]
+\begin{table}[!htb]
 \begin{center}
     \begin{tabular}{| l | l | l | l | l |}
     \hline
@@ -128,6 +128,8 @@ Parameters which determines the degree of permissible agreement are the thresh h
 \end{center}
 \caption{Results for the exploratory query analysis}
 \end{table}
+
+\newpage
 
 \noindent We define Q1, Q2 and Q3 as follows
 
@@ -144,22 +146,14 @@ From these results we can conclude the following :
 \item While recall is high (especially for rock songs), precision is low for all queries in this analysis. This would entail that while the relevant songs are indeed retrieved, many irrelevant songs are also retrieved which satisfy the criteria. This could be resolved by compounding the query with criteria/statistics which filter out the false positives. 
 \end{enumerate}
 
-\section{Results on melodic alignment and similarities over sub melodies}
+\section{Results on KK Tonality Profiles algorithm for Key Estimation} \label{kktonalexpt}
 
-\noindent A micro experiment was run to show the extensibility of Modulo7 for the purpose of melodic alignment. Its often important to ascertain which regions of a melody are similar to which other regions of a melody. For this experiment, the Smith Waterman algorithm \ref{SMAlgorithm} is used for similarity computation and representing regions of melodies that are similar to each other. \\
-
-\noindent Its important to note that this experiment is a demonstrative experiment instead of an evaluation to show the application of \ref{SMAlgorithm} on tonality alignment. For a more in depth study of tonality alignment and sub melodic similarity, the reader should refer to \cite{smithWatermanBook}.  \\
-
-\noindent For this experiment 
-
-\section{Results on KK Tonality Profiles algorithm for Key Estimation}
-
-\noindent In order to test the KK Tonality algorithm given in \ref{kktonality}, Modulo7 is benchmarked against a big subset of the Wikifonia data set of lead sheets in the compact mxl format (variant of the music xml format) \cite{WikifoniaDataset}. The original dataset of the Wikifonia is now no longer available but a sizable subset of 6715 songs are currently down loadable and copyright free. Out of this set, 1314 have key signatures embedded in the song sources. The experiment involves comparing the key signatures embedded inside the key signatures versus the implied key signatures the KK Tonality estimates from the pitch histogram of the songs parsed from this source. A special MXL parser (a minor variant of the music xml parser) was developed for this purpose. The scoring scheme for this experiment was simple, if the key signature was correctly identified then score of 1 otherwise score of 0. In this particular dataset, key signatures are partially known (\textbf{since the number of sharps or flats in the key signatures are always encoded in music xml files} so only relative major/minor are needed to be ascertained). As a consequence only two choices are to be made between key signatures for each file giving a baseline of \textbf{50\%}. In this particular example, KK Tonality's performance is how well it can distinguish between relative minors and majors. \\\\
-After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the total 1314 key signatures are correctly identified leading to an accuracy of \text{85.9\%}. This is commensurate with the reported accuracies reported in \cite{kkTonalityKeyFinding}. 
+\noindent In order to test the KK Tonality algorithm given in \ref{kktonality}, Modulo7 is benchmarked against a subset of the Wikifonia data set of lead sheets in the compact mxl format (which is just a zipped version of xml files) \cite{WikifoniaDataset}. The original dataset of the Wikifonia is now no longer available but a sizable subset of 6715 songs are currently down loadable and copyright free. Out of this set, 1314 have key signatures embedded in the song sources. The experiment involves comparing the key signatures embedded inside the key signatures versus the implied key signatures the KK Tonality algorithm \ref{kktonality} estimates from the pitch histogram of the songs parsed from this source. A special MXL parser (a minor variant of the music xml parser) was developed for this purpose. The scoring scheme for this experiment was simple, if the key signature was correctly identified then score of 1 otherwise score of 0. In this particular dataset, key signatures are partially known for all 6715 songs (\textbf{since the number of sharps or flats in the key signatures are always encoded in music xml files} so only relative major/minor were required to be ascertained). As a consequence only two choices are to be made between key signatures for each file giving a baseline of \textbf{50\%}. In this particular example, KK Tonality's performance is how well it can distinguish between relative minor and major key(a minor and major key having identical scales but different keys). \\\\
+After running the KK Tonality algorithm on the Wikifonia dataset, 1129 out the total 1314 key signatures are correctly identified leading to an accuracy of \text{85.9\%}. This is commensurate with the reported accuracies reported in \cite{kkTonalityKeyFinding}. 
 
 \section{Results on CPU and Memory and Disk space compared against jMIR}
 
-\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features(although that is not an end goal for Modulo7). However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. Out of the total 111 features that are implemented in jSymbolic \cite{jSymbolic}, 23 features were identified as implemented as internal computation within the Modulo7 indexers and/or querying engine. \textbf{Its important to note that unlike jMIR}. A modified version of Modulo7's basic indexing engine was used for extracting the following features. 
+\noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features(although that is not an end goal for Modulo7). However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. Out of the total 111 features that are implemented in jSymbolic \cite{jSymbolic}, 23 features were identified as implemented as internal computation within the Modulo7 indexers and/or querying engine. A modified version of Modulo7's basic indexing engine was used for extracting the following features. 
 \begin{enumerate}
 \item 1 feature for duration of song
 \item 2 features for average melodic intervals, note duration
@@ -173,29 +167,29 @@ After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the t
 \item 1 feature for time signature
 \item 4 features for checking for voice equality in the following categories : melodic leaps, note duration, number of notes and range \\
 \end{enumerate}
-\noindent In order to compare the frameworks, jProfiler was to profile for max CPU utilization, average Java Heap Memory usage and time taken for both frameworks over different sized subsets of the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}. In order to protect against background process interference, the frameworks were ran on AWS EC2 m4x.large instances (dual core 2.4 GHz Intel Xeon® E5-2676 v3 Haswell processors and 8 GB DDR3 RAM). We plot the average memory consumed, CPU load and time taken in seconds as a function of dataset size (over monotonically increasing subset sizes of the SMD dataset). We ignore IO performance since in this experiment, IO is only utilized when pushing output to disk, which is not taken as a metric of evaluation. No data sets involving music xml files were chosen, as jSymbolic does not support music xml files. 
+\noindent In order to compare the frameworks, jProfiler was to profile for max CPU utilization, average Java Heap Memory usage and time taken for both frameworks over different sized subsets of the Saarland Music Data (SMD) Dataset \cite{saarlandmsd}. In order to protect against background process interference, the frameworks were ran on AWS EC2 m4x.large instances (dual core 2.4 GHz Intel Xeon® E5-2676 v3 Haswell processors and 8 GB DDR3 RAM). We plot the average memory consumed, CPU load and time taken in seconds as a function of dataset size (over monotonically increasing subset sizes of the SMD dataset). We ignore IO performance since in this experiment, IO is only utilized when pushing output to disk, which is not taken as a metric of evaluation. No data sets involving music xml files were chosen, as jSymbolic does not support music xml files.\\ 
 
-\begin{figure}
+\begin{figure}[!htb]
 \centering
-\includegraphics[width=\textwidth]{TimeTaken.png}
+\includegraphics[width=120mm, scale=0.8]{TimeTaken.png}
 \makeatletter
 \let\@currsize\normalsize
 \caption{Modulo7 vs jSymbolic for time taken to generate features}
 \label{fig:time}
 \end{figure}
 
-\begin{figure}
+\begin{figure} [!htb]
 \centering
-\includegraphics[width=\textwidth]{MemoryTaken.png}
+\includegraphics[width=120mm, scale=0.8]{MemoryTaken.png}
 \makeatletter
 \let\@currsize\normalsize
 \caption{Modulo7 vs jSymbolic for average memory utilized}
 \label{fig:mem}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[!htb]
 \centering
-\includegraphics[width=\textwidth]{CPUUsage.png}
+\includegraphics[width=120mm, scale=0.8]{CPUUsage.png}
 \makeatletter
 \let\@currsize\normalsize
 \caption{Modulo7 vs jSymbolic for maximum CPU utilized utilized}
@@ -211,6 +205,28 @@ After running the KK Tonality algorithm on the wikifonia dataset, 1129 out the t
 \item jSymbolic under utilizes CPU for computing features whereas Modulo7 is optimal in terms of CPU usage. The profiling results revealed that jSybmolic is single threaded and contains no caching mechanism for storing features (leading to re-computation of features that are dependencies of other features)
 \item jSymbolic consumes more Java Heap memory during execution on average. While no conclusive evidence could be established, a code audit revealed jSymbolic uses a large number of primitive arrays \cite{jSymbolicCode} in contrast to a fewer number of dynamic allocations in Modulo7 which could lead to higher memory consumed. 
 \end{enumerate}
+
+\section{Results on melodic alignment and similarities over sub melodies} \label{melodicalignmentexpt}
+
+\noindent A micro experiment was run to show the extensibility of Modulo7 for the purpose of melodic alignment. Its often important to ascertain which regions of a melody are similar to which other regions of a melody. For this experiment, the Smith Waterman algorithm \ref{SMAlgorithm} is used for similarity computation and representing regions of melodies that are similar to each other. A particular definition for that was used for the similarity between voice instants \ref{SMAlgorithm} in this experiment is 
+
+\begin{equation}
+isSim(V_x, V_y) = \begin{cases}
+2 & V_x = V_y \\
+-1 & otherwise
+\end{cases}
+\end{equation}
+
+\noindent Its important to note that this experiment is a demonstrative experiment instead of an evaluation to show the application of \ref{SMAlgorithm} on tonality alignment. For a more in depth study of tonality alignment and sub melodic similarity, the reader should refer to \cite{smithWatermanBook}.  \\
+
+\noindent For this experiment a couple of famous publicly available monophonic tunes(twinkle twinkle little stars and jesu joy of man's desiring by J.S Bach) are chosen and their corresponding music xml transcriptions are aligned both to C Major Key. \\
+
+\noindent The following alignments are noticed (some deletions in between are omitted for brevity's sake, relevant substitutions are retained) \\
+
+\noindent TW = D D - - - - - - - - - - - - - - - - - - - - E E D \\
+\noindent JM = C D - - - - - - - - - - - - - - - E - - - - - - E D - - - - \\ 
+
+\noindent This facilitates in visualizing the similar regions. While the songs have widely different appeal (joy of man's desiring(JM) is a hymn and twinkle twinkle little star(TW)), they have a couple of contiguous notes common in the end.  
 
 
  
