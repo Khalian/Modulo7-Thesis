@@ -103,32 +103,32 @@ PI = <\Delta p_1, \Delta p_2, ... , \Delta p_n>
 RPI = <rp_1, rp_2, ... rp_n>
 \end{equation}
 
-\subsection{Vector Space Models for Polyphonic Music} 
+\subsection{Vector Space Models for Polyphonic Music} \label{polyphonicvectors}
 
 \noindent This section discusses the mathematical formulations behind vector space model implementations for polyphonic music. These models can directly be utilized for similarity measures for songs in \ref{polyphonicsim}. \\
 
 \noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of twelve distinct intervals present in western music theory. Each position in the vector corresponds to the total number of times that interval has occurred in a song. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} \Delta p_i^{voice_j}$ and for a song $\Delta P^{song} = \sum_{voice_j} \Delta P^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{\sum_i \delta (p_i)}{\Delta P^{song}}$ where $\sum_i \delta (p_i)$ stands for the number of pitches $p$ s.t $\Delta(p) = i$. Now we define the normalized tonal histogram vector as
  
-\begin{equation}
-NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_{12}>
+\begin{equation} \label{eq:nth}
+NTH(S) = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_{12}>
 \end{equation}
 
-\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a song. This is the total summation of the duration of intervals over each individual voice for the entire song. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and for a song $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\delta t_i}{\Delta T^{song}}$ where $\sum_i \delta t_i$ is defined as $\sum_{\Delta t_j = i} \Delta t_j $ where $\Delta t_j$ is the pitch duration as defined in \ref{basicnotation}. We can now define the normalized tonal duration histogram vector as
+\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a song. This is the total summation of the duration of intervals over each individual voice for the entire song. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and for a song $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\delta (t_i)}{\Delta T^{song}}$ where $\delta (t_i)$ is defined as $\sum_{\Delta p_j = i} \Delta p_j $ where $\Delta p_j$ is the interval duration as defined in \ref{basicnotation}. We can now define the normalized tonal duration histogram vector as
 
-\begin{equation}
-NTDH = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_{12}>
+\begin{equation} \label{eq:ntdh}
+NTDH(S) = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_{12}>
 \end{equation}
 
-\noindent \textbf{Normalized Pitch Duration Histogram Vector:}  The pitch duration histogram is a vector or map of twelve distinct pitches present in western music theory. Each position in the vector corresponds to the cumulative duration for which that pitch has occurred in a voice and for a song it is the summation of cumulative durations over all the voices. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^p_i = \frac{\sum_i \Delta p_i}{\Delta T^{voice}}$. Here the summation in the numerator is the cumulative time for which the pitch in the $i^{th}$ position of the western music chromatic scale is played. Thus we can define the normalized tonal duration histogram vector as 
+\noindent \textbf{Normalized Pitch Duration Histogram Vector:}  The pitch duration histogram is a vector or map of twelve distinct pitches present in western music theory. Each position in the vector corresponds to the cumulative duration for which that pitch has occurred in a voice and for a song it is the summation of cumulative durations over all the voices. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^p_i = \frac{\mu (t_i)}{\Delta T^{voice}}$ where $\mu (t_i)$ is defined as $\sum_{\Delta t_j = i} \Delta t_j $ where $\Delta t_j$ is the pitch duration as defined in \ref{basicnotation}. Thus we can define the normalized tonal duration histogram vector as 
 
-\begin{equation} \label{NPDH}
-NPDH = <\Delta t^p_1, \Delta t^p_2, ... , \Delta t^p_{12}>
+\begin{equation} \label{eq:npdh}
+NPDH(S) = <\Delta t^p_1, \Delta t^p_2, ... , \Delta t^p_{12}>
 \end{equation}
 
 
 \section{Similarity Measures} \label{similarity}
 
-\noindent Similarity is defined in Modulo7 as a function which takes as input two voices or songs and outputs a value between 0 to 1 where 0 stands for least similar and 1 stands for most similar. Similarity measures are a cornerstone of recommendations and many recommender engines are based on rank similarity measures for different criteria. Mathematically :-
+\noindent Similarity is defined in Modulo7 as a function which takes as input two voices or songs and outputs a real number between 0 to 1 where 0 stands for least similar and 1 stands for most similar. Similarity measures are a cornerstone of recommendations and many recommender engines are based on ranked similarity measures. Mathematically
 \begin{equation}
 Sim_{song}(S_1, S_2) \in (0, 1)
 \end{equation}
@@ -136,11 +136,11 @@ Sim_{song}(S_1, S_2) \in (0, 1)
 Sim_{voice}(V_1, V_2) \in (0, 1)
 \end{equation}
 
-\subsection{N-gram Similarity Measures}
+\subsection{N-gram Similarity Measures} \label{ngramsim}
 
 \noindent String representations of voices can be treated as text documents, and as a result n gram representations of voices can be used for developing similarity models. The following n gram models are implemented which are described in \cite{similietechnicalmanual}. \\
 
-\noindent \textbf{Count Distance Measure:} Let $t_n$ and $t_n$ denote the set of distinct trigrams in the string representations of voices t and s, and let $\tau$ denote an n-gram, the count distance is defined as 
+\noindent \textbf{Count Distance Measure:} Let $t_n$ and $s_n$ denote the set of distinct trigrams in the string representations of voices t and s respectively, and let $\tau$ denote an n-gram. The count distance is defined as 
 
 \begin{equation}
 \sigma(s, t) = \frac{\sum_{\tau \in s_n \cap t_n} 1}{max (\mid s_n \mid, \mid t_n \mid)}
@@ -160,7 +160,7 @@ Here $\mid s \mid$ and $\mid t \mid$ are lengths of string representations of vo
 \sigma(s, t) = 1 - \frac{\sum_{\tau \in s_n \cup t_n} \mid f_s(\tau) - f_t(\tau) \mid}{\mid s \mid + \mid t \mid - 2(n-1)}
 \end{equation}
 
-\noindent N gram models are readily extensible to polyphonic music, 
+\noindent N gram models are readily extensible to polyphonic music by the generic similarity technique described in \ref{polyphonicsim}.
 
 \subsection{Similarity Measures for Monophonic Music} \label{monophonicSim}
 
@@ -170,16 +170,24 @@ Here $\mid s \mid$ and $\mid t \mid$ are lengths of string representations of vo
 
 \subsection{Similarity Measures for Polyphonic Music} \label{polyphonicsim}
 
-\noindent In order to incorporate vector space models to polyphonic similarity, monophonic measures can be extended in order to accomodate for polyphony. Another approach would be to apply measures.
+\noindent In order to incorporate vector space models to polyphonic similarity, monophonic measures can be extended in order to accomodate for polyphony.
 
-\noindent {Generic maximal voice similarity} An approach would be to take pairwise voice similarities between two voices of a song, and then representing the max of these pairwise computed similarities. This model is especially useful in cases where comparing a melody against a song which contains a similar melody. Mathematically 
+\noindent {Generic maximal voice similarity} An approach would be to take pairwise voice similarities between two voices of a song, and then representing the max of these pairwise computed similarities. This model is especially useful in cases where comparing a melody against a song which contains a similar melody and acts as a generic polyphonic extension to models in \ref{ngramsim}. Mathematically 
 \begin{equation}
 GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_j \in S_2
 \end{equation}
 
-\subsection{Sub melodic similarities} \label{sim:unequal}
+\noindent \textbf{Standard Document Similarities: } Given the document representations in \ref{polyphonicvectors}, standard document similarity measures like cosine similarity can be applied. We can define certain measures such as the tonal histogram similarity as 
 
-\noindent Its almost certain that two voices will never have the same length. Hence its important at this point to ascertain how to map similarity measures to unequal length voices. Moreover, its also important to judge which regions of one melody are maximally similar to which other regions of the other melody (also called as alignment). Modulo7 takes inspiration from bio informatics domain and uses the smith waterman algorithm modified for voice similarity \cite{smithWatermanBook}. The algorithm is as follows:-
+\begin{equation}
+THS(S_1, S_2) = cosine_{sim} (NTH(S_1), NTH(S_2))
+\end{equation}
+
+\noindent where NTH is defined as equation \ref{eq:nth}. In the same manner we can define similarity measures for \ref{eq:ntdh} and \ref{eq:npdh}.
+
+\section{Sub melodic similarities and Tonal Alignment} \label{sim:unequal}
+
+\noindent Often its important to judge which regions of one melody are maximally similar to other regions of a different melody (also called as tonal alignment) instead of judging overall similarity. Modulo7 takes inspiration from bio informatics domain and uses the smith waterman algorithm modified for voice similarity \cite{smithWatermanBook}. The algorithm is as follows:-
 
 \begin{algorithm}
 
@@ -203,35 +211,23 @@ GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Meta Data based similarity}
-
-\noindent All the similarity measures considered so far is based on similarity on voices and sets of voices in a a song. However there are other global properties of a song such as the key signature or the time signature of a song. This global information can give us context about a song's particular characteristics (for example songs in Minor scale are generally sadder than songs in the Major scale). Hence estimates can be more quickly derived by comparing meta data features rather than voices (whose computation). These similarity measures can be used for a additional purposes(for example completing incomplete meta data). 
-
-\subsection{Tonal Similarity}
-
-\noindent Often pieces of one key are similar to pieces on a different key, simply based on the fact that the keys themselves are similar. As a result a similarity measure could be developed which takes into account the differences in the key signature of a song
-
-\begin{equation}
-Sim(K_1, K_2) = \begin{cases} 
-      1 & K_1 == K_2 \\
-      0 & otherwise \\  \end{cases}
-\end{equation}
+\noindent Here InSim(Vx, Vy) is a customizable similarity function for two voice instants (pitch/chord) and $\phi$ stands for absence of a pitch/chord and as a consequence  InSim(Vx, $\phi$) denotes the similarity between a pitch/chord to a rest or no pitch/chord.  
 
 \section{Criteria Analysis} \label{criteria}
 
-\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic predicate. Some example problems of such sorts are if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the STAB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements on top of similarity measures or alternatively if certain pieces just satisfies a one or more criteria. Following are the criteria implemented in Modulo7.
-
-\subsection{Simple criteria} 
-
-\noindent Simple criteria are based on simple global level properties of the song. \\
+\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic criteria or predicate. Some examples would be if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the SATB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements by compounding such criteria. Following are the criteria implemented in Modulo7. \\
 
 \noindent \textbf{Polyphonic Criteria:} Its a simple criteria which decides whether a piece of music is polyphonic or not. This is decided on the basis of the number of voices in the song. \\
 
-\noindent \textbf{Key Signature Equality Criteria:} Its a simple criteria that checks if a song is in a particular key or not.
+\noindent \textbf{Key Signature Equality Criteria:} Its a simple criteria that checks if a song is in a particular key or not. \\
+
+\noindent \textbf{Time Signature Criteria:} Its a simple criteria that checks if a song has a particular time signature/meter or not. \\
+
+\noindent \textbf{SATB Criteria:} Whether the song satisfies the STAB voice classification as defined in \cite{satbcriteria}. 
 
 \section{Statistics Analysis} \label{statistic}
 
-\noindent A statistic when applied to a given song outputs a real number. Alternatively statistics could be thought of a non trivial extracted single value features. Mathematically a feature can be defined as:-
+\noindent A statistic when applied to a given song outputs a real number. Alternatively statistics could be thought of a non trivial single value features that can be extracted from a song. Mathematically a feature can be defined as:-
 
 \begin{equation}
 Statistic(Song) = x \ s.t \ x \in \mathbb{R}
@@ -248,3 +244,9 @@ Statistic(Song) = x \ s.t \ x \in \mathbb{R}
 \item Sadness Index : The sadness index of a song is the number of minor intervals \cite{minorintervalssad}  in a song divided by the total number of intervals. A minor interval sounds "sad" to a layman hence a higher concentration of them makes a song sadder \cite{majorvsminorintervals}. 
 \item Power Index : The power index of a song is the number of perfect interval in a song divided by the total number of intervals. Perfect melodic intervals are very prevalent in a rock and metal songs and are an expression of a neutral/powerful tone. This stems from the fact that perfect fifths along with perfect unison or perfect octaves, which are very common in rock music \cite{foundationsOfRock} 
 \end{enumerate}
+
+\noindent \textbf{Max Range of a song} The maximal range that is occuring within a given song. This is the max range over all voices of a song. \\
+
+\noindent \textbf{Most frequent interval/ pitch } The pitch / interval value of the most commonly occuring pitch/interval. \\
+
+\noindent \textbf{Average pitch/interval duration} The average pitch and duration interval for all given pitches, durations. 
