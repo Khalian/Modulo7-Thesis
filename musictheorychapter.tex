@@ -1,65 +1,66 @@
 \chapter{Basics of Music Theory}
 \label{sec:music theory}
 
-\noindent Music theory is defined as the systematic study of the structure, complexity and possibilities of what can be expressed musically. More formally its the academic discipline of studying the basic building blocks of music and the interplay of these blocks to produce complex scores (pieces of music). Modulo7 is built on top of western theoretic principles and hence only western music theory is explored. Also music theory is an extremely complicated subject and hence only the basics and relevant portions to the Modulo7 implementation are discussed here. \\\\
-Traditionally music theory is used for providing directives to a performer to play a particular song/score. \\\\
-This chapter is primarily meant for people with a weak or lack of understanding of western music theory. 
-The following section talks about the basic building blocks of music theory:-
-\section{Building Blocks}
+\noindent Music theory is defined as the systematic study of the structure, complexity and possibilities of what can be expressed musically. More formally its the academic discipline of studying the basic building blocks of music and the interplay of these blocks to produce complex scores (pieces of music). Traditionally music theory is used for providing directives to a performer to play a particular song/score or for a composer for producing novel music. Modulo7 is built on top of western theoretic principles and hence only western music theory is explored. Also music theory is an extremely complicated subject and hence only the basics and relevant portions to the Modulo7 implementation are discussed here. \\
+
+\noindent This chapter is primarily meant for readers with a weak or lack of understanding of western music theory and can be skipped if the reader is familiar with these concepts. 
+
+\section{Building Blocks of Music}
 
 \noindent Music is built on fundamental quantities (much like matter is built on fundamental quantities like atoms/molecules). The following are the core concepts in order of atomicity (i.e successive concepts build on the preceding ones)\\
 
-\noindent \textbf{Pitch/Note: } A pitch is a deterministic frequency of sound played by a musical voice (instrument or human). In western music theory, certain deterministic pitches are encoded as Notes. For example the note A4 is equal to 440 Hz. In other words Notes are symbolic representations of certain pitches. With certain notable exceptions, most music is played on these set frequencies. \\\\
+\noindent \textbf{Pitch/Note: }\label{pitch} A pitch is a deterministic frequency of sound played by a musical voice (instrument or a singer). In western music theory, certain deterministic pitches are encoded as Notes. For example the note A4 is equal to 440 Hz. In other words Notes are symbolic representations of certain pitches. With certain notable exceptions \cite{microtonalmusic}, most music is played on these set frequencies. \\\\
 Each note is characterized by two entities. First is the note type and the second is the octave. An octave can be considered as a range of 12 consecutive notes. There are 8 octaves numbered 0 to 7 which are played by traditional instruments or vocal ranges. Notes are categorized into 7 major notes types (called A, B, C, D, E, F, G) and 5 minor notes (also called as accidentals). They can be characterized by increasing or decreasing the frequency of the notes by a certain amount (called sharps(\#) and flats(b) respectively). For example the accidental lying in between (A and B is called A\# or Bb). Similarly accidentals lie in between C, D; D, E; F, G and G, A. (\textbf{Note that there are no accidentals in between B and C and E and F}). \\
 
 \noindent \textbf{Semitone and Tone:} A semitone is defined as the incremental or decremental distance between two consecutive notes. For instance there is one semitone in between A and A\#. Similarly there are 3 semitones in between A and C. A tone is the distance between two consecutive note types. For example there is one tone in between A and B. \\
 
 \noindent \textbf{Beat/Tick:} A beat or tick is a rhythmic pulse in a song. Beats in sequence is used to maintain a steady pulse on which the rhythmic foundations of a song is based.  \\
 
-\noindent \textbf{Pitch duration:} A pitch duration is a relative time interval the pitch persists on a musical instrument. For example a whole note will persist twice as longer as a half note which will persist twice as long as a quarter note.  \\
+\noindent \textbf{Pitch/Note duration:} A pitch/note duration is a relative time interval the pitch persists on a musical instrument. For example a whole note will persist twice as longer as a half note which will persist twice as long as a quarter note.  \\
 
-\noindent \textbf{Attack/Velocity:} The intensity or force with which a pitch is played. This parameter influences the loudness of the note and in general the dynamics of the song (covered in a subsequent section).  \\
+\noindent \textbf{Attack/Velocity:} The intensity or force with which a pitch is played. This parameter influences the loudness of the note and in general the dynamics of the song which is covered in the end of \ref{dynamics}. \\
 
-\noindent \textbf{Chord:} A chord is a set of notes being stacked together (being played together at or almost at the same time). Chords are the basic building blocks of the concept of harmony (which will be discussed further on.). Traditionally a chord is constructed by stacking together notes played on a single instrument, but a chord can be constructed by different instruments simultaneously playing different notes. \\
+\noindent \textbf{Rests:} Rests are pauses in between notes (with no sound being played at that point of time) for a fixed duration, generally in the same unit of measurement as a pitch duration. For example a whole rest is of the same duration as a whole note.  \\
 
-\noindent \textbf{Rests:} Rests are pauses in between notes (with no sound being played at that point of time) for a fixed duration, generally in the same unit of measurement as a pitch duration. \\
+\noindent \textbf{Melody:} A melody is a succession of notes and rests which sound pleasing(which is subjective to a listener). \\
 
-\noindent \textbf{Melody:} A melody is a succession of notes and rests which sound pleasing. There are many rules about what makes a melody sound good which we will get to in the subsequent reading. \\
+\noindent \textbf{Chord:} A chord is a set of notes stacked together (being played on or almost on the same time). Chords are the basic building blocks of the concept of harmony. Traditionally a chord is constructed by stacking together notes played on a single instrument, but a chord can be constructed by different instruments simultaneously playing different notes. \\
 
 \noindent \textbf{Harmony:} A harmony is a succession of chords (also known as a chord progression) along with the principles that govern the relationships between different chords. \\
 
-\noindent \textbf{Voice:} \label{voice} A voice is an interplay of notes, chords and rests by a single instrument/vocalist. The reader can think of a voice as a hybrid or generalization of the melody and harmony concepts. \\
+\noindent \textbf{Voice:} A voice is an interplay of notes, chords and rests by a single instrument/vocalist. The reader can think of a voice as a hybrid or generalization of the melody and harmony concepts. \\
 
-\noindent \textbf{Register:} For a given voice, the register of a voice is the range of notes that the singer of that voice can comfortably sing or a musical instrument sounds nice in. \\
+\noindent \textbf{Interval:} \label{interval} An interval is the relative semitone distance between any two notes. Intervals are categorized as melodic(semi tone distance between successive notes in a melody) and harmonic intervals (semi tone distance between notes within a chord). \\
 
-\noindent \textbf{Range:} For a given voice, the range of a voice is the range between the maximum and minimum notes that a singer can sing or a musical instrument can play.  \\
+\noindent \textbf{Register:} For a given voice, the register of a voice is the range of notes that the singer of that voice can comfortably sing or a musical instrument sounds good. \\
 
-\noindent \textbf{Score/Song:} A score or a song is an interplay of voices. It is the final product of music that is delivered to the audience. Songs are of different types based on cultural context and complexity (for example an orchestra is a large number of voices being coordinated by a conductor. In contrast a folk song might be played by a single person on a guitar or a duet between a vocalist and an instrumentalist). \\
+\noindent \textbf{Range:} For a given voice, the range of a voice is the range between the maximum and minimum notes that a singer can sing or a musical instrument can sing/play.  \\
 
-\noindent \textbf{Interval:} An interval is the relative semitone distance between any two notes. Intervals are categorized as melodic(semi tone distance between successive notes in a melody) and harmonic intervals (semi tone distance between notes within a chord).
+\noindent \textbf{Score/Song:} A score or a song is an interplay of voices. It is the final product of music that is delivered to an audience. Songs can be categorized different "types" based on cultural context and complexity (for example an orchestra is a large number of voices being coordinated by a conductor. In contrast a folk song might be played by a single person on a guitar or a duet between a vocalist and an instrumentalist). 
+
 
 \section{General Concepts in Music Theory}
 
-\noindent On top of the building blocks of music, there are certain generic ideas or concepts on which music is based. The following sections describe them :-
+\noindent On top of the building blocks of music, there are certain generic ideas or concepts on which music is based. The following sections discuss few such concepts \\
 
-\noindent \textbf{Polyphony/Monophony:} A monophonic song involves exactly one voice in the song. An example would be a single person singing a tune. A polyphonic song is one which involves two or more voices transposed with one another. An example of polyphonic music would be a Western classical orchestra or a band performing a chorus section of a song. \\
+\noindent \textbf{Polyphony/Monophony:} A monophonic song involves exactly one voice in the song. An example would be a single person singing a tune. A polyphonic song is one which involves two or more voices transposed with one another. An example of polyphonic music would be a Western Classical Orchestra or a band performing a chorus section of a song. \\
 
-\noindent \textbf{Phrase:} A musical phrase is a subset of the song that has a complete musical sense of its own. One could think of phrases as musical sentences, whereas a voice could be considered a paragraph. A musical phrase can be played independently and still be considered as a song albeit an incomplete one. \\
+\noindent \textbf{Phrase:} A musical phrase is a contiguous part/snippet of a song that has a complete musical sense of its own. One could think of phrases as musical sentences, whereas a voice could be considered a paragraph. A musical phrase can be played independently and still be considered as a song albeit an incomplete one. \\
 
 \noindent \textbf{Meter:} The meter of a song is an expression of the rhythmic structure of a song. In context of western classical music, its a representation of the patterns of accents heard in the recurrence of measures of stressed and unstressed beats. Meters dictate the rhythm or tempo in which a song is played. \\
 
-\noindent \textbf{Key/Tonality:} Tonality or key of a song is a musical system in which pitches or chords are arranged so as to include a hierarchy of relation between musical pitches, stabilities and attractions between various pitches. For example if the song is in the key of C, C is the most stable pitch in that song and other pitches like B have a tendency to go towards C (also called resolution of a pitch) to inculcate a sense of completeness. Moreover other pitches in relation to this pitches have various degrees of stability. \\
+\noindent \textbf{Key/Tonality:} Tonality or key of a song is a musical system in which pitches or chords are arranged so as to include a hierarchy of relationships between musical pitches, stabilities and attractions between various pitches. For example if the song is in the key of C, C is the most stable pitch in that song and other pitches like B have a tendency to go towards C (also called resolution of a pitch) to inculcate a sense of completeness. Moreover other pitches in relation to this pitches have various degrees of stability and serve different functions. \\
 
 \noindent \textbf{Scale:} A scale of a song is an ordered set of notes starting from a fundamental frequency or pitch. If viewed ascendingly or descendingly (increasing/decreasing frequency of the pitches respectively) on this ordering, a scale describes a relationship between successive notes and their semitone distances from each other. A scale restricts the set of notes being played once the fundamental pitch is determined. \\
 
 \noindent \textbf{Scale Degree:} Given a scale and a root note, the scale degree for a note is defined as the distance from the root note to that note on the scale, if the notes on that scale are sequentially played from root note progressively towards the other note. \\
 
-\noindent \textbf{Key Signature:} A key signature is a key along with a scale defined for a song (or in other words the fundamental pitch of the scale of the song is the same as the key of the song). A key signature is an expression of coherence for a song as well as a well defined set of notes that can be played for this piece, and as a result a song does not have notes that are outside of this key signature. \\
+\noindent \textbf{Key Signature:} A key signature is a key along with a scale defined for a song (or in other words the fundamental pitch of the scale of the song is the same as the key of the song). A key signature is defines the set of notes that can be played for a particular piece of western music. \\
 
-\noindent \textbf{Chromatic Music:} Chromatic music is any music that does not have a well defined key signature. Alternatively chromatic music can be categorized as music which is in the chromatic scale (chromatic scale is a scale in which all semitones in western music is present). Chromatic music is more difficult to analyze due to its lack of structure. \\
+\noindent \textbf{Chromatic Music:} Chromatic music is any music that does not have a well defined key signature. Alternatively chromatic music can be categorized as music which is in the chromatic scale (chromatic scale is a scale in which all semitones in western music are present). Chromatic music is more difficult to analyze due to its lack of structure. \\
 
-\noindent \textbf{Melodic Contour:} Melodic contour is the "shape" of melody. A melody with pitches going monotonically upward in frequency is called an ascending contour. Similarly a melody going monotonically downwards in frequency is called a descending contour. There are many other kinds of contour in music theory. \\
+\noindent \textbf{Melodic Contour:} Melodic contour is the "shape" of melody. A melody with pitches going monotonically upward in frequency is called an ascending contour. Similarly a melody going monotonically downwards in frequency is called a descending contour. \\
 
-\noindent \textbf{Dynamics:} Dynamics is a coarse idea which indicate the variety of relative loudness between notes, speed of notes being played across phrases and other such ideas. \\
+\noindent \textbf{Dynamics:} \label{dynamics} The dynamics of a song is a coarse idea which indicate the relative loudness of notes, speed or pace of notes being played across phrases etc. \\
 
 \noindent \textbf{Counterpoint: } Counterpoint is a musical phenomenon of two or more independent voices being interleaved to produce a rich and more interesting piece of music. Counterpoint pieces sound more interesting than the sum of their parts. Counterpoint is the basic fundamental on top of which orchestral pieces are built. 

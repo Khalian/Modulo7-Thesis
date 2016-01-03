@@ -1,43 +1,49 @@
 \appendix
 \addcontentsline{toc}{chapter}{APPENDICES}
-\chapter{Third Party Libraries Used}
+\chapter{Software Engineering Aspects}
 
-\noindent Modulo7 is a significant software engineering effort. This is partly due to the fact that Modulo7 tends to address speed and efficiency  related issues that are prevalent in other frameworks and partly due to the disparate sources of music that it supports. As such Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned as the follows
+\noindent Modulo7 is a significant Software Engineering effort. This is partly due to the exhaustive coverage of different music sources and partly due to Modulo7 addressing speed, efficiency and scalability issues that are not addressed by other frameworks. \\
 
-\section{Apache Lucene}
+\noindent At the time of submitting this thesis the Modulo7 source code is hosted at : \\ \url{https://github.com/Khalian/Modulo7} along with a detailed wiki page describing the steps to run it here : \url{https://github.com/Khalian/Modulo7/wiki}. 
+
+\section{Third Party Libraries Used}
+
+\noindent Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned as the follows
+
+\subsection{Apache Lucene}
 
 \noindent Apache Lucene is a full text search engine library written in Java. Apache Lucene is used for indexing text documents, spelling correction and other such functionality. \\
 In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyrics either independently acquired from text files containing lyrics or from emdedded lyrics in the Modulo7 supported sources. 
 
-\section{Apache Avro}
+\subsection{Apache Avro}
 
 \noindent Apache Avro is a serialization library used to store Modulo7 objects to disk. This allows for faster retrieval of parsed objects instead of having to reparse entire song sources again and again.
 
-\section{Echo Nest jEN API}
+\subsection{Echo Nest jEN API}
 
 \noindent The toughest challenge in all of Modulo7 was to parse symbolic information from audio sources. In order to accomplish this, Modulo7 relied on the Echo Nest's client library to convert mp3 files into chromagram representation of music \cite{chromagramtutorial}. The chromagram representation is acquired directly by converting mp3 representation into the frequency domain by Echo Nest. Modulo7 treats this process as a black box, as it is interested in finding out only the chromagram representation (from which identifying notes and chords become much simpler). 
 
-\section{Antlr}
+\subsection{Antlr}
 
 \noindent Antlr (Another language recognition tool) is a framework used to develop lexers and parses for custom programming languages. In case of Modulo7, Antlr was used to develop the Modulo7SQL Custom query language.
 
-\section{Jsoup}
+\subsection{Jsoup}
 
 \noindent Jsoup is a library used for parsing XML documents written in Java. In case of Modulo7, Jsoup is used to parse music xml documents and present song representations to the Modulo7 engine. 
 
-\section{Audiveris}
+\subsection{Audiveris}
 
 \noindent Audiveris is a OMR (Optical Music Recognition System) written in Java which converts digitized sheet music files into musicxml files. Audiveris is used to parse sheet music files into Modulo7 song representations.
 
-\section{Alchemy} \label{Alchemy}
+\subsection{Alchemy} \label{Alchemy}
 
 \noindent Alchemy is an implementation of NLP(In general AI) as a service model by IBM. Alchemy provides support for language ID, semantic analysis of arbitrary documents and text. In Modulo7, Alchemy is used for analyzing lyrics.  
 
-\section{Apache JCS (Java Caching System)}
+\noindent {Apache JCS (Java Caching System)}
 
 \noindent Apache JCS is used as a distributed in memory cache to cache the results of Modulo7 custom queries and similarity results for the queries made in the past. 
 
-\section{Apache Commons IO and Math}
+\subsection{Apache Commons IO and Math}
 
 \noindent Apache Commons IO and Math libraries are helper libraries used throughout the Modulo7 code base for low level operations. 
 
@@ -45,7 +51,7 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 
 \noindent There are certain algorithms in literature that are directly implemented in Modulo7. These algorithms facilitate the smooth functioning of Modulo7's indexing in face of incomplete metadata. Some notable algorithms that have been used are briefly described in the following subsections
 
-\section{KK Tonality Profiles and a Key Estimation Algorithm} \label{kktonality}
+\section{Key Estimation Algorithm} \label{kktonality}
 
 \noindent Many music sources have the key signature inscribed in it. For example a midi file might have the key signature bytes transcribed. In the event that this information is not present, it must be inferred from the recording. This is required for certain similarity measures that need the key signature of the song for preprocessing steps  in particular for tonality alignment (\ref{sim:unequal}). There are many methods for achieving this including non trivial tree representations of polyphonic music to estimate key \cite{treemodel}. However in Modulo7, the author has implemented a simpler model for tonality estimation based on templates called KK tonality profiles \cite{kkTonalityKeyFinding} \\
 
@@ -94,7 +100,7 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 \end{algorithmic}
 \end{algorithm}
 
-\subsection{Symbolic Transcription from Chromagrams} \label{chromagramest}
+\section{Symbolic Transcription from Chromagrams} \label{chromagramest}
 
 \noindent A chromagram \cite{chromagramtutorial} is a representation of a song in frequency domain with relative intensities of notes in short window frames of analysis in songs. This chromagram representation is central to acquiring symbolic description from audio sources. Once a chromagram is acquired, ascertaining chords in it becomes important(in particular because harmonic elements are non trivial to ascertain in a given chromagram). Modulo7 implements an algorithm described in \cite{chord-detection} in order to detect chords in chromagrams. This procedure is based on chromagram bitmap representations of different chords and "similarity" of current chromagram with the various bit map representations. \\
 

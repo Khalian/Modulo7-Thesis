@@ -109,7 +109,7 @@ Parameters which determines the degree of permissible agreement are the thresh h
 
 \newpage 
 
-\subsection{Results on exploratory query analysis}
+\subsection{Results on exploratory query analysis} \label{queryexplore}
 
 \noindent In order to estimate the efficacy of the Modulo7 SQL querying, certain customized querying experiments are conducted. In order to ascertain the relevance of the statistic extraction \ref{statistic} and criteria estimation \ref{criteria}, certain queries were designed and cross checked with the tags associated with that song (since meta data tags come along with the songs in the million song data set). For example based on a prior statement made about intervals expressing the mood of a song in \ref{intervals} , we can estimate a rock song based on a query : select mp3 from database where power index > k where k is some thresh hold. This particular experiment involves exploring for a reasonable estimate of k to ascertain rock songs from non-rock songs. The ground truth would be the genre labels extracted in \ref{genrelabels} or the last fm dataset tags \cite{msd} depending on the query context. \textbf{Its important to note that this experiment is exploratory and novel in nature and hence there is no pre-existing framework/methodology or approach to compare against.}\\
 

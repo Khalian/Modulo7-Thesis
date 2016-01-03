@@ -1,4 +1,8 @@
-\chapter{Conclusions}
+\chapter{Conclusions and Recommendations}
+
+\noindent In this chapter, conclusions and recommendations for further research are listed. 
+
+\section{Conclusions}
 
 \noindent In this thesis, a new Music Information Retrieval system is proposed and implemented which applies concepts of music theory for structured querying and search based on custom similarity measures. \\
 
@@ -10,4 +14,18 @@
 \item To explore and quantify the efficiency and efficacy of applying music theoretic concepts for similarity judgments and querying.
 \end{enumerate} 
 
-\noindent In a nutshell, Modulo7 unifies disparate music sources into one cohesive framework which allows for a common ground for querying and similarity searches on a heterogeneous data set.
+\noindent In a nutshell, Modulo7 unifies disparate music sources into one cohesive framework which allows for a common ground for querying and similarity searches on a heterogeneous data set. While Modulo7 does not extend the state of art in any of the subproblems it tackled (e.g better optical music recognition algorithms, new similarity measures etc), it was able to successfully unite the best aspects of different frameworks while adding features to fix missing meta data like key signature of a song \ref{kktonality}. 
+
+\section{Conclusions on the query engine}
+
+\noindent In this thesis, a novel querying framework was developed which facilitated a structured querying approach based on music theoretic features. The number of features that were implemented as a part of this work was limited and hence optimal queries were not identified (based on the results of the experiments done in \ref{queryexplore}). While relevant songs were being included, irrelevant documents were also being fetched as a part of the query. One obvious way to solve this problem to would be to implement more features and specialize queries to exclude irrelevant document. 
+
+\noindent As a part of the effort for the querying engine, a novel indexing and persistent storage mechanism is implemented. 
+
+\section{Conclusions on the similarity search engine}
+
+\noindent Modulo7 implements many of the similarity models defined in \cite{similietechnicalmanual} along with simple extensions to polyphonic music. 
+
+\section{Recommendations for Further Research}
+
+\noindent 

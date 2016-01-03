@@ -1,88 +1,125 @@
 \chapter{Mathematics of Modulo7}
 \label{sec:mir math}
 
-\noindent The following sections describe the mathematical concepts used and implemented in Modulo7.
+\noindent This chapter describes the mathematical concepts used and implemented in Modulo7. A significant chunk of the ideas described here are derived from \cite{similie} and \cite{similietechnicalmanual} with some simple novel extensions, in particular to polyphonic music. 
+
+\section{Basic Notation} \label{basicnotation}
+
+\noindent In this section we define some basic notation that is utilized in subsequent sections in this chapter
+
+\begin{enumerate}
+\item Pitch : A pitch $p$ is a quantitative representation of the concept of pitch defined in \ref{pitch}. Given an octave number x and a note type d (index of note in the western notation scale), $p = 12 \times x + d$  
+\item Pitch Onset : Onset $t_i$ is the absolute time at which $p_i$ begins in a song. 
+\item Interval : An interval is the difference between two consecutive pitches. Mathematically an interval can be defined as $\Delta p_i = p_i - p_{i-1}$
+\item Pitch duration : The pitch duration is the time difference between two consecutive pitch onsets. Mathematically a pitch duration can be defined as $\Delta t_i$ = $t_i - t_{i-1}$. 
+\end{enumerate}
 
 \section{Preprocessing Steps} \label{sim:preprocess}
 
-\noindent It might be that the input sources require certain preprocessing for any mathematical model to work. The following sub sections describe certain preprocessing operations that can be done in order to prepare input data to be transcribed into a vector space model. 
+\noindent It might be that the input sources require certain preprocessing steps for certain mathematical models to work. The following sub sections describe certain preprocessing operations that can be done in order to prepare input data to be transcribed into a vector space model. 
 
-\subsection{Tonality Alignment} \label{tonalityalignment}
+\subsection{Key Transposition} \label{tonalityalignment}
 
-\noindent In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied.
+\noindent In order to compare two songs in different keys, the songs must be transposed to one key. This transposition shifts every note by a certain interval (same as the intervalic distance between the keys of the input songs.) This is analogous to correcting a global offset such that similarity measures based on string representations of music can be applied. Mathematically define the intervalic distance for songs $S_1$ and $S_2$ as 
 
-\subsection{Voice to Melodic Representation Coversion} \label{voicemelconv} 
+\begin{equation}
+Int(S_1, S_2) = \mid K_1 - K_2 \mid
+\end{equation}
 
-\noindent Given a voice, various instants inside the voice can be either single notes (melodic notes) or chords (stacks of notes). Often in order to apply pure melodic techniques a voice, a conversion is required from a generic voice to a melody. In order to do that, every chord in the voice is replaced by the root note of the chord. 
+\noindent Here $K_1$ and $K_2$ stand for the key signatures for songs $S_1$ and $S_2$ respectively and their difference stands for the number of semitones in between the two keys. Consider a pitch $p_j$ in a song a song $S_i$. Define the intervalic shift operation as $p^{shifted}_j = p_j - Int(S_1, S_2)$. The new transposed Song $S^{transposed}_2$ can now be formulated as 
 
+\begin{equation}
+S^{transposed}_2 = \{p^{shifted}_j \mid p_j \in S_2 \}
+\end{equation}
+
+\subsection{Voice to Melodic Representation Conversion} \label{voicemelconv} 
+
+\noindent Given a voice, various instants inside the voice can be either single notes (melodic notes) or chords (stacks of notes). Often in order to apply pure melodic techniques a voice, a conversion is required from a generic voice to a melody. In order to do that, every chord in the voice is replaced by the root note of the chord. Given a chord $c_j$ in song S, and define the procedure which gives the root note of a chord (melodic representation of a chord) as $r(c_j)$ define the conversion as follows 
+
+\begin{equation}
+S_{melodic} = \{S | c_j \rightarrow r(c_j) \ \ \ \forall \ \ \ c_j \in S\}
+\end{equation}
+
+\noindent Here $c_j \rightarrow r(c_j)$ denotes converting the chord $c_j$ into its melodic representation. 
+ 
 \subsection{Contourization} \label{contourization}
 
-\noindent A contour is a quantitative representation of the direction of motion of a given voice / melody. Contours are clearly defined for melodies as a concept and hence the preprocessing steps of converting generic voices to pure melodies.\ref{voicemelconv}. There are many different representations of contour in literature and Modulo7 implements the following representations of contour. \\
+\noindent A contour is a quantitative representation of the direction of motion of a given voice / melody. Contours are clearly defined for melodies as a concept and hence the preprocessing steps of converting generic voices to pure melodies.\ref{voicemelconv} is necessary before any contourization can be applied. There are many different representations of contour in literature and Modulo7 implements the following representations of contour. \\
 
-\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the successive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice.\\
+\noindent \textbf{Gross Contour : } Gross Contour only contains the information of whether the successive notes of a melody goes up or down irrespective of the intervalic distance by which notes go down or up. Notes going up are designated with value 1, notes going down by -1 and notes staying on the same pitch with 0. So in essence the gross contour is a vector of 0's, 1's and -1s with length = number of melodic intervals present in the voice. If $p_i$ denotes the $i^th$ pitch that occurs in a voice V, the $i^{th}$Gross Contour can be mathematically defined as 
 
-\noindent \textbf{Natural Contour : } The natural contour of a song is similar to the gross contour with a difference that the intervalic distance between subsequent notes are calculated instead of ignored as in gross contour. Define the gradient between succesive notes N1 and N2 as 
+\begin{equation}
+GC_i(V) = \begin{cases}
+1 & p_j > p_{i-1} \\
+-1 & p_j < p_{i-1} \\
+0 & otherwise
+\end{cases}
+\end{equation}
 
+\noindent The Gross Contour is defined as $GC(V) = <GC_1(V), GC_2(V) ... GC_n(V)>$ where n is the number of pitches in voice V. \\
+ 
+\noindent \textbf{Natural Contour : } The natural contour of a song is similar to the gross contour with a difference that the intervalic distance between subsequent notes are calculated instead of ignored as in gross contour. Define the gradient between pitches $p_i$ and $p_j$ and their onsets $t_i$ and $t_j$ as \cite{similietechnicalmanual}
+\begin{equation}
+m = \frac{p_j - p_i}{t_j - t_i}
+\end{equation} 
 
+\noindent Define the concept of contour extrema as any two pitches $p_i$ and $p_j$ s.t $i < j$ where every pitch $p_k \forall k \in \{i, j\}$, $p_k$ is either greater than or less than both $p_i$ and $p_j$.
+
+\noindent Once all the contour extremum are ascertained, natural contour can be defined as a semi tone transposition of every note in between two consecutive extremum notes $p_i$ and $p_j$ as
+
+\begin{equation}
+p_k = p_i + m(t_k - t_i) \ \ \ \forall \ \ \ k \in \{i, j\}
+\end{equation}
+ 
 \section{Vector Space Models of Music}
 
-\noindent In traditional text based information retrieval retrieval systems, documents are indexed and a vector space representation of documents are created. Typical approaches for counting term frequencies or some weighting scheme like Term Frequency-Inverse Document Frequency Approach (TF-IDF). Analogous to text based IR, Music data can also be expressed as a vector space based on the approach taken. Some of these approaches are taken from the SIMILIE \cite{similietechnicalmanual} but generalized for polyphonic music. Many approaches are novel based on the author's music theoretic studies. 
+\noindent In traditional text based information retrieval retrieval systems, documents are indexed and vector space representation of documents are created which facilitate in comparison of documents. Typical approaches for this counting term frequencies or some weighting scheme like Term Frequency-Inverse Document Frequency Approach (TF-IDF). Analogous to text based IR, Music data can also be expressed as a vector space based on the approach taken. Some of these approaches are taken from the SIMILIE \cite{similietechnicalmanual} but generalized for polyphonic music.
 
 \subsection{Vector Space Models for Monophonic Music}
 
-\noindent Certain vector space models are with respect to a single voice. This allows vector space models to be represented as arrays with simple methods of computation that can be applied on top of it. First define pitch as a real number/string depending on context such that at given instant time $t_i$ either frequency $p_i$ is being played or its note representation $p_i$ is being played. With this simple definition of pitch and onset time we can define our vector space models as follows\\
+\noindent Certain vector space models can be naturally defined for monophonic music. These vector space models can be represented as simple arrays. Given the pitches and onset times \ref{basicnotation} of notes played in a song we can define monophonic vector space models as follows \\
  
-\noindent \textbf{Pitch Vector:} A voice can be expressed as a sequence of pitches $n_i$ = ($p_i, t_i$) where $p_i$ is the pitch and/or the set of pitches at instant of time $t_i$. The symbolic representation of music essentially a discretized version of these values from music sources and hence a vector representation can be made. A voice V can be represented as a vector
+\noindent \textbf{Pitch Vector:} A voice can be expressed as a sequence of pitch onset duals $n_i$ = ($p_i, t_i$) where $p_i$ is the pitch and/or the set of pitches at instant of time $t_i$. A symbolic representation of music essentially a discretized version of these values from music sources and hence a vector representation can be logically formed. A voice V can be represented as a pitch vector defined as
 
 \begin{equation}
 P = <n_1, n_2, ... n_n>
 \end{equation}
 
-\noindent A similar vector representation could be when the time information is eschewed in favor on only the pitches. This vector is called the raw pitch vector and is denoted as the follows :-
+\noindent A similar vector representation could be when the time information is eschewed in favor of only the pitch information. This vector is called the raw pitch vector and is defined as
 
 \begin{equation} \label{eq:rawpitch}
 R = <p_1, p_2, ..., p_n>
 \end{equation}
 
-\noindent \textbf{Pitch Interval Vector:} Another way to look at elements is the interval spacing between elements. This is same as the interval concept in the music theory chapter. Mathematically an interval is defined as $\Delta p_i = p_i - p_{i-1}$. And thus an pitch interval vector is defined as
+\noindent \textbf{Pitch Interval Vector:} Another way to look at elements is the interval spacing between elements. Given the definition of interval in \ref{basicnotation} the pitch interval vector is defined as 
 
 \begin{equation}
 PI = <\Delta p_1, \Delta p_2, ... , \Delta p_n>
 \end{equation}
 
-\noindent \textbf{Rhythmically weighted Pitch Interval Vector:} In order to include the rhythmic information in the pitch interval Vector, define rhythmically weighted pitch as $rp_i = \Delta p_i \times t_i$. Now the rhythmically weighted pitch vector can be represented as
+\noindent \textbf{Rhythmically Weighted Pitch Interval Vector:} In order to include the rhythmic information in the pitch interval Vector, define rhythmically weighted pitch as $rp_i = \Delta p_i \times t_i$. Now the rhythmically weighted pitch vector can be represented as
 
 \begin{equation}
 RPI = <rp_1, rp_2, ... rp_n>
 \end{equation}
 
-\begin{equation}
-gr(N_1, N2_2) = Interval_{dist}(N_1, N_2)
-\end{equation}
-
-Thus then the natural contour can be defined as:-
-
-\begin{equation}
-NC(Voice) = (gr(N_0, N_1), gr(N_1, N_2), .... gr(N_{len_{Voice} - 1}, N_{len_{Voice}}))
-\end{equation}
-
-where $N_i$ is the $i^{th}$ note in the voice after converting it into a melody \ref{voicemelconv}
-
 \subsection{Vector Space Models for Polyphonic Music} 
 
-\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of 12 distinct intervals present in western music theory and the number of time. Each position in the vector corresponds to the total number of times that interval has occurred in a song. This is the total summation of the intervals over each individual voice. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} p_i^{voice_j}$ and for a song $\Delta P^{song} = \sum_{voice_j} \Delta P^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{sum_i \Delta p_i}{\Delta P^{song}}$ where $p_i$ stands for the interval quantity = i. Thus we can define the normalized tonal histogram vector as
+\noindent This section discusses the mathematical formulations behind vector space model implementations for polyphonic music. These models can directly be utilized for similarity measures for songs in \ref{polyphonicsim}. \\
 
+\noindent \textbf{Normalized Tonal Histogram Vector:} The tonal histogram is a vector or map of twelve distinct intervals present in western music theory. Each position in the vector corresponds to the total number of times that interval has occurred in a song. Mathematically define $\Delta P^{voice_j} = \sum_{i=1}^{len(voice)} \Delta p_i^{voice_j}$ and for a song $\Delta P^{song} = \sum_{voice_j} \Delta P^{voice_j}$. Define interval fraction as : $\Delta p^f_i = \frac{\sum_i \delta (p_i)}{\Delta P^{song}}$ where $\sum_i \delta (p_i)$ stands for the number of pitches $p$ s.t $\Delta(p) = i$. Now we define the normalized tonal histogram vector as
+ 
 \begin{equation}
 NTH = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_{12}>
 \end{equation}
 
-\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a song.This is the total summation of the duration of intervals over each individual voice for the entire song. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and for a song $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\sum_i \Delta t_i}{\Delta T^{song}}$ where the sum in the numerator stands for the cumulative duration for which an interval quantity = i is played. Thus we can define the normalized tonal duration histogram vector as
+\noindent \textbf{Normalized Tonal Duration Histogram Vector:} The tonal duration histogram is a vector or map of 12 distinct intervals present in western music theory. Each position in the vector corresponds to the cumulative duration for which that interval has occurred in a song. This is the total summation of the duration of intervals over each individual voice for the entire song. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and for a song $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^f_i = \frac{\delta t_i}{\Delta T^{song}}$ where $\sum_i \delta t_i$ is defined as $\sum_{\Delta t_j = i} \Delta t_j $ where $\Delta t_j$ is the pitch duration as defined in \ref{basicnotation}. We can now define the normalized tonal duration histogram vector as
 
 \begin{equation}
 NTDH = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_{12}>
 \end{equation}
 
-\noindent \textbf{Normalized Pitch Duration Histogram Vector:}  The pitch duration histogram is a vector or map of 12 distinct pitches present in western music theory. Each position in the vector corresponds to the cumulative duration for which that pitch has occurred in a voice and for a song it is the summation of cumulative durations over all the voices. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^p_i = \frac{\sum_i \Delta p_i}{\Delta T^{voice}}$. Here the summation in the numerator is the cumulative time for which the pitch in the $i^{th}$ position of the western music chromatic scale is played. Thus we can define the normalized tonal duration histogram vector as
+\noindent \textbf{Normalized Pitch Duration Histogram Vector:}  The pitch duration histogram is a vector or map of twelve distinct pitches present in western music theory. Each position in the vector corresponds to the cumulative duration for which that pitch has occurred in a voice and for a song it is the summation of cumulative durations over all the voices. Mathematically define $\Delta T^{voice_j} = \sum_{i=1}^{len(voice)} t_i^{voice_j}$ and $\Delta T^{song} = \sum_{voice_j} \Delta T^{voice_j}$. Define durational interval fraction as : $\Delta t^p_i = \frac{\sum_i \Delta p_i}{\Delta T^{voice}}$. Here the summation in the numerator is the cumulative time for which the pitch in the $i^{th}$ position of the western music chromatic scale is played. Thus we can define the normalized tonal duration histogram vector as 
 
 \begin{equation} \label{NPDH}
 NPDH = <\Delta t^p_1, \Delta t^p_2, ... , \Delta t^p_{12}>
@@ -99,13 +136,39 @@ Sim_{song}(S_1, S_2) \in (0, 1)
 Sim_{voice}(V_1, V_2) \in (0, 1)
 \end{equation}
 
+\subsection{N-gram Similarity Measures}
+
+\noindent String representations of voices can be treated as text documents, and as a result n gram representations of voices can be used for developing similarity models. The following n gram models are implemented which are described in \cite{similietechnicalmanual}. \\
+
+\noindent \textbf{Count Distance Measure:} Let $t_n$ and $t_n$ denote the set of distinct trigrams in the string representations of voices t and s, and let $\tau$ denote an n-gram, the count distance is defined as 
+
+\begin{equation}
+\sigma(s, t) = \frac{\sum_{\tau \in s_n \cap t_n} 1}{max (\mid s_n \mid, \mid t_n \mid)}
+\end{equation}
+
+\noindent \textbf{Sum Common Measure:} Given the above definition of $s_n$, $t_n$ and $\tau$, Let $f_s(\tau)$ and $f_t(\tau)$ denote the frequencies of of trigram $\tau$ in $s_n$  and $t_n$ respectively, the Sum Common Measure is defined as
+
+\begin{equation}
+\mu(s, t) = \frac{\sum_{\tau \in s_n \cap t_n} f_s(\tau) + f_t(\tau)}{\mid s \mid + \mid t \mid - 2(n-1)}
+\end{equation}
+
+Here $\mid s \mid$ and $\mid t \mid$ are lengths of string representations of voices s and t. \\
+
+\noindent \textbf{Ukkonnen Measure}. Ukknonen measure is similar to Sum Common Measure, except it takes the absolute difference of trigram frequencies that are not present in either string. Mathematically 
+
+\begin{equation}
+\sigma(s, t) = 1 - \frac{\sum_{\tau \in s_n \cup t_n} \mid f_s(\tau) - f_t(\tau) \mid}{\mid s \mid + \mid t \mid - 2(n-1)}
+\end{equation}
+
+\noindent N gram models are readily extensible to polyphonic music, 
+
 \subsection{Similarity Measures for Monophonic Music} \label{monophonicSim}
 
 \noindent Similarity measures are different concepts for monophonic and polyphonic music as it stems from comparing different vector representations. For the following sections assume vectors of equal length. In a further section \ref{sim:unequal} we extend standard similarity measures to vectors of unequal length. \\
 
 \noindent \textbf{Edit Distance on Raw Pitch Vector Representation:} Consider the raw pitch vector in equation \ref{eq:rawpitch}. This vector is essentially a vector of tokens or equivalently a string. Hence standard edit distance algorithms in normal text IR can be applied to it (e.g Leveinstein Distance, Wagner-Fischer algorithm etc \cite{simtour}).
 
-\subsection{Similarity Measures for Polyphonic Music}
+\subsection{Similarity Measures for Polyphonic Music} \label{polyphonicsim}
 
 \noindent In order to incorporate vector space models to polyphonic similarity, monophonic measures can be extended in order to accomodate for polyphony. Another approach would be to apply measures.
 
@@ -153,7 +216,6 @@ Sim(K_1, K_2) = \begin{cases}
       1 & K_1 == K_2 \\
       0 & otherwise \\  \end{cases}
 \end{equation}
-
 
 \section{Criteria Analysis} \label{criteria}
 
