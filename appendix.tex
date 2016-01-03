@@ -2,26 +2,27 @@
 \addcontentsline{toc}{chapter}{APPENDICES}
 \chapter{Software Engineering Aspects}
 
-\noindent Modulo7 is a significant Software Engineering effort. This is partly due to the exhaustive coverage of different music sources and partly due to Modulo7 addressing speed, efficiency and scalability issues that are not addressed by other frameworks. \\
+\noindent Modulo7 is a significant Software Engineering effort. This is partly due to the exhaustive coverage of different music sources and partly due to Modulo7 addressing speed, efficiency and scalability issues that are not addressed by other frameworks \cite{jMIR, humdrum, similie}. \\
 
-\noindent At the time of submitting this thesis the Modulo7 source code is hosted at : \\ \url{https://github.com/Khalian/Modulo7} along with a detailed wiki page describing the steps to run it here : \url{https://github.com/Khalian/Modulo7/wiki}. 
+\noindent At the time of submitting this thesis the Modulo7 source code is hosted at : \\ \url{https://github.com/Khalian/Modulo7} along with a detailed wiki page describing the steps to run it : \url{https://github.com/Khalian/Modulo7/wiki}. 
 
 \section{Third Party Libraries Used}
 
-\noindent Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned as the follows
+\noindent Modulo7 utilizes a number of third party libraries in its operations. These libraries and their roles are mentioned below
 
 \subsection{Apache Lucene} \label{lucene}
 
-\noindent Apache Lucene is a full text search engine library written in Java. Apache Lucene is used for indexing text documents, spelling correction and other such functionality. \\
-In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyrics either independently acquired from text files containing lyrics or from emdedded lyrics in the Modulo7 supported sources. 
+\noindent Apache Lucene is a full text information retrieval engine library written in Java. Apache Lucene is used for indexing text documents, spelling correction and other such functionality. \\
+
+\noindent In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyrics either independently acquired from text files containing lyrics or from emdedded lyrics in the Modulo7 supported sources. 
 
 \subsection{Apache Avro} \label{avro}
 
-\noindent Apache Avro is a serialization library used to store Modulo7 objects to disk. This allows for faster retrieval of parsed objects instead of having to reparse entire song sources again and again.
+\noindent Apache Avro is a serialization library used to store Modulo7 representation \ref{fig:figureDocStruct} to disk. This allows for faster retrieval of parsed objects instead of having to re-parse entire song sources repeatedly.
 
 \subsection{Echo Nest jEN API} \label{echonestjen}
 
-\noindent The toughest challenge in all of Modulo7 was to parse symbolic information from audio sources. In order to accomplish this, Modulo7 relied on the Echo Nest's client library to convert mp3 files into chromagram representation of music \cite{chromagramtutorial}. The chromagram representation is acquired directly by converting mp3 representation into the frequency domain by Echo Nest. Modulo7 treats this process as a black box, as it is interested in finding out only the chromagram representation (from which identifying notes and chords become much simpler). 
+\noindent The toughest challenge in all of Modulo7 was to parse symbolic information from audio sources. In order to accomplish this, Modulo7 relied on the Echo Nest's client library to convert mp3 files into chromagram representation of music \cite{chromagramtutorial}. The chromagram representation is acquired directly by converting mp3 representation into the frequency domain by Echo Nest. Modulo7 treats this process as a black box, as it is interested in finding out only the chromagram representation (from which identifying notes and chords can be ascertained based on the ideas developed in \ref{chromagramest}). 
 
 \subsection{Antlr} \label{antlr}
 
@@ -37,25 +38,29 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 
 \subsection{Alchemy} \label{Alchemy}
 
-\noindent Alchemy is an implementation of NLP(In general AI) as a service model by IBM. Alchemy provides support for language ID, semantic analysis of arbitrary documents and text. In Modulo7, Alchemy is used for analyzing lyrics.  
+\noindent Alchemy is an implementation of NLP(In general AI) as a service model by IBM. Alchemy provides support for language ID, semantic analysis of arbitrary documents and text. In Modulo7, Alchemy is used for analyzing lyrics and to answer questions like language identification and semantic intent. 
 
-\noindent {Apache JCS (Java Caching System)}
+\subsection {Apache JCS (Java Caching System)} \label{apachejcs}
 
-\noindent Apache JCS is used as a distributed in memory cache to cache the results of Modulo7 custom queries and similarity results for the queries made in the past. 
+\noindent Apache JCS is used as a distributed in memory cache to cache the results of Modulo7 custom queries and similarity results. 
 
 \subsection{Apache Commons IO and Math}
 
 \noindent Apache Commons IO and Math libraries are helper libraries used throughout the Modulo7 code base for low level operations. 
 
+\subsection{JFugue}
+
+\noindent JFugue is an open source playback library for various music sources, and is directly consumed by Modulo7 for providing playback support for different song formats. 
+
 \chapter{Algorithms in use in Modulo7}
 
-\noindent There are certain algorithms in literature that are directly implemented in Modulo7. These algorithms facilitate the smooth functioning of Modulo7's indexing in face of incomplete metadata. Some notable algorithms that have been used are briefly described in the following subsections
+\noindent There are certain algorithms in literature that are directly implemented in Modulo7. These algorithms facilitate the smooth functioning of Modulo7's indexing in face of incomplete data or meta data. Some notable algorithms that have been used are briefly described in the following subsections.
 
 \section{Key Estimation Algorithm} \label{kktonality}
 
-\noindent Many music sources have the key signature inscribed in it. For example a midi file might have the key signature bytes transcribed. In the event that this information is not present, it must be inferred from the recording. This is required for certain similarity measures that need the key signature of the song for preprocessing steps  in particular for tonality alignment (\ref{sim:unequal}). There are many methods for achieving this including non trivial tree representations of polyphonic music to estimate key \cite{treemodel}. However in Modulo7, the author has implemented a simpler model for tonality estimation based on templates called KK tonality profiles \cite{kkTonalityKeyFinding} \\
+\noindent Many music sources have the key signature inscribed in it. For example a midi file might have the key signature bytes transcribed in it as midi messages \cite{midispec}. In the event that this information is not present, it must be inferred from the recording. This is required for certain similarity measures that need the key signature of the song for preprocessing steps  in particular for tonality alignment (\ref{sim:unequal}). There are many methods for achieving this including non trivial tree representations of polyphonic music to estimate key \cite{treemodel}. However in Modulo7, the author has implemented a simpler model for tonality estimation based on templates called KK tonality profiles \cite{kkTonalityKeyFinding} \\
 
-\noindent The premise of the KK tonality profile stems from experiments done in \cite{kkTonalityKeyFinding} and \cite{kkcognitive} which estimate how likely a user is to ascribe a note to a series on notes played on a melody or an incomplete harmonic element in different keys. The notes guessed correlate to the relative prominence of a note in a given key(what this the frequency and total duration a note is played in a song in a given key). After many experiments, the experimenters collected the aggregate duration for each note for each key. This experiment was  repeated for all 12 major and 12 minor keys. They were able to acquire 24 profiles (vectors of real numbers) which represent a quantitative measure of the key. For example the profiles for C Major and C Minor are respectively \cite{kkcognitive}.
+\noindent The premise of the KK tonality profile stems from experiments done in \cite{kkTonalityKeyFinding} and \cite{kkcognitive} which estimate how likely a user is to ascribe a note to a series on notes played on a melody or an incomplete harmonic element in different keys. The notes guessed correlate to the relative prominence of a note in a given key(for each note type, what is total duration a note is played in a song in a given key). After many experiments, the experimenters collected the aggregate duration for each note for each key. This experiment was  repeated for all 12 major and 12 minor keys. They were able to acquire 24 profiles (vectors of real numbers) which represent a quantitative measure of the key. For example the profiles for C Major and C Minor are respectively \cite{kkcognitive}.
 \begin{equation} \label{kkprofiles}
 \begin{aligned}
   CMajor = <6.35, 2.23, 3.48, 2.33, 4.38, 4.09, 2.52, 5.19, 2.39, 3.66, 2.29, 2.88> \\
@@ -81,7 +86,7 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 \State MinProf[key] = left\_shift(MinProf[prev\_Key])
 \State prev\_Key = key
 \EndFor
-\State song\_Pitch\_Hist = compute\_song\_tonal\_histogram(song) as per \ref{NPDH}
+\State song\_Pitch\_Hist = compute\_song\_tonal\_histogram(song) as per \ref{eq:npdh}
 \State best\_Key = CMin, best\_Corr = $-\infty$
 \For {key, maj\_prof in MajProf}:
 \If {correlation(maj\_prof, song\_Pitch\_Hist) $>$ best\_Corr}
@@ -104,7 +109,7 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 
 \noindent A chromagram \cite{chromagramtutorial} is a representation of a song in frequency domain with relative intensities of notes in short window frames of analysis in songs. This chromagram representation is central to acquiring symbolic description from audio sources. Once a chromagram is acquired, ascertaining chords in it becomes important(in particular because harmonic elements are non trivial to ascertain in a given chromagram). Modulo7 implements an algorithm described in \cite{chord-detection} in order to detect chords in chromagrams. This procedure is based on chromagram bitmap representations of different chords and "similarity" of current chromagram with the various bit map representations. \\
 
-\noindent In order to completely understand this approach, a bit mask for a chord is defined as a 12 dimensional vector in which there is a 1 entry for a present note[on its position on the chromagram] and a 0 entry for an absent note[on its position] \cite{chord-detection}. So for example the C major chord has three notes in it : C, E, G and as a consequence the bit mask for this chord would be : [1,0,0,0,1,0,0,1,0,0,0,0] as the positions for C, E and G are 1, 5 and 8 respectively in the chromagram representation. \\
+\noindent A bit mask for a chord is defined as a 12 dimensional vector in which there is a 1 entry for a present note[on its position on the chromagram] and a 0 entry for an absent note[on its position] \cite{chord-detection}. So for example the C major chord has three notes in it : C, E, G and as a consequence the bit mask for this chord would be : [1,0,0,0,1,0,0,1,0,0,0,0] as the positions for C, E and G are 1, 5 and 8 respectively in the chromagram representation. \\
 
 \noindent Given a set of candidate chords $T$ which contain bit mask representations of all chord and a chromagram, we define chromagram distance $\delta_i$ as \cite{chord-detection}:-
 
@@ -112,23 +117,30 @@ In context of Modulo7, Apache Lucene is used to maintain inverted indices of lyr
 \delta_i = \frac{\sqrt{\sum_{n = 0}^{P - 1} T_i(n)C(n)^2}}{P - N_i}
 \end{equation}
 
-\noindent Here C is the chromagram vector, n stands for the entry number/index in the vector, P = 12 (the number of semi tones in an octave), and $T_i$ is the $i^{th}$ in the candidate chord set. The chord membership can then be defined as 
+\noindent Here C is the chromagram vector, n stands for the entry number/index in the vector, P = 12 (the number of semi tones in an octave), and $T_i$ is the $i^{th}$ element in the candidate chord set. The chord membership can then be defined as 
 
 \begin{equation}
-MCC(C) = arg_{min} \delta_i (T_i) \ \ \ \forall \ \ \ T_i
+MCC(C) = \{arg_{min_{T_i}} \delta_i (T_i) \ \ \ \forall \ \ \ T_i \in T_i \}
 \end{equation}
 
-\noindent Modulo7 a heuristic extension for ascertaining a chord/note from a chromagram. Define max chromagram entry as 
+\noindent Modulo7 a heuristic extension for ascertaining a chord/note from a chromagram. Define max chromagram entry as (value of highest index in a chromagram)
 
 \begin{equation}
-MCE(C) = arg_{max_n}(C(n)) \ \ \ \forall c \ \ \ \in (1, P)
+MCE(C) = \{arg_{max_{C_n}}(C(n)) \ \ \ \forall c \ \ \ \in (1, P) \}
+\end{equation}
+
+\noindent Define max chromagram index be defined is
+
+\begin{equation}
+MCI(C) = \{arg_{max_{C_n}}(n)\}
 \end{equation}
 
 \noindent The voice instant (note/chord) assignment for a particular chromagram would be 
 
-\begin{equation}
+\begin{equation} \label{eq:VI}
 VI(C) = \begin{cases}
-      MCE(C) & MCA(n) \geq 0.5 \\
+      MCI(C) & MCE(n) \geq 0.5 \\
       MCC(C) & otherwise \\  \end{cases}
 \end{equation}
 
+\noindent This equation is used to ascertain a symbolic transcription for a given set of chromagrams. 

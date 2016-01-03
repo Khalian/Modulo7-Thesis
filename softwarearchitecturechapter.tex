@@ -43,8 +43,8 @@
 \includegraphics[width=\textwidth]{jingle-bells-sheet-music-piano.png}
 \makeatletter
 \let\@currsize\normalsize
-\caption{Jingle bells melody sheet music representation	}
-\label{fig:sheet music example}
+\caption{Jingle bells melody sheet music representation}
+\label{fig:sheetmusicexample}
 \end{figure}
 
 \noindent Parsing digitized sheet music is an extremely challenging task. It requires a solid understanding of computer vision algorithms and even the state of the art software in existence today cant handle all scores (especially for poorly digitized formats \cite{gamera}). Given the amount of domain knowledge required, Modulo7 uses a third party library called Audiveris \ref{audiveris} for the purposes of Optical Music Recognition. 
@@ -168,11 +168,11 @@ This scheme takes into account both the rank of the songs in based on a similari
 
 \noindent In the previous scheme, the frequency of genre labels occurring inside the dataset is ignored. In order to accommodate that let $f_x(S_i)$ be the total frequency of genre label x for the set $S_{sim}$ where $S_{sim} = \{S_i | \ \ isSim(S_i, S_new) \geq \epsilon\}$ where isSim and $\epsilon$ is defined identically in \ref{NaiveGenre}.  Hence we can define the set of estimated tags as $T_{new} = first_{k} sort_{f_x(S_i)}(x)$ where k is defined identically in \ref{WeightedGenre}. The tags are sorted according to descending cumulative frequencies of tags in the similar set. 
 
-\section{Meta data Esimtation} \label{metadataestimation}
+\section{Meta data Estimation} \label{metadataestimation}
 
 \noindent Unlike other frameworks, Modulo7 attempts to attempts to guess and fill certain meta data that are missing in song sources. One such meta data is key signature of a song which it guesses is the Key Signature of a song via the algorithm described in \ref{kktonality} 
 
-\section{Limitations of Modulo7} 
+\section{Limitations of Modulo7}  \label{limitations}
 
 \noindent While Modulo7 attempts to solve a large set of problems, there are some fundamental limitations to what Modulo7 can or cannot do. Some of the notable ones are listed as follows:-
 

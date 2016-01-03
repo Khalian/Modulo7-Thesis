@@ -10,7 +10,7 @@ A few assumptions that are made in testing are as follows :-
 \item All evaluations are done against research datasets \cite{WikifoniaDataset, saarlandmsd, msd} which are published in academia or exposed as public data sets in industry. As such no proprietary data sets are used for the purpose of any evaluation metric.
 \end{enumerate}
 
-\section{Results of Index Compression}
+\section{Results of Index Compression} \label{indexcompression}
 
 \noindent The Modulo7 representation \ref{fig:figureDocStruct} can be visualize as indexed meta data version of the song with the symbolic information of the song intact(which entails no core information is lost during the conversion). True to all indexed data, Modulo7 represents the song in a much smaller size than the original source when persisted to disk. The following chart demonstrates the average compression of indexed data as compared to source files on the Saarland Music Data (SMD) Dataset \cite{saarlandmsd} when the Modulo7 representation is persisted on disk 
 
@@ -34,11 +34,11 @@ A similar transformation was also done on a direct download able subset of the w
 \end{figure}
 
 \noindent As expected, Modulo7 is extremely space efficient for storing symbolic information. One observation is that modulo7 file size increases in a much smaller rate than the wikifonia data set, but the meta data storage requirement is higher for Modulo7 (approximately 4KB). 
-\section{Million Song Dataset Experiments}
+\section{Million Song Dataset Experiments} 
 
 \noindent The million song dataset was chosen for experimental evaluation \cite{msd} for the querying and similarity engines and the lyrics analyzer. MSD contains pre-computed chromagram transcriptions of Mp3 files and the last fm data set contains a set of tags and genres for building a  ground truth for evaluation. Due to the hardware constraints, a scaled down subset was chosen from the original 584,897 songs to a more manageable 10000 songs(offered as a direct down loadable subset in the Million song data set website \cite{msddownloadable}).
 
-\subsection{Results on melodic similarity analysis}
+\subsection{Results on Melodic Similarity Analysis} \label{msdsimexpts}
 
 \noindent This set of experiments determine the precision and recall values for the similarities defined in \ref{similarity} on ground truth data extracted from \cite{msd}. Modulo7 does not attempt to improve on the state of the art when it comes to similarity metrics or does not attempt to create a new similarity metric. Rather this set of experiments are a test of efficiency in execution and accuracy of existing similarity models of \ref{polyphonicsim} and \ref{ngramsim} on large scale datasets. \\
 
@@ -151,7 +151,7 @@ From these results we can conclude the following :
 \noindent In order to test the KK Tonality algorithm given in \ref{kktonality}, Modulo7 is benchmarked against a subset of the Wikifonia data set of lead sheets in the compact mxl format (which is just a zipped version of xml files) \cite{WikifoniaDataset}. The original dataset of the Wikifonia is now no longer available but a sizable subset of 6715 songs are currently down loadable and copyright free. Out of this set, 1314 have key signatures embedded in the song sources. The experiment involves comparing the key signatures embedded inside the key signatures versus the implied key signatures the KK Tonality algorithm \ref{kktonality} estimates from the pitch histogram of the songs parsed from this source. A special MXL parser (a minor variant of the music xml parser) was developed for this purpose. The scoring scheme for this experiment was simple, if the key signature was correctly identified then score of 1 otherwise score of 0. In this particular dataset, key signatures are partially known for all 6715 songs (\textbf{since the number of sharps or flats in the key signatures are always encoded in music xml files} so only relative major/minor were required to be ascertained). As a consequence only two choices are to be made between key signatures for each file giving a baseline of \textbf{50\%}. In this particular example, KK Tonality's performance is how well it can distinguish between relative minor and major key(a minor and major key having identical scales but different keys). \\\\
 After running the KK Tonality algorithm on the Wikifonia dataset, 1129 out the total 1314 key signatures are correctly identified leading to an accuracy of \text{85.9\%}. This is commensurate with the reported accuracies reported in \cite{kkTonalityKeyFinding}. 
 
-\section{Results on CPU and Memory and Disk space compared against jMIR}
+\section{Results on CPU and Memory and Disk space compared against jMIR} \label{vsjmir}
 
 \noindent In order to compare the memory and disk space requirements, Modulo7 was tested against its closest competitor jMIR's \cite{jMIR} jSymbolic component. Both frameworks are written in Java and both involve extraction of features(although that is not an end goal for Modulo7). However jMIR is more exhaustive in what features it extracts so only a subset of those that are also extracted by Modulo7 are considered. Out of the total 111 features that are implemented in jSymbolic \cite{jSymbolic}, 23 features were identified as implemented as internal computation within the Modulo7 indexers and/or querying engine. A modified version of Modulo7's basic indexing engine was used for extracting the following features. 
 \begin{enumerate}
@@ -224,9 +224,9 @@ isSim(V_x, V_y) = \begin{cases}
 \noindent The following alignments are noticed (some deletions in between are omitted for brevity's sake, relevant substitutions are retained) \\
 
 \noindent TW = D D - - - - - - - - - - - - - - - - - - - - E E D \\
-\noindent JM = C D - - - - - - - - - - - - - - - E - - - - - - E D - - - - \\ 
+\noindent JM = D D - - - - - - - - - - - - - - - E - - - - - - E D - - - - \\ 
 
-\noindent This facilitates in visualizing the similar regions. While the songs have widely different appeal (joy of man's desiring(JM) is a hymn and twinkle twinkle little star(TW)), they have a couple of contiguous notes common in the end.  
+\noindent This facilitates in visualizing the similar regions of songs. While the songs have widely different appeal (joy of man's desiring(JM) is a hymn and twinkle twinkle little star(TW)), they have a couple of contiguous notes common in the beginning and end.  
 
 
  

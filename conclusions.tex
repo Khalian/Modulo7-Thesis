@@ -1,6 +1,7 @@
 \chapter{Conclusions and Recommendations}
 
-\noindent In this chapter, we list our findings and conclusions on the 
+\noindent In this chapter, we list our findings and conclusions about the work done in this thesis and also explore potential directions for further research. 
+ 
 \section{Conclusions}
 
 \noindent In this thesis, a new Music Information Retrieval system is proposed and implemented which applies concepts of music theory for structured querying and search based on custom similarity measures. \\
@@ -9,22 +10,49 @@
 \begin{enumerate}
 \item To implement an space efficient and an universal indexing scheme for variegated sources of music.
 \item To implement and expose a querying language and a search engine  which uses music theoretic criteria as its building blocks. 
-\item To implement a lyrics analyzer to support lyrics similarity. To evaluate the lyrics similarity engine and its ability to predict meta data (in particular genre of a song).  
+\item To implement a lyrics analyzer to support lyrics similarity. To evaluate the lyrics similarity engine and its ability to predict meta data (in particular the genre of a song).  
 \item To explore and quantify the efficiency and efficacy of applying music theoretic concepts for similarity judgments and querying.
 \end{enumerate} 
 
-\noindent In a nutshell, Modulo7 unifies disparate music sources into one cohesive framework which allows for a common ground for querying and similarity searches on a heterogeneous data set. While Modulo7 does not extend the state of art in any of the subproblems it tackled (e.g better optical music recognition algorithms, new similarity measures etc), it was able to successfully unite the best aspects of different frameworks while adding features to fix missing meta data like key signature of a song \ref{kktonality}. 
+\noindent In a nutshell, Modulo7 unifies disparate music sources into one cohesive framework which allows for a common ground for querying and similarity searches on a heterogeneous data set. While Modulo7 does not extend the state of art in any of the subproblems it tackled (e.g better optical music recognition algorithms, new similarity measures etc), it was able to successfully unite the best aspects of different frameworks while adding algorithms to fix missing meta data like key signature of a song \ref{kktonality}. \\
 
-\section{Conclusions on the query engine}
+\noindent However, Modulo7 encountered many obstacles on the path to building a cohesive framework. One notable problem is the difficulty in faithful symbolic transcription for mp3 files \ref{limitations} which hampered performance and accuracy. 
 
-\noindent In this thesis, a novel querying framework was developed which facilitated a structured querying approach based on music theoretic features. The number of features that were implemented as a part of this work was limited and hence optimal queries were not identified (based on the results of the experiments done in \ref{queryexplore}). While relevant songs were being included, irrelevant documents were also being fetched as a part of the query. One obvious way to solve this problem to would be to implement more features and specialize queries to exclude irrelevant document. 
+\subsection{Conclusions on the Query Engine Implementation}
 
-\noindent As a part of the effort for the querying engine, a novel indexing and persistent storage mechanism is implemented. 
+\noindent In this thesis, a novel querying framework was developed which facilitated a structured querying approach based on music theoretic features. The number of features that were implemented as a part of this work was limited and hence optimal queries were not identified (based on the results of the experiments done in \ref{queryexplore}). While relevant songs were being included, irrelevant documents were also being fetched as a part of the query. One obvious way to solve this problem to would be to implement more features and specialize queries to exclude irrelevant documents. \\
 
-\section{Conclusions on the similarity search engine}
 
-\noindent Modulo7 implements many of the similarity models defined in \cite{similietechnicalmanual} along with simple extensions to polyphonic music. 
+\subsection{Conclusions on the Similarity Search Engine Implementation}
 
-\section{Recommendations for Further Research}
+\noindent Modulo7 implements many of the similarity models defined in \cite{similietechnicalmanual} along with simple extensions to polyphonic music in \ref{polyphonicsim}. This coupled with the variegated source parsing \ref{m7songsources}, allowed for similarity computations of different sources of music (e.g a midi file being compared with a music xml file). Existing frameworks in literature \cite{jMIR, marsyas, similie, humdrum}  focus on media specific Music Information Retrieval and hence Modulo7 distinguishes itself from other frameworks. \\
 
-\noindent 
+\noindent A key insight is gained about the efficiency and efficacy of  implementing and testing the vector space models defined in  \ref{polyphonicvectors} by testing it against the \cite{msd} in the experiment \ref{msdsimexpts}. We have proved that symbolic measures enjoy limited effectiveness on inherently non symbolic data (chromagrams extracted from mp3 files). 
+
+\subsection{Conclusions on Scalability and Speed}
+
+\noindent As a part of the effort for the querying engine, a novel indexing and persistent storage mechanism is implemented. The persistent store mechanism has been shown to be extremely efficient in \ref{indexcompression}. A natural conclusion could be made in which music data sets could be maintained as persisted Modulo7 internal objects instead of the sources themselves. This would result in significant space savings and could be utilized as a de-facto storage mechanism for symbolic music. \\
+
+\noindent Modulo7 is also proven to be significantly more efficient (in terms CPU, memory and time consumed) for acquiring features then existing state of the art frameworks such as jMIR \ref{vsjmir}. As such Modulo7 would scale more efficiently with bigger data sets and is an ideal framework for bulk processing.  
+
+\section{Recommendations for future research}
+
+\noindent Modulo7 was an ambitious project and during the course of working on this thesis, several key ideas and concepts were identified as a potential directions for future research work. These extensions can be broadly be classified as creating exhaustive music models framework and scalability enhancements.
+
+\subsection{Complete Music Models frameworks}
+
+\noindent On top of the models implemented in \ref{sec:mir math}. Many more mathematical models could be implemented. One problem that was not addressed was of time signature estimation(or alternatively estimating the tempo, meter of the song). Robust methods in literature exist like the one in \cite{tempoestimation}, Similarly significant extensions can be made on the key estimation procedure based on data tree based representations \cite{treemodel}. These methodologies can directly be implemented in Modulo7's meta data estimator. \\
+
+\noindent Moreover more sophisticated vector space models can be implemented. An example would be the techniques described in \cite{eventbasedvectormodel}, which uses n-grams of acoustic/melodic and harmonic "events" as a vector space representation. But most importantly, a more in depth study of music is required to ascertain how musicologist's compare music and could that be mathematically formulated. 
+
+\subsection{Scalability Enhancements}
+
+\noindent One of the original motivations for developing Modulo7 was to create a distributed framework for feature extraction, computing similarities and querying. While an in memory caching mechanism was implemented via the Apache JCS module \ref{apachejcs} it was never evaluated as the focus had shifted more towards the querying and similarity search engines. However to the best of the author's knowledge, there are no server stack distributed Music Information Retrieval Engines in published academic literature. 
+
+\noindent In order to improve the performance and extend the scalability of Modulo7 the following recommendations could be made 
+
+\begin{enumerate}
+\item Implement a fault tolerant distributed storage mechanism (e.g Hadoop Distributed File System) for indexed data. 
+\item Implement a big data framework for extracting features, building meta data based indices (based on Hadoop and/or Spark) typically as Map-Reduce jobs. 
+\item Expose clients with remote method invocation/Rest End point support for client and indexed data to reside on different computers. 
+\end{enumerate}
