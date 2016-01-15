@@ -29,7 +29,7 @@ Int(S_1, S_2) = \mid K_1 - K_2 \mid
 \noindent Here $K_1$ and $K_2$ stand for the key signatures for songs $S_1$ and $S_2$ respectively and their difference stands for the number of semitones in between the two keys. Consider a pitch $p_j$ in a song a song $S_i$. Define the intervalic shift operation as $p^{shifted}_j = p_j - Int(S_1, S_2)$. The new transposed Song $S^{transposed}_2$ can now be formulated as 
 
 \begin{equation}
-S^{transposed}_2 = \{p^{shifted}_j \mid p_j \in S_2 \}
+S^{transposed}_2 = \{p^{shifted}_j \mid p_j \in S_1 \}
 \end{equation}
 
 \subsection{Voice to Melodic Representation Conversion} \label{voicemelconv} 
@@ -140,13 +140,13 @@ Sim_{voice}(V_1, V_2) \in (0, 1)
 
 \noindent String representations of voices can be treated as text documents, and as a result n gram representations of voices can be used for developing similarity models. The following n gram models are implemented which are described in \cite{similietechnicalmanual}. \\
 
-\noindent \textbf{Count Distance Measure:} Let $t_n$ and $s_n$ denote the set of distinct trigrams in the string representations of voices t and s respectively, and let $\tau$ denote an n-gram. The count distance is defined as 
+\noindent \textbf{Count Distance Measure:} Let $t_n$ and $s_n$ denote the set of distinct n-grams in the string representations of voices t and s respectively, and let $\tau$ denote an n-gram. The count distance is defined as 
 
 \begin{equation}
 \sigma(s, t) = \frac{\sum_{\tau \in s_n \cap t_n} 1}{max (\mid s_n \mid, \mid t_n \mid)}
 \end{equation}
 
-\noindent \textbf{Sum Common Measure:} Given the above definition of $s_n$, $t_n$ and $\tau$, Let $f_s(\tau)$ and $f_t(\tau)$ denote the frequencies of of trigram $\tau$ in $s_n$  and $t_n$ respectively, the Sum Common Measure is defined as
+\noindent \textbf{Sum Common Measure:} Given the above definition of $s_n$, $t_n$ and $\tau$, Let $f_s(\tau)$ and $f_t(\tau)$ denote the frequencies of of n-gram $\tau$ in $s_n$  and $t_n$ respectively, the Sum Common Measure is defined as
 
 \begin{equation}
 \mu(s, t) = \frac{\sum_{\tau \in s_n \cap t_n} f_s(\tau) + f_t(\tau)}{\mid s \mid + \mid t \mid - 2(n-1)}
@@ -170,9 +170,9 @@ Here $\mid s \mid$ and $\mid t \mid$ are lengths of string representations of vo
 
 \subsection{Similarity Measures for Polyphonic Music} \label{polyphonicsim}
 
-\noindent In order to incorporate vector space models to polyphonic similarity, monophonic measures can be extended in order to accomodate for polyphony.
+\noindent In order to incorporate vector space models to polyphonic similarity, monophonic measures can be extended in order to accommodate for polyphony.\\
 
-\noindent {Generic maximal voice similarity} An approach would be to take pairwise voice similarities between two voices of a song, and then representing the max of these pairwise computed similarities. This model is especially useful in cases where comparing a melody against a song which contains a similar melody and acts as a generic polyphonic extension to models in \ref{ngramsim}. Mathematically 
+\noindent {\textbf{Generic maximal voice similarity}} An approach would be to take pairwise voice similarities between two voices of a song, and then representing the max of these pairwise computed similarities. This model is especially useful in cases where comparing a melody against a song which contains a similar melody and acts as a generic polyphonic extension to models in \ref{ngramsim}. Mathematically 
 \begin{equation}
 GMVS(S_1, S_2, VSim) = arg_{max} (VSim(V_i, V_j)) \ s.t \ V_i \in S_1 \ and \ V_j \in S_2
 \end{equation}
@@ -215,7 +215,7 @@ THS(S_1, S_2) = cosine_{sim} (NTH(S_1), NTH(S_2))
 
 \section{Criteria Analysis} \label{criteria}
 
-\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic criteria or predicate. Some examples would be if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed) or if the piece has voices in the SATB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes). This allows a consumer to build complex queries based on pieces satisfying selectivity requirements by compounding such criteria. Following are the criteria implemented in Modulo7. \\
+\noindent While Modulo7's primary goal is on comparing similarities between pieces, often its better to ascertain whether a certain piece satisfies a certain music theoretic criteria or predicate. Some examples would be if the piece has a species 1 counterpoint (i.e. the voices move with the exact same speed\cite{theorytreatise}) or if the piece has voices in the SATB criteria (with exactly 4 voices and their ranges being in particular range of high and low notes) \cite{satbcriteria}. This allows a consumer to build complex queries based on pieces satisfying selectivity requirements by compounding such criteria. Following are the criteria implemented in Modulo7. \\
 
 \noindent \textbf{Polyphonic Criteria:} Its a simple criteria which decides whether a piece of music is polyphonic or not. This is decided on the basis of the number of voices in the song. \\
 
@@ -235,14 +235,14 @@ Statistic(Song) = x \ s.t \ x \in \mathbb{R}
 
 \noindent The following are the statistics implemented in Modulo7. \\
 
-\noindent \textbf{Melodic Repeatability Fraction: } Given a voice, compute a sub voice that repeats the maximum number of times within the voice and then take the fraction between the length sub voice which satisfies this criteria against the length of the voice. This measure also uses the pre-processing step \\
+\noindent \textbf{Melodic Repeatability Fraction: } Given a voice, compute a sub voice that repeats the maximum number of times within the voice and then take the fraction between the length sub voice which satisfies this criteria against the length of the voice. This measure also uses the pre-processing step defined in \ref{voicemelconv}, since its only applicable to pure melodies. \\
 
 \noindent \textbf{Interval Index: } \label{intervals} An interval index is the fraction of intervals being played in a song divided by the total number of intervals present in the song. These statistics are coarse measures of a song. There are three classes of interval indices:-
 
 \begin{enumerate}
 \item Happiness Index : The happiness index of a song is the number of major intervals in a song divided by the total number of intervals. A major interval sounds "happy" to a layman hence a higher concentration of them makes a song happier \cite{majorvsminorintervals}. 
 \item Sadness Index : The sadness index of a song is the number of minor intervals \cite{minorintervalssad}  in a song divided by the total number of intervals. A minor interval sounds "sad" to a layman hence a higher concentration of them makes a song sadder \cite{majorvsminorintervals}. 
-\item Power Index : The power index of a song is the number of perfect interval in a song divided by the total number of intervals. Perfect melodic intervals are very prevalent in a rock and metal songs and are an expression of a neutral/powerful tone. This stems from the fact that perfect fifths along with perfect unison or perfect octaves, which are very common in rock music \cite{foundationsOfRock} 
+\item Power Index : The power index of a song is the number of perfect intervals in a song divided by the total number of intervals. Perfect melodic intervals are very prevalent in rock and metal songs and are an expression of a neutral/powerful tone. This stems from the fact that perfect fifths along with perfect unison or perfect octaves form power chords, which are very common in rock music \cite{foundationsOfRock} 
 \end{enumerate}
 
 \noindent \textbf{Max Range of a song} The maximal range that is occurring within a given song. This is the max range over all voices of a song. \\

@@ -1,13 +1,13 @@
 \chapter{Software architecture and Methodology}
-\noindent This chapter provides the details of the software architecture and the methodology of Modulo7 and also lists the limitations of the Modulo7 software effort. 
+\noindent This chapter provides the details of the software architecture and the methodology of Modulo7 and also lists the limitations of the Modulo7 software implementation. 
 \section{Server Side architecture}
-\noindent Modulo7 is designed with the purpose of scalability. Modulo7 built up of the following modules
+\noindent Modulo7 is designed with the purpose of scalability. Modulo7 is built up of the following modules
 \begin{enumerate}
 \item \textbf{Source Converters} : Converts music sources (e.g. music XML, midi etc) into Modulo7's binary representation.
 \item \textbf{Music Theory Models} : These models are implementations of the music  theoretic criteria formalized in \ref{similarity}, \ref{statistic} and \ref{criteria} as well as the vector space models defined in \ref{polyphonicvectors}
-\item \textbf{Persistent Storage Mechanism} : The Modulo7 internal representation is implemented as a hierarchical class design as shown in \ref{fig:figureDocStruct}. This representation is then serialized via Apache Avro \ref{avro} and stored in disk. 
+\item \textbf{Persistent Storage Mechanism} : The Modulo7 internal representation is implemented as a hierarchical class design as shown in \ref{fig:figureDocStruct}. This representation is then serialized via Apache Avro \ref{avro} and stored to disk. 
 \item \textbf{Lyrics Indexer} : An inverted index of song lyrics. This acts as a base on which standard techniques for similarity analysis might be applied. Alternatively it can provide a framework on which custom models (e.g. semantic intent of the song, correlation between music theory models and lyrics) might also be applied. Apache Lucene was used for developing the document index for lyrics \ref{lucene} and alchemy \ref{Alchemy} was used semantic intent and language ID feature implementations.  
-\item \textbf{Lyrics similarity models} : A set of similarity models that can be applied to indexed lyrics objects. Modulo7 also implements meta data predictor models \ref{lyricsarch}. 
+\item \textbf{Lyrics similarity models} : A set of similarity models that can be applied to indexed lyrics objects. Modulo7 also implements meta data predictor models described in \ref{lyricsarch}. 
 \item \textbf{Query Engine} : An SQL like interface to a client that allows you to gather and ascertain useful information (based on music theoretic criteria). Antlr was used for developing a lexer and parser for this engine \ref{antlr}. 
 \end{enumerate}
 
@@ -97,7 +97,7 @@
 \begin{enumerate}
 \item Return all songs that are in the key of CMajor
 \item Return all songs that are in in the Minor scale
-\item Return a ranked order of lyrics given similar to an input string (for example a verse in the song). 
+\item Return a ranked order of lyrics similar to an input string (for example a verse in the song). 
 \item Return all songs that are performed by Led Zepplin
 \item Return all polyphonic songs in the database
 \end{enumerate}
@@ -148,7 +148,7 @@
 
 \begin{enumerate}
 \item \textbf{Language ID} : Modulo7 can detect what language the song's lyrics is written in. It does this via an language ID call to alchemy \ref{Alchemy}. 
-\item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). It does this via a sentiment analysis call to \ref{Alchemy}
+\item \textbf{Sentiment Analysis} : Modulo7 can detect the positivity or negativity sentiment of a song's lyrics and assigns a score to it (with -1 standing for highest degree of negativity and similarly 1 standing for highest degree of positivity). It does this via a sentiment analysis call to alchemy. \ref{Alchemy}
 \end{enumerate}
 
 \section{Lyrics Based Genre Estimation} \label{genreestimation}
@@ -157,16 +157,16 @@
 
 \subsection{Naive Genre Estimation} \label{NaiveGenre}
 
-\noindent Consider $T(S_i)$ be defined as the set of genre annotations for the song $S_i$ which is the $i^{th}$ song in the music match dataset. Let $S_{new}$ be a new song for which genre annotations need to be predicted and let L(S) represent the lyrics of a song. Hence $L_{new}$ should be similar to some $L(S_k)$ for their genres to be deemed identical. Let $S_{sim} = \{S_i | \ \ isSim(S_i, S_{new}) \geq \epsilon\} $ be the set of all the songs similar to $S_{new}$(Here $\epsilon$ is some thresh hold value and isSim is a similarity function that compares lyrics of two songs). We define $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim}\}$. In other words the genres of the new song is the union of the genre labels in the songs similar to the new song up to a particular thresh hold.
+\noindent Consider $T(S_i)$ be defined as the set of genre annotations for the song $S_i$ which is the $i^{th}$ song in a tag annotated data set. Let $S_{new}$ be a new song for which genre annotations need to be predicted and let L(S) represent the lyrics of a song. Hence $L_{new}$ should be similar to some $L(S_k)$ for their genres to be deemed identical. Let $S_{sim} = \{S_i | \ \ isSim(S_i, S_{new}) \geq \epsilon\} $ be the set of all the songs similar to $S_{new}$(Here $\epsilon$ is some thresh hold value and isSim is a similarity function that compares lyrics of two songs). We define $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim}\}$. In other words the genres of the new song is the union of the genre labels in the songs similar to the new song up to a particular thresh hold.
 
 \subsection{Weighted Genre Estimation} \label{WeightedGenre}
 
-\noindent In the previous scheme, there are no considerations for degree of importance of each tag for a give lyrics or about the degree of similarity between lyrics. In order to accommodate these we assume the existence of tag weights associated for tags in the song meta data. Let $T(S_i)$ be defined as the genre annotations for song $S_i$. Let $S_{sim} = sort_v^{desc}({S_i, | isSim(S_i, S_{new}) = v})$ be the rank ordered set of genre labels based on descending order of similarity values. Out of these top we choose the top k $S_{sim(k)} = first_{k} (S_{sim})$ similar songs. The genre estimation can then be defined as $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim(k)}\}$ \\\\
-This scheme takes into account both the rank of the songs in based on a similarity metric. The scheme can retain only a subset of the maximal weighted tags in the resulted weighted tag set for the input song and the size of this subset depends on the chosen value of k. 
+\noindent In the previous scheme, there are no considerations for degree of importance of each tag for a give lyrics or about the degree of similarity between lyrics. In order to accommodate these we assume the existence of tag weights associated for tags in the song meta data. Let $T(S_i)$ be defined as the weighted genre annotations for song $S_i$. Let $S_{sim} = sort_v^{desc}({S_i, | isSim(S_i, S_{new}) = v})$ be the rank ordered set of genre labels based on descending order of similarity values, where isSim may choose to leverage the weights of tags to compute similarity. Out of these top we choose the top k $S_{sim(k)} = first_{k} (S_{sim})$ similar songs. The genre estimation can then be defined as $T_{new} = \{\cup \ T(S_i) \ | \ S_i \in S_{sim(k)}\}$ \\\\
+This scheme takes into account the rank of the songs in based on a similarity metric. The scheme can retain only a subset of the maximal weighted tags in the resulting tag set for the input song and the size of this subset depends on the chosen value of k. 
 
-\subsection{Most frequently occurring tags} \label{MaxFrequencyGenre}
+\subsection{Max Frequency Tag Estimation} \label{MaxFrequencyGenre}
 
-\noindent In the previous scheme, the frequency of genre labels occurring inside the dataset is ignored. In order to accommodate that let $f_x(S_i)$ be the total frequency of genre label x for the set $S_{sim}$ where $S_{sim} = \{S_i | \ \ isSim(S_i, S_new) \geq \epsilon\}$ where isSim and $\epsilon$ is defined identically in \ref{NaiveGenre}.  Hence we can define the set of estimated tags as $T_{new} = first_{k} sort_{f_x(S_i)}(x)$ where k is defined identically in \ref{WeightedGenre}. The tags are sorted according to descending cumulative frequencies of tags in the similar set. 
+\noindent In the previous scheme, the frequency of genre labels occurring inside the dataset is ignored. In order to accommodate that let $f_x(S_i)$ be the total frequency of genre label x for the set $S_{sim}$ where $S_{sim} = \{S_i | \ \ isSim(S_i, S_{new}) \geq \epsilon\}$ where isSim and $\epsilon$ is defined identically in \ref{NaiveGenre}.  Hence we can define the set of estimated tags as $T_{new} = first_{k} sort_{f_x(S_i)}(x)$ where k is defined identically in \ref{WeightedGenre}. The tags are sorted according to descending cumulative frequencies of tags in the similar set. 
 
 \section{Meta data Estimation} \label{metadataestimation}
 
@@ -178,6 +178,6 @@ This scheme takes into account both the rank of the songs in based on a similari
 
 \begin{enumerate}
 \item Modulo7 does not perform any kind of timbral analysis. This limitation is by design, since all formats of music do not convey timbral information faithfully (for instance sheet music is a specification of music to be played and not an actual recording), hence Modulo7 has not been designed with timbral analysis in mind.
-\item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant for most songs. Also Modulo7 does not take into account atonal music (as a key signature leads to transforms that are needed in certain similarity metrics \ref{sim:preprocess}). 
+\item Modulo7 does not take into account varying time and/or key signatures. This is due to the fact that in most western music, these two global parameters stay constant. Also Modulo7 does not take into account atonal music (as a key signature leads to transforms that are needed in certain similarity metrics \ref{sim:preprocess}). 
 \item Modulo7 assumes input mp3 files are monophonic. This is due to the fact that the state of the art in audio processing techniques have not solved the problem of polyphonic symbolic transcription faithfully. \cite{melextract}
 \end{enumerate}

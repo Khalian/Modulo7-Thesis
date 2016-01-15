@@ -20,14 +20,13 @@
 
 \subsection{Conclusions on the Query Engine Implementation}
 
-\noindent In this thesis, a novel querying framework was developed which facilitated a structured querying approach based on music theoretic features. The number of features that were implemented as a part of this work was limited and hence optimal queries were not identified (based on the results of the experiments done in \ref{queryexplore}). While relevant songs were being included, irrelevant documents were also being fetched as a part of the query. One obvious way to solve this problem to would be to implement more features and specialize queries to exclude irrelevant documents. \\
-
+\noindent In this thesis, a novel querying framework was developed which facilitated a structured querying approach based on music theoretic features. The number of features that were implemented as a part of this work was limited and hence optimal queries were not identified (based on the results of the experiments done in \ref{queryexplore}). While relevant songs were being included, irrelevant documents were also being fetched as a part of the query. One obvious way to solve this problem to would be to implement more features and specialize queries to exclude irrelevant documents. As such, a present the query engine is not an exhaustive implementation of statistics and criteria.  
 
 \subsection{Conclusions on the Similarity Search Engine Implementation}
 
 \noindent Modulo7 implements many of the similarity models defined in \cite{similietechnicalmanual} along with simple extensions to polyphonic music in \ref{polyphonicsim}. This coupled with the variegated source parsing \ref{m7songsources}, allowed for similarity computations of different sources of music (e.g a midi file being compared with a music xml file). Existing frameworks in literature \cite{jMIR, marsyas, similie, humdrum}  focus on media specific Music Information Retrieval and hence Modulo7 distinguishes itself from other frameworks. \\
 
-\noindent A key insight is gained about the efficiency and efficacy of  implementing and testing the vector space models defined in  \ref{polyphonicvectors} by testing it against the \cite{msd} in the experiment \ref{msdsimexpts}. We have proved that symbolic measures enjoy limited effectiveness on inherently non symbolic data (chromagrams extracted from mp3 files). 
+\noindent A key insight is gained about the efficiency and efficacy of  implementing and testing the vector space models defined in  \ref{polyphonicvectors} by testing it against the million song data set\cite{msd} in the experiments \ref{msdsimexpts}. We have proved that symbolic measures enjoy limited effectiveness on inherently non symbolic data (e.g. chromagrams extracted from mp3 files). 
 
 \subsection{Conclusions on Scalability and Speed}
 
@@ -41,13 +40,13 @@
 
 \subsection{Complete Music Models frameworks}
 
-\noindent On top of the models implemented in \ref{sec:mir math}. Many more mathematical models could be implemented. One problem that was not addressed was of time signature estimation(or alternatively estimating the tempo, meter of the song). Robust methods in literature exist like the one in \cite{tempoestimation}, Similarly significant extensions can be made on the key estimation procedure based on data tree based representations \cite{treemodel}. These methodologies can directly be implemented in Modulo7's meta data estimator. \\
+\noindent On top of the models implemented in \ref{sec:mir math}. Many more mathematical models could be implemented. One problem that was not addressed was of time signature estimation(or alternatively estimating the tempo, meter of the song). Robust methods in literature exist like the one in \cite{tempoestimation}. Similarly significant extensions can be made on the key estimation procedure based on data tree based representations \cite{treemodel}. These methodologies can directly be implemented in Modulo7's meta data estimator. \\
 
 \noindent Moreover more sophisticated vector space models can be implemented. An example would be the techniques described in \cite{eventbasedvectormodel}, which uses n-grams of acoustic/melodic and harmonic "events" as a vector space representation. But most importantly, a more in depth study of music is required to ascertain how musicologist's compare music and could that be mathematically formulated. 
 
 \subsection{Scalability Enhancements}
 
-\noindent One of the original motivations for developing Modulo7 was to create a distributed framework for feature extraction, computing similarities and querying. While an in memory caching mechanism was implemented via the Apache JCS module \ref{apachejcs} it was never evaluated as the focus had shifted more towards the querying and similarity search engines. However to the best of the author's knowledge, there are no server stack distributed Music Information Retrieval Engines in published academic literature. 
+\noindent One of the original motivations for developing Modulo7 was to create a distributed framework for feature extraction, computing similarities and querying. While an in memory caching mechanism was implemented via the Apache JCS module \ref{apachejcs} it was never evaluated as the focus had shifted more towards the querying and similarity search engine functionality. However to the best of the author's knowledge, there are no server stack distributed Music Information Retrieval Engines in published academic literature. \\
 
 \noindent In order to improve the performance and extend the scalability of Modulo7 the following recommendations could be made 
 
