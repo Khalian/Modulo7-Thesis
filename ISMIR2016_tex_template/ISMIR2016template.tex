@@ -40,7 +40,7 @@
 % Three addresses
 % --------------
 \threeauthors
-  {Arunav Sanyal} {Department of Computer Science \\ Johns Hopkins University \\ {\tt asanyal4@jhu.edu}}
+  {First Author} {Affiliation1 \\ {\tt author@ismir.edu}}
   {Second Author} {\bf Retain these fake authors in\\\bf submission to preserve the formatting}
   {Third Author} {Affiliation3 \\ {\tt author3@ismir.edu}}
 
@@ -68,27 +68,40 @@
 \maketitle
 %
 \begin{abstract}
-This paper describes a novel Music Information Retrieval and Structured Querying framework named Modulo7. Modulo7 is a full stack implementation (both client and server side software) which facilitates indexing variegated sources of music (midi, mp3, music xml and digitized sheet music files). Modulo7 implements a similarity search engine based on customized vector space representations of songs, an efficient indexing and persistent storage mechanism and an interface for querying attributes based on SQL(Structured Querying Language) like principles. The papers describes the implementation details and outlines speed up and scale up results over input sources and other MIR frameworks. 
+This paper describes a novel Music Information Retrieval and Structured Querying framework named Modulo7. Modulo7 is a full stack implementation (both client and server side software) which facilitates indexing variegated sources of music (midi, mp3, music xml and digitized sheet music files). Modulo7 implements a similarity search engine based on customized vector space representations of songs, an efficient indexing and persistent storage mechanism and an interface for querying attributes based on SQL(Structured Querying Language) like principles. The papers describes the implementation details and outlines speed up and scale up results over input sources and other MIR frameworks. \\\\
+\textbf{Keywords : MIDI, Music XML, MP3, Music Retrieval, SQL}
 \end{abstract}
 %
 \section{Introduction}\label{sec:introduction}
 
-Given the explosive growth of Music Information Retrieval research, several approaches and software suits have been designed 
+Given the explosive growth of Music Information Retrieval research, several approaches and software suits have been designed to tackle generic problems such as efficient indexing, similarity searches, archival methods, structured and un-structured querying ,feature extraction, audio and digital signal processing. A vast majority of the MIR frameworks in academia tend to approach very specific problems and does not support scalability as a significant end goal in itself \cite{mirproblems}. Moreover, industry applications predominantly treat MIR applications based on collaborative filtering approaches \cite{amazonreco} and/or manual annotation \cite{musicgenomepandora} instead of structural analysis of music sources yet scales very well to large datasets. \\\\
+Modulo7 is an attempt to capture the best features of both worlds. Modulo7 converts different music sources (midi, musicxml files, sheet music png/jpeg files and mp3) into a single unified symbolic representation. It indexes songs on different properties (artist, key signature, time signature etc). 
 
 %
 \section{Relevant Work} \label{sec:relevantwork}
 
-Music Information Retrieval is a vast and interdisciplinary body of work. In order to facilitate research in MIR, several software suits and frameworks have been developed in the past. Notable amongst them are software suits like jMIR \cite{jMIR} for automatic feature extraction from audio and midi sources, marsyas \cite{marsyas} for audio processing, humdrum 
+Music Information Retrieval is a vast and interdisciplinary body of work. In order to facilitate research in MIR, several software suits and frameworks have been developed in the past. Notable amongst them are software suits like jMIR \cite{jMIR} for automatic feature extraction from audio and midi sources, marsyas \cite{marsyas} and essentia \cite{essentia} for audio processing, humdrum \cite{humdrum} for automated musicological research, gamera \cite{gamera} for optical music recognition, 
 
-\section{Modulo7 Architecture}\label{sec:architecture}
+\section{Modulo7 Architecture and Design}\label{sec:architecture}
 
-This section details the software architecture of the Modulo7 
+This section details the software architecture of the Modulo7. The Modulo7 architecture can be visualized as \ref{fig:architecture} and is broadly divided into the following components 
+
+\begin{enumerate}
+\item \textbf{Music parsers: } Components that individually parse different music sources into a unified symbolic representation. as described in \ref{fig:document}
+\end{enumerate}
 
 \begin{figure}
  \centerline{\framebox{
  \includegraphics[width=\columnwidth]{Modulo7Architecture.png}}}
- \caption{Figure captions should be placed below the figure.}
+ \caption{A block diagram of the Modulo7 Architecture.}
  \label{fig:architecture}
+\end{figure}
+
+\begin{figure}
+ \centerline{\framebox{
+ \includegraphics[width=\columnwidth]{DocumentStructureOfModulo7.png}}}
+ \caption{Figure captions should be placed below the figure.}
+ \label{fig:document}
 \end{figure}
 
 \section{Typeset Text}\label{sec:typeset_text}
@@ -174,13 +187,6 @@ Figures and tables may extend across both columns to a maximum width of 17.2cm.
  \caption{Table captions should be placed below the table.}
  \label{tab:example}
 \end{table}
-
-\begin{figure}
- \centerline{\framebox{
- \includegraphics[width=\columnwidth]{figure.png}}}
- \caption{Figure captions should be placed below the figure.}
- \label{fig:example}
-\end{figure}
 
 \section{Equations}
 
