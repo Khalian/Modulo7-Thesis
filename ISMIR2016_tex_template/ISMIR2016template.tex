@@ -68,14 +68,20 @@
 \maketitle
 %
 \begin{abstract}
-This paper describes a novel Music Information Retrieval and Structured Querying framework named Modulo7. Modulo7 is a full stack implementation (both client and server side software) which facilitates indexing variegated sources of music (midi, mp3, music xml and digitized sheet music files). Modulo7 implements a similarity search engine based on customized vector space representations of songs, an efficient indexing and persistent storage mechanism and an interface for querying attributes based on SQL(Structured Querying Language) like principles. The papers describes the implementation details and outlines speed up and scale up results over input sources and other MIR frameworks. \\\\
+This paper describes a novel Music Information Retrieval and Structured Querying framework named Modulo7. Modulo7 is a full stack implementation (both client and server side software) which facilitates indexing variegated sources of music (midi, mp3, music xml and digitized sheet music files). Modulo7 implements a similarity search engine based on customized vector space representations of songs, an efficient indexing and persistent storage mechanism and an interface for querying attributes based on SQL(Structured Querying Language) like principles. The papers describes the implementation details and outlines speed up and scale up results over input sources and other MIR frameworks and discusses potential improvements. \\\\
 \textbf{Keywords : MIDI, Music XML, MP3, Music Retrieval, SQL}
 \end{abstract}
 %
 \section{Introduction}\label{sec:introduction}
 
 Given the explosive growth of Music Information Retrieval research, several approaches and software suits have been designed to tackle generic problems such as efficient indexing, similarity searches, archival methods, structured and un-structured querying,feature extraction, audio and digital signal processing. A vast majority of the MIR frameworks in academia tend to approach very specific problems and does not support scalability as a significant end goal in itself \cite{mirproblems}. Moreover, industry applications predominantly treat MIR applications based on collaborative filtering approaches \cite{amazonreco} and/or manual annotation \cite{musicgenomepandora} instead of structural analysis of music sources yet scales very well to large datasets. \\\\
-Modulo7 is an attempt to capture the best features of both worlds. Modulo7 converts different music sources (midi, musicxml files, sheet music png/jpeg files and mp3) into a single unified symbolic representation. It indexes songs on global properties (artist, key signature, time signature etc) and provides a vector space implementation for similarity searches and querying based on the similie \cite{similie} platform and extended to include chords and polyphony. As a consequence, Modulo7 acts as an end to end software suite for Music Information Retrieval including client side querying, searching, indexing and persistent store mechanism.
+Modulo7 is an attempt to capture the best features of both worlds. Modulo7 converts different music sources (midi, musicxml files, sheet music png/jpeg files and mp3) into a single unified symbolic representation. It indexes songs on global properties (artist, key signature, time signature etc) and provides a vector space implementation for similarity searches and querying based on the similie \cite{similie} platform and extended to include chords and polyphony. As a consequence, Modulo7 acts as an end to end software suite for Music Information Retrieval including client side querying, searching, indexing and persistent store mechanism. The broad novel goals of Modulo7 can be classified as follows
+
+\begin{enumerate}
+\item To create a framework for retrieval from multiple digitized music formats. 
+\item To efficiently store and index variegated data formats into a unified format.  
+\item To query/search on a quantified version of music theoretic principles. 
+\end{enumerate}
 
 %
 \section{Relevant Work} \label{sec:relevantwork}
@@ -90,11 +96,13 @@ This section details the software aspects of the Modulo7 most notably its archit
 
 The Modulo7 architecture can be visualized as \ref{fig:architecture} and is broadly divided into the following components. 
 
-\begin{figure}
- {\framebox{
+\begin{figure}[h]
+\begin{center}
+{\framebox{
  \includegraphics[width=\columnwidth]{Modulo7Architecture.png}}}
  \caption{A block diagram of the Modulo7 Architecture.}
  \label{fig:architecture}
+\end{center}
 \end{figure}
 
 \begin{enumerate}
@@ -106,11 +114,13 @@ The Modulo7 architecture can be visualized as \ref{fig:architecture} and is broa
 
 \end{enumerate}
 
-\begin{figure}
+\begin{figure}[h]
+\begin{center}
  {\framebox{
  \includegraphics[width=\columnwidth, height=75mm]{DocumentStructureOfModulo7.png}}}
  \caption{Modulo7 internal representation.}
  \label{fig:document}
+\end{center}
 \end{figure}
 
 \item \textbf{Music theory Models: } Modulo7 implements vector space models described in \cite{similie} with extensions to polyphonic music and chords using a template matching algorithm described in \cite{chord-detection}. This forms a mathematical formulation of music sources described in detail in section \ref{vecmodels} which is leveraged for querying and similarity searches.
@@ -130,24 +140,123 @@ The Modulo7 architecture can be visualized as \ref{fig:architecture} and is broa
 The workflow can be defined as the steps of operations the user takes to initialize the Modulo7 system and expose the consumer to client facing querying options
 
 \begin{enumerate}
-\item Modulo7 is initialized by specifying a source directory. Every music source file inside the directory  is parsed and converted to either an in memory or persistent store version 
+\item Modulo7 is initialized by specifying a source directory. Every music source file inside the directory  is parsed and converted to either an in memory or persistent store version. It also indexes these songs on global properties (artist, key signature, time signature etc). It also guesstimates certain properties if not explicitly present (e.g key signature via the \cite{kkTonalityKeyFinding} algorithm)
+\item It then exposes a prompt which asks the user for two modes (search engine/structured querying). (In either case the appropriate vector space model is built)
+\begin{enumerate}
+\item If the user selects the search engine functionality, Modulo7 similarity engine then asks for an input query song and a similarity metric (from one of the choices described in section \ref{searchengine}). Then the engine proceeds to rank the query song with each of the indexed songs based on the similarity metric and then returns an ordered list of "relevant" song. 
+\item If the user selects the structured querying mode, Modulo7 asks for an input query along with a set of predicates songs must satisfy (details in section \ref{structuredquery}. Any song that satisfies this query is deemed relevant and returned to the user.  
 \end{enumerate}
+\item Modulo7 optionally caches results in memory so that it does not have to recompute queries.
 
-
+\end{enumerate}
 
 \section{Vector Space Models for Music Sources} \label{vecmodels}
 
+The vector space models form the core of the search and query functionality of Modulo7. Vector space models are derived from quantification of music theoretical representations of songs and extends functionality of the SIMILIE \cite{similie} melodic similarity library.
 
+\subsection{Building Blocks of unified internal representation}
+
+All vector space models are built from the unified internal representation of songs in Modulo7. 
+
+\begin{enumerate}
+\item \textbf{Note:} A note is a pair of pitch(deterministic frequency played by an instrument) and onset (time instance at which a pitch is played). A \textbf{Chord} is a set of pitches played at the same onset. 
+\item \textbf{Interval:} The difference between two note pitches.
+\item \textbf{Voice:} A set of notes or chords played in succession(usually on a single instrument).
+\item \textbf{Song: } A song is a set of interleaved voices, along with some global properties (key signature, time signature, artist, album etc)
+\end{enumerate}
+
+\subsection{Global Vector Space Models} \label{globalvectorspace}
+
+Now once the above building blocks are ascertained for songs, some vector space models can be defined over the entire song. Some notable ones are 
+
+\begin{enumerate}
+\item \textbf{Normalized Tonal Histogram Vector} : For each of the 12 intervals in western music, compute the frequencies of each and divide by total number of intervals over the song. This forms a 12 dimensional vector irrespective of length of song. Mathematically
+\begin{equation}
+NTH(S) = <\Delta p^f_1, \Delta p^f_2, ... , \Delta p^f_{12}>
+\end{equation}
+Here $\Delta p^f_i$ is the fraction of the number of occurrences of the $i^{th}$ interval.
+\item \textbf{Normalized Tonal Duration Histogram Vector} : For each of the 12 intervals in western music, compute the cumulative durations each of these intervals are played and divide by total duration of the song. This forms a 12 dimensional vector irrespective of length of song. Mathematically 
+
+\begin{equation}
+NTDH(S) = <\Delta t^f_1, \Delta t^f_2, ... , \Delta t^f_{12}>
+\end{equation}
+
+Here $\Delta t^f_1$ is the fraction of the duration that the  $i^{th}$ interval is played.  
+ 
+\end{enumerate}
+
+\subsection{Voice specific vector space models} \label{voicespecificvectorspace}
+ 
+Considering each voice as a separate entity, a voice can be modeled as a vector independent of other voices in a song. A particular song can then be represented as a set of these vectors. Some notable examples of these are 
+
+\begin{enumerate}
+\item \textbf{Pitch Interval Vector:} If a voice has k pitches played one after the other, there are  k - 1 intervals (for each pitch its immediate subsequent pitch). The pitch interval vector 
+\end{enumerate}
  
 \section{Client Abstractions}
 
 \subsection{Search Engine Functionality} \label{searchengine}
+
+Based on the vector space models defined in sections \ref{globalvectorspace} and
+\ref{voicespecificvectorspace}, similarity metrics can be defined 
+
+\subsection{Structured Querying Functionality} \label{structuredquery}
+
+Modulo7 implements a custom SQL like language with its own grammar definition and implementation. Any query can be constructed as 
+
+\begin{equation}
+\begin{aligned}
+select \ input\_types \ from \\\ DATABASE\_NAME \\ where (boolean\_formula)
+\end{aligned}
+\end{equation}
+
+Here the individual components stand for 
+
+\begin{enumerate}
+\item \textbf{Input Types: } A list of the input types we are interested in. For example if we are only interested in midi files then this value is "midi". If we are interested in more than one type(e.g midi and musicxml) then Input Types = "midi, musicxml". 
+\item \textbf{DATABASE\_NAME} : A placeholder for the of the database (created when Modulo7 server starts up)
+\item \textbf{boolean\_function} : A boolean function is a well formed propositional formula (chain of propositions or predicates connected by AND/ORs). Each predicate can either be defined as a criteria or statistic condition.   
+\end{enumerate}
+
+\subsection{Criteria}
+
+A criteria is a particular music theoretic condition that a song either satisfies or not. Some notable supported criteria are 
+
+\begin{enumerate}
+\item Polyphony criteria : Whether a song is polyphonic or not
+\item Key Signature criteria : Whether a song has a particular key signature
+\item STAB Voice Criteria : Whether a song follows the Soprano, Alto, Tenor, Bass Voice structures as defined in 
+\end{enumerate}
+
+\subsection{Statistic}
+
+A statistic is a real number generated when applied to a particular song. A statistic condition when this generated statistic satisfies a relational operator with a given thresh-hold value. For example PowerIndex(song) < 0.5 is a valid statistic condition. Some notable supported statistic conditions are 
+
+\begin{enumerate}
+\item Average Pitch Duration over the songs
+\item Happiness Index : Fraction of major intervals over the total number of intervals
+\item Power Index : Fraction of perfect intervals over the total number of intervals
+\item Sadness Index : Fraction of minor intervals over the total number of intervals
+\item Number of voices in the song
+\end{enumerate}
 
 \section{Experimental Evaluation}
 
 This section includes improvements that have been attained over existing frameworks and input sources. For the purposes of this experiment, existing datasets such as the Saarland dataset \cite{saarlandmsd}, the Wikifonia Dataset \cite{WikifoniaDataset} and the million song dataset \cite{msd}. 
 
 \subsection{Indexing and Persistent Store Improvements}
+
+Modulo7 achieves significant storage improvements over the input formats, while not losing any symbolic information. Figure \ref{fig:storageimprovement} illustrates this for the Saarland dataset \cite{saarlandmsd}
+
+\begin{figure}[h]
+\begin{center}
+{\framebox{
+ \includegraphics[width=\columnwidth]{BarGraph2.png}}}
+ \caption{Space storage improvements over Saarland Dataset.}
+ \label{fig:storageimprovement}
+\end{center}
+ \end{figure}
+
 
 \section{Conclusion and Future Work}
 
