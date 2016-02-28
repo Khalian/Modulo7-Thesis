@@ -190,15 +190,44 @@ Here $\Delta t^f_1$ is the fraction of the duration that the  $i^{th}$ interval 
 Considering each voice as a separate entity, a voice can be modeled as a vector independent of other voices in a song. A particular song can then be represented as a set of these vectors. Some notable examples of these are 
 
 \begin{enumerate}
-\item \textbf{Pitch Interval Vector:} If a voice has k pitches played one after the other, there are  k - 1 intervals (for each pitch its immediate subsequent pitch). The pitch interval vector 
+\item \textbf{Pitch Interval Vector:} If a voice has k pitches played one after the other, there are  k - 1 intervals (for each pitch its immediate subsequent pitch). The pitch interval vector is the chronological succession of these intervals. Mathematically 
+
+\begin{equation}
+PI = <\Delta p_1, \Delta p_2, ... , \Delta p_n>
+\end{equation}
+
+Here $\Delta p_i$ is the $i^{th}$ interval which is the difference between the $i^{th}$ and $(i - 1)^{th}$ pitches. 
+
+\item \textbf{Rhythmically weighted Pitch Interval Vector:} Similar to the pitch interval vector, except it also takes into account the time $t_i$ an interval $\Delta p_i$ is played for. Mathematically
+
+\begin{equation}
+RPI = <rp_1, rp_2, ... , rp_n>
+\end{equation}
+
+Here $rp_i$ = $\Delta p_i \times t_i$
+
 \end{enumerate}
+
+\noindent Its important to note that these vectors have a dimensionality influenced by the length of the voices in a song. 
  
-\section{Client Abstractions}
+\section{Client Abstractions} 
+
+Modulo7 exposes two client facing  
 
 \subsection{Search Engine Functionality} \label{searchengine}
 
 Based on the vector space models defined in sections \ref{globalvectorspace} and
-\ref{voicespecificvectorspace}, similarity metrics can be defined 
+\ref{voicespecificvectorspace}, customized similarity metrics can be defined to form ranked search functionality for a given query song against an indexed data set. Given two songs $S_1$ and $S_2$, we can define similarity to be 
+
+\begin{equation}
+Sim(S_1, S_2) \in \{0, 1\}
+\end{equation}
+
+The definition of $Sim(S_1, S_2)$ can be implemented in various ways and Modulo7 allows the consumer to choose the similarity metric as a custom argument. So for a given query song $S_{query}$ and a given similarity metric Sim, we can define the order list as 
+
+\begin{equation}
+content...
+\end{equation}
 
 \subsection{Structured Querying Functionality} \label{structuredquery}
 
@@ -225,12 +254,12 @@ A criteria is a particular music theoretic condition that a song either satisfie
 \begin{enumerate}
 \item Polyphony criteria : Whether a song is polyphonic or not
 \item Key Signature criteria : Whether a song has a particular key signature
-\item STAB Voice Criteria : Whether a song follows the Soprano, Alto, Tenor, Bass Voice structures as defined in 
+\item STAB Voice Criteria : Whether a song follows the Soprano, Alto, Tenor, Bass Voice structures as defined in \cite{satbcriteria}
 \end{enumerate}
 
 \subsection{Statistic}
 
-A statistic is a real number generated when applied to a particular song. A statistic condition when this generated statistic satisfies a relational operator with a given thresh-hold value. For example PowerIndex(song) < 0.5 is a valid statistic condition. Some notable supported statistic conditions are 
+A statistic is a real number generated when applied to a particular song. A statistic condition is defined when this generated statistic satisfies a relational operator with a given thresh-hold value. For example PowerIndex(song) < 0.5 is a valid statistic condition. Some notable supported statistic conditions are 
 
 \begin{enumerate}
 \item Average Pitch Duration over the songs
@@ -246,7 +275,7 @@ This section includes improvements that have been attained over existing framewo
 
 \subsection{Indexing and Persistent Store Improvements}
 
-Modulo7 achieves significant storage improvements over the input formats, while not losing any symbolic information. Figure \ref{fig:storageimprovement} illustrates this for the Saarland dataset \cite{saarlandmsd}
+Modulo7 achieves significant storage improvements over the input formats, while not losing any symbolic information. Figure \ref{fig:storageimprovement} illustrates this for the Saarland dataset \cite{saarlandmsd} \\
 
 \begin{figure}[h]
 \begin{center}
@@ -255,7 +284,7 @@ Modulo7 achieves significant storage improvements over the input formats, while 
  \caption{Space storage improvements over Saarland Dataset.}
  \label{fig:storageimprovement}
 \end{center}
- \end{figure}
+\end{figure}
 
 
 \section{Conclusion and Future Work}
