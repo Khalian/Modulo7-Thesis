@@ -78,9 +78,9 @@ Given the explosive growth of Music Information Retrieval research, several appr
 Modulo7 is an attempt to capture the best features of both worlds. Modulo7 converts different music sources (midi, musicxml files, sheet music png/jpeg files and mp3) into a single unified symbolic representation. It indexes songs on global properties (artist, key signature, time signature etc) and provides a vector space implementation for similarity searches and querying based on the similie \cite{similie} platform and extended to include chords and polyphony. As a consequence, Modulo7 acts as an end to end software suite for Music Information Retrieval including client side querying, searching, indexing and persistent store mechanism. The broad novel goals of Modulo7 can be classified as follows
 
 \begin{enumerate}
-\item To create a framework for retrieval from multiple digitized music formats. 
-\item To efficiently store and index variegated data formats into a unified format.  
-\item To query/search on a quantified version of music theoretic principles. 
+\item To create a framework for retrieval from multiple digitized music formats and in effect facilitate comparing songs of different formats. 
+\item To efficiently store and index variegated data formats into a unified format while keeping symbolic information intact.  
+\item To query/search relevant songs based on a quantified version of music theoretic principles. 
 \end{enumerate}
 
 %
@@ -302,7 +302,7 @@ Modulo7 achieves significant storage improvements over the input formats, while 
 \end{center}
 \end{figure}
 
-Similarly an experiment was carried out to ascertain compression as a function of data set size for the Wikifonia Dataset
+\noindent Similarly an experiment was carried out to ascertain compression as a function of data set size for the Wikifonia Dataset \cite{WikifoniaDataset}
 
 \begin{figure}[h]
 \begin{center}
@@ -315,16 +315,62 @@ Similarly an experiment was carried out to ascertain compression as a function o
 
 \subsection{Comparisons against JSymbolic}
 
+Some experiments were conducted against the jSymbolic component in the jMIR \cite{jMIR} software suite. Like the jMIR suite, Modulo7 extracts features from songs, but with a different goal (relevance querying and similarity against jMIRs genre classification goals). Modulo7 implements \textbf{23} of jSymbolic's \textbf{111} features. Moreover both frameworks are written in Java and hence language features do not influence the evaluation. \\ 
 
+\noindent The experiment involved comparing memory footprints and time taken for extraction of 23 features for both libraries over increasing subset sizes of the Saarland \cite{saarlandmsd} dataset. 
 
 \begin{figure}[h]
 \begin{center}
 {\framebox{
  \includegraphics[width=\columnwidth]{MemoryTaken.png}}}
- \caption{Average Memory taken for feature extraction, jSymbolic vs Modulo7.}
- \label{fig:Ti}
+ \caption{Average Memory taken for feature extraction, jSymbolic vs Modulo7}
+ \label{fig:MemoryTaken}
 \end{center}
 \end{figure}
+
+\begin{figure}[h]
+\begin{center}
+{\framebox{
+ \includegraphics[width=\columnwidth]{TimeTaken.png}}}
+ \caption{Total time taken for feature extraction, jSymbolic vs Modulo7}
+ \label{fig:TimeTaken}
+\end{center}
+\end{figure}
+
+\noindent It can be inferred that Modulo7 outperforms jSymbolic in feature extraction and scales better with increasing data set sizes. 
+
+\subsection{Similarity Search Experiments}
+
+\noindent In order to estimate the efficacy of the similarity search algorithms, the million song dataset or MSD \cite{msd} was chosen to act as ground truth. MSD contains tags associated with songs (genre, comments about mood of the song and other such keywords) which was extracted by the researchers using the Last FM API. The ground truth of similarity was based on the number of matching tags between two songs. Consider tag sets $T_i$ and $T_j$ for songs in the MSD $S_i$ and $S_j$. The ground truth similarity is defined as 
+
+\begin{equation} \label{taghitrate}
+GTSim(S_1, S_2) = \sum_{t_i \in T(S_1)} \sum_{t_j \in T(S_2)} \begin{cases} 
+      1 & t_i == t_j \\
+      0 & otherwise \\  \end{cases}
+\end{equation}
+
+\noindent The measure was not normalized as MSD had a large number of "junk" tags (irrelevant comments about songs) which would have influenced the ground truth otherwise. \\
+
+\noindent A direct download-able subset of the million song data set was used which contained 10000 songs. A ten fold cross validation was performed (1000 query songs, 9000 data hold out) and average precision and recall are calculated. 
+
+\begin{table}[h]
+\begin{center}
+    \begin{tabular}{| l | l | l |}
+    \hline
+    Similarity Measure & Average Recall & Average Precision \\ \hline
+    SCM Trigram & 0.308 & 0.299 \\ \hline
+    Ukkonnen & 0.339 & 0.291 \\ \hline
+    Count Distance & 0.294 & 0.283  \\ \hline
+    Tonal Histogram & 0.341 & 0.362  \\ \hline
+    \end{tabular}
+\end{center}
+\caption{Average Precision and Recall for Melodic Similarity Measures}
+\end{table}
+
+
+\subsection{Exploratory Query Search Experiments}
+
+
 
 
 
