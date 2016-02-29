@@ -259,7 +259,7 @@ Here the individual components stand for
 
 \begin{enumerate}
 \item \textbf{Input Types: } A list of the input types we are interested in. For example if we are only interested in midi files then this value is "midi". If we are interested in more than one type(e.g midi and musicxml) then Input Types = "midi, musicxml". 
-\item \textbf{DATABASE\_NAME} : A placeholder for the of the database (created when Modulo7 server starts up)
+\item \textbf{DATABASE\_NAME} : A placeholder for the of the data base (created when Modulo7 server starts up)
 \item \textbf{boolean\_function} : A boolean function is a well formed propositional formula (chain of propositions or predicates connected by AND/ORs). Each predicate can either be defined as a criteria or statistic condition.   
 \end{enumerate}
 
@@ -367,8 +367,33 @@ GTSim(S_1, S_2) = \sum_{t_i \in T(S_1)} \sum_{t_j \in T(S_2)} \begin{cases}
 \caption{Average Precision and Recall for Melodic Similarity Measures}
 \end{table}
 
-
 \subsection{Exploratory Query Search Experiments}
+
+In order to ascertain the effectiveness of the query engine, certain custom experiments were ran. Queries built from concepts 
+
+\begin{table}[!htb]
+\begin{center}
+    \begin{tabular}{| l | l | l | l |}
+    \hline
+    Purpose &  Query & Precision  & Recall \\ \hline
+    Rock Song ID &  Q1 & 0.13  & 0.98 \\ \hline
+    Sad Song ID &  Q2 & 0.02  & 0.44 \\ \hline
+    Happy Song ID &  Q3 & 0.018  & 0.4 \\
+    \hline
+    \end{tabular}
+\end{center}
+\caption{Results for the exploratory query analysis}
+\end{table}
+
+\newpage
+
+\noindent We define Q1, Q2 and Q3 as follows
+
+\begin{enumerate}
+\item [Q1] select mp3 from default\_database where powerindex $>$ 0.61; with a ground truth estimate as song tags being either "rock" or "pop\_rock"
+\item [Q2] select mp3 from default\_database where sadnessindex $>$ 0.15 and scale = minor; with the ground truth estimate being song tags either "sad" or "sad\_songs" 
+\item [Q3] select mp3 from default\_database where happinessindex $>$ 0.11 and scale = major; with ground truth being song tags as either "happy" or "happy\_song"s
+\end{enumerate}
 
 
 
