@@ -217,21 +217,37 @@ Modulo7 exposes two client facing
 \subsection{Search Engine Functionality} \label{searchengine}
 
 Based on the vector space models defined in sections \ref{globalvectorspace} and
-\ref{voicespecificvectorspace}, customized similarity metrics can be defined to form ranked search functionality for a given query song against an indexed data set. Given two songs $S_1$ and $S_2$, we can define similarity to be 
+\ref{voicespecificvectorspace}, customized similarity metrics can be defined to form ranked search functionality for a given query song against an indexed data set. These similarity metrics are derived from the SIMILIE project \cite{similie} and extended ideas in \cite{smithwatermanmusic}. Given two songs $S_1$ and $S_2$, we can define similarity to be 
 
 \begin{equation}
 Sim(S_1, S_2) \in \{0, 1\}
 \end{equation}
 
-The definition of $Sim(S_1, S_2)$ can be implemented in various ways and Modulo7 allows the consumer to choose the similarity metric as a custom argument. So for a given query song $S_{query}$ and a given similarity metric Sim, we can define the order list as 
+\noindent The definition of $Sim(S_1, S_2)$ can be implemented in various ways and Modulo7 allows the consumer to choose the similarity metric as a custom argument. So for a given query song $S_{query}$ and a given similarity metric Sim, we can define the order list $Or(S_{query}, Sim)$ given the indexed set of songs $S_{ind}$
 
 \begin{equation}
-content...
+\begin{aligned}
+Or(S_{query}, Sim) =  desc\_sort_k \\ \{S | Sim(S_{query}, S) = k, S \in S_{ind}\}
+\end{aligned}
 \end{equation}
+
+\noindent This order list is presented as an output to the consumer. Following are some notable similarity measures implemented in Modulo7. 
+
+\begin{enumerate}
+\item \textbf{Smith Waterman Song Similarity}: Given two voices $V_1$ and $V_2$, Modulo7 uses the smith waterman genome alignment algorithm \cite{smithwatermanmusic} to estimate similarity based on notes as units. In order to extend this to songs, pair wise voice similarities are calculated and the max similarity is returned. Mathematically 
+
+\begin{equation}
+\begin{aligned}
+SM(S_1, S_2) = arg_{max} k \{SMV(V_i, V_j) \\ = k | V_i \in S_1, V_j \in S_2)\}
+\end{aligned}
+\end{equation} 
+
+\item \textbf{N Grams Similarity }: 
+\end{enumerate}
 
 \subsection{Structured Querying Functionality} \label{structuredquery}
 
-Modulo7 implements a custom SQL like language with its own grammar definition and implementation. Any query can be constructed as 
+\noindent Modulo7 implements a custom SQL like language with its own grammar definition and implementation. Any query can be constructed as 
 
 \begin{equation}
 \begin{aligned}
@@ -285,6 +301,31 @@ Modulo7 achieves significant storage improvements over the input formats, while 
  \label{fig:storageimprovement}
 \end{center}
 \end{figure}
+
+Similarly an experiment was carried out to ascertain compression as a function of data set size for the Wikifonia Dataset
+
+\begin{figure}[h]
+\begin{center}
+{\framebox{
+ \includegraphics[width=\columnwidth]{M7Graph.png}}}
+ \caption{Modulo7 compression of Wikifonia Dataset over increasing subset sizes}
+ \label{fig:compression}
+\end{center}
+\end{figure}
+
+\subsection{Comparisons against JSymbolic}
+
+
+
+\begin{figure}[h]
+\begin{center}
+{\framebox{
+ \includegraphics[width=\columnwidth]{MemoryTaken.png}}}
+ \caption{Average Memory taken for feature extraction, jSymbolic vs Modulo7.}
+ \label{fig:Ti}
+\end{center}
+\end{figure}
+
 
 
 \section{Conclusion and Future Work}
