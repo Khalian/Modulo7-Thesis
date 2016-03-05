@@ -350,6 +350,13 @@ Some experiments were conducted against the jSymbolic component in the jMIR \cit
 
 \noindent It can be inferred from these charts that Modulo7 outperforms jSymbolic in feature extraction speed and memory consumed and scales better with increasing data set sizes. 
 
+\noindent Since jSymbolic is Open Source a quick review noted the following reasons for speedups
+
+\begin{enumerate}
+\item JSymbolic is single threaded whereas Modulo7 is multi threaded.
+\item jSymbolic uses statically sized arrays, Modulo7 uses dynamically resizing maps for storing features.
+\end{enumerate}
+
 \subsection{Similarity Search Experiments}
 
 \noindent In order to estimate the efficacy of the similarity search algorithms, the million song dataset or MSD \cite{msd} was chosen to act as ground truth. MSD contains tags associated with songs (genre, comments about mood of the song and other such keywords) which was extracted by the researchers using the Last FM API. The ground truth of similarity was based on the number of matching tags between two songs. Consider tag sets $T_i$ and $T_j$ for songs in the MSD $S_i$ and $S_j$. The ground truth similarity is defined as 
