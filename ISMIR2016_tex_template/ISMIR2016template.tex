@@ -68,31 +68,31 @@
 \maketitle
 %
 \begin{abstract}
-This paper describes a novel Music Information Retrieval and Structured Querying framework named Modulo7. Modulo7 is a full stack implementation (both client and server side software) which facilitates indexing variegated sources of music (midi, mp3, music xml and digitized sheet music files). It implements a similarity search engine based on customized vector space representations of songs based music theory, an efficient indexing and persistent storage mechanism and an interface for querying relevant songs based on SQL(Structured Querying Language) like principles and a search engine functionality. This papers describes the design goals and implementation details of the framework, outlines the speed up and scale up results over input sources and other MIR frameworks and discusses potential improvements. \\\\
+This paper describes a novel Music Information Retrieval and Structured Querying framework named Modulo7. Modulo7 is a full stack implementation (both client and server side software) which facilitates indexing variegated sources of music (midi, mp3, music xml and digitized sheet music files). It implements a similarity search engine based on customized vector space representations of songs based on music theory, an efficient indexing and persistent storage mechanism and an interface for querying relevant songs based on SQL(Structured Querying Language) like principles and a search engine functionality. This paper describes the design goals and implementation details of the framework, outlines the speed up and scale up results over input sources and other MIR frameworks and discusses potential improvements. \\\\
 \textbf{Keywords : MIDI, Music XML, MP3, Music Retrieval, SQL}
 \end{abstract}
 %
 \section{Introduction}\label{sec:introduction}
 
-Given the explosive growth of Music Information Retrieval research, several approaches and software suites have been designed to tackle generic problems such as efficient song indexing, music recommendation, archival methods, structured and un-structured querying, feature extraction, audio and digital signal processing etc. A vast majority of the MIR frameworks in academia tend to approach very specific problems and does not support scalability as a significant end goal in itself \cite{mirproblems}. Moreover, industry applications predominantly treat MIR approaches based on collaborative filtering techniques \cite{amazonreco} and/or manual annotation schemes \cite{musicgenomepandora} instead of structural analysis of music sources. However these frameworks scale very well to large datasets. \\\\
+Given the explosive growth of Music Information Retrieval research, several approaches and software suites have been designed to tackle generic problems such as efficient song indexing, music recommendation, archival methods, structured and un-structured querying, feature extraction, audio and digital signal processing etc. A vast majority of the MIR frameworks in academia tend to approach very specific problems and do not support scalability as a significant end goal in itself \cite{mirproblems}. However, industry applications predominantly treat MIR approaches based on collaborative filtering techniques \cite{amazonreco} and/or manual annotation schemes \cite{musicgenomepandora} instead of structural analysis of music sources. These frameworks scale very well to large datasets. \\\\
 Modulo7 is an attempt to capture the best features of both worlds. Modulo7 converts different music sources (midi, musicxml files, sheet music png/jpeg files and mp3) into a single unified symbolic representation. It indexes songs on global properties (artist name, key signature, time signature etc) and provides a vector space implementation based on music theory and facilitates similarity searches based on the SIMILIE \cite{similie} platform and extended to include chords and polyphony and a novel querying approach. As a consequence, Modulo7 acts as an end to end software suite for Music Information Retrieval which analyses song's musical content directly instead of music consumer's opinions about music. The broad goals of Modulo7 can hence be summarized as
 
 \begin{enumerate}
 \item To efficiently store and index variegated data formats into a unified format while keeping symbolic information intact.
 \item To create a framework for music retrieval from multiple music formats and in effect facilitate comparing songs of different formats.
 \item To query/search relevant songs based on a quantified version of music theoretic principles. 
-\item To build a full stack open source platform for end to end MIR tasks. Modulo7 is hosted at \cite{m7code}
+\item To build a full stack for end to end MIR tasks. This framework is also open sourced. Modulo7 is hosted at \cite{m7code}
 \end{enumerate}
 
 %
 \section{Relevant Work} \label{sec:relevantwork}
 
 Music Information Retrieval is a vast and interdisciplinary body of work. In order to facilitate research in MIR, several software suites and frameworks have been developed in the academic community in the past. Notable amongst them are software suites like jMIR \cite{jMIR} for automatic feature extraction from audio and midi sources to be used as input into machine learning algorithms for genre classification, marsyas \cite{marsyas}, essentia \cite{essentia} and librosa \cite{librosa} for audio processing, humdrum \cite{humdrum} for automated musicological research, gamera \cite{gamera} for optical music recognition and symbol identification and SIMILIE \cite{similie} for melodic similarity analysis. \\\\
-On top of the effort done by academia, there has been significant effort undertaken by companies in the field of MIR with an overarching emphasis on music recommendation as an end goal. For instance Amazon implements a collaborative filtering approach by quantifying a consumer's shopping behavior \cite{amazonreco}. Pandora on the other hand utilizes an approach in which trained musicologists manually classify similarity between artists and songs \cite{musicgenomepandora} which is subsequently consumed by Pandora's APIs for similarity searches. Shazam \cite{shazam} implements a database of music fingerprints and supports music ID as a service (by comparing a generated fingerprint of an input song to their existing database). 
+In addition to the effort done by academia, there has been significant effort undertaken by companies in the field of MIR with an overarching emphasis on music recommendation as an end goal. For instance, Amazon implements a collaborative filtering approach by quantifying a consumer's shopping behavior \cite{amazonreco}. Pandora, on the other hand, utilizes an approach in which trained musicologists manually classify similarity between artists and songs \cite{musicgenomepandora} which is subsequently consumed by Pandora's APIs for similarity searches. Shazam \cite{shazam} implements a database of music fingerprints and supports music ID as a service (by comparing a generated fingerprint of an input song to their existing database). 
  
 \section{Software Design}\label{sec:architecture}
 
-This section details the software design of the Modulo7 most notably its architecture and a typical consumer work-flow description(i.e. how Modulo7 is initialized and consumed as a service). 
+This section details the software design of the Modulo7: most notably its architecture and a typical consumer work-flow description(i.e. how Modulo7 is initialized and consumed as a service). 
 
 \subsection{Software Architecture and Design}
 
@@ -125,7 +125,7 @@ The Modulo7 architecture can be visualized in figure \ref{fig:architecture} and 
 \end{center}
 \end{figure}
 
-\item \textbf{Music theory Models: } Modulo7 implements vector space models derived from \cite{similie} with extensions to polyphonic music and chords using a template matching algorithm described in \cite{chord-detection}. This forms a mathematical formulation of music sources. Its described in detail in section \ref{vecmodels}.
+\item \textbf{Music theory Models: } Modulo7 implements vector space models derived from \cite{similie} with extensions to polyphonic music and chords using a template matching algorithm described in \cite{chord-detection}. This forms a mathematical formulation of music sources. It is described in detail in section \ref{vecmodels}.
 
 \item \textbf{Client side Querying: } Modulo7 implements client side abstractions that exposes two modes of information retrieval. Both these modes leverage the vector space models described in section \ref{vecmodels}.
 \begin{enumerate}
@@ -139,10 +139,10 @@ The Modulo7 architecture can be visualized in figure \ref{fig:architecture} and 
 
 \subsection{Consumer Workflow} 
 
-The consumer workflow can be defined as the steps/operations the user takes to initialize the Modulo7 server and client components and the output generated on search and structured queries. 
+The consumer workflow can be defined as the steps/operations the user takes to initialize the Modulo7 server and client components, and the output generated on search and structured queries. 
 
 \begin{enumerate}
-\item Modulo7 server is initialized by specifying a source directory. Every music source file inside the directory is parsed and converted to either an in memory and/or persistent store version. It also indexes these songs on global properties (artist, key-signature, time-signature etc). It also guesstimates certain properties if not explicitly present (e.g key signature via the KK Tonality profiles key finding \cite{kkTonalityKeyFinding} algorithm)
+\item Modulo7 server is initialized by specifying a source directory. Every music source file inside the directory is parsed and converted to either an in memory and/or persistent store version. It also indexes these songs on global properties (artist, key-signature, time-signature etc). Furthermore, Modulo7 guesstimates certain properties if not explicitly present (e.g key signature via the KK Tonality profiles key finding \cite{kkTonalityKeyFinding} algorithm)
 \item It then exposes a prompt which asks the user for two modes (search engine/structured querying). (In either case the appropriate vector space model is built based on the query)
 \begin{enumerate}
 \item If the user selects the search engine functionality, the engine then asks for an input query song and a similarity metric (from one of the choices described in section \ref{searchengine}). Then the engine proceeds to rank the query song with each of the indexed songs based on the similarity metric and then returns an ordered list of "relevant" song(based on the similarity scores for each of the indexed songs against the query song). 
@@ -270,14 +270,15 @@ select \ input\_types \ from \\\ DATABASE\_NAME \\ where (boolean\_formula)
 A criteria is a particular music theoretic condition that a song either satisfies or not. Modulo7 implements 6 such criteria. Some notable examples are 
 
 \begin{enumerate}
-\item Polyphony criteria : Whether a song is polyphonic or not
-\item Key Signature criteria : Whether a song has a particular key signature
-\item STAB Voice Criteria : Whether a song follows the Soprano, Alto, Tenor, Bass Voice structures as defined in \cite{satbcriteria}
+\item Polyphony criteria : Whether a song is polyphonic or not.
+\item Key Signature criteria : Whether a song has a particular key signature.
+\item STAB Voice Criteria : Whether a song follows the Soprano, Alto, Tenor, Bass Voice structures as defined in \cite{satbcriteria}.
 \end{enumerate}
+
 
 \subsection{Statistic}
 
-A statistic is a real number generated when applied to a particular song (effectively a quantified attribute of a song). A statistic condition is defined when this generated statistic satisfies a relational operator with a given thresh-hold value. For example PowerIndex(song) $<$ 0.5 is a valid statistic condition. Modulo7 implements 11 such statistics. Some notable examples are 
+A statistic is a real number generated when applied to a particular song (effectively a quantified attribute of a song). A statistic condition is defined when this generated statistic satisfies a relational operator with a given thresh-hold value. For example statistic(song) $<$ 0.5 is a valid statistic condition. Modulo7 implements 11 such statistics. Some notable examples are 
 
 \begin{enumerate}
 \item Average Pitch Duration over the song duration. 
@@ -296,7 +297,7 @@ boolean\_formula = cond_1 \ op_1 \ cond_2 \ .. \ op_{n-1} \ cond_n
 
 \section{Experimental Evaluation}
 
-This section includes experiments conducted and improvements that have been attained over existing frameworks and input sources. For the purposes of this experiment, existing academic datasets such as the Saarland dataset \cite{saarlandmsd}, the Wikifonia Dataset \cite{WikifoniaDataset} and the million song data set \cite{msd} and experiments were run on identical hardware for competing implementations. 
+This section includes experiments conducted and improvements that have been attained over existing frameworks and input sources. For the purposes of this experiment, existing academic datasets such as the Saarland dataset \cite{saarlandmsd}, the Wikifonia Dataset \cite{WikifoniaDataset} and the million song data set \cite{msd} were considered and experiments were run on identical hardware for competing implementations. 
 
 \subsection{Indexing and Persistent Store Improvements}
 
@@ -305,7 +306,7 @@ Modulo7 achieves significant storage improvements over the input formats, while 
 \begin{figure}[h]
 \begin{center}
 {\framebox{
- \includegraphics[width=\columnwidth]{BarGraph2.png}}}
+ \includegraphics[width=\columnwidth, height=40mm]{BarGraph2.png}}}
  \caption{Space storage improvements over Saarland Dataset.}
  \label{fig:storageimprovement}
 \end{center}
@@ -316,7 +317,7 @@ Modulo7 achieves significant storage improvements over the input formats, while 
 \begin{figure}[h]
 \begin{center}
 {\framebox{
- \includegraphics[width=\columnwidth]{M7Graph.png}}}
+ \includegraphics[width=\columnwidth, height=50mm]{M7Graph.png}}}
  \caption{Modulo7 compression of Wikifonia Dataset over increasing subset sizes}
  \label{fig:compression}
 \end{center}
@@ -353,7 +354,7 @@ Some experiments were conducted against the jSymbolic component in the jMIR \cit
 \noindent Since jSymbolic is Open Source a quick review noted the following reasons for speedups
 
 \begin{enumerate}
-\item JSymbolic is single threaded whereas Modulo7 is multi threaded.
+\item JSymbolic is single threaded whereas Modulo7 is multi threaded. Indexing and Data parallelization is achieved via multiple threads in Modulo7.  
 \item jSymbolic uses statically sized arrays, Modulo7 uses dynamically resizing maps for storing features.
 \end{enumerate}
 
